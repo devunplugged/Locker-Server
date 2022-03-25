@@ -1,0 +1,20 @@
+main{
+    margin-top: 100px;
+}
+/* 
+body{
+   background-color: #2c2e30;
+    color:white;
+}
+
+.text-muted{
+    color: #c7c7c7 !important;
+}*/
+
+.code39{
+    font-family: 'Libre Barcode 39', cursive;
+}
+
+.font-size-barcode{
+    font-size: 100px;
+}
