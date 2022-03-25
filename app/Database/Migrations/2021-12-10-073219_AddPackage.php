@@ -43,7 +43,7 @@ class AddPackage extends Migration
             'status' => [
                 'type' => 'ENUM',
                 'constraint' => array('new', 'insert-ready', 'in-locker', 'remove-ready', 'removed', 'locked'),
-                'default' => 'closed'
+                'default' => 'new'
             ],
             'locker_id' => [
                 'type' => 'BIGINT',
