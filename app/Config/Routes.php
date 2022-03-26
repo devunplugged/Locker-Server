@@ -108,7 +108,7 @@ $routes->group("api", function ($routes) {
     $routes->post("cell/list", "Cell::list", ['filter' => 'jwtAdminAuth']);
     $routes->post("cell/delete", "Cell::delete", ['filter' => 'jwtAdminAuth']);
 
-    $routes->post("token/add", "Token::add", ['filter' => 'jwtAdminAuth']); 
+    $routes->post("token/add", "Token::add"); //, ['filter' => 'jwtAdminAuth']
     $routes->post("token/decode", "Token::decode"); 
     $routes->get("token/get-client", "Token::getClientType", ['filter' => 'jwtAuth']); 
 });
