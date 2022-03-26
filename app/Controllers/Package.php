@@ -232,7 +232,7 @@ class Package extends BaseController
         }
 
         $logs = $package->getLog();
-        $address = $package->getLog();
+        $address = $package->getAddress();
         $companyData = $package->getCompany();
         $company = $companyData['company'];
         $companyAddress = $companyData['companyAddress'];
