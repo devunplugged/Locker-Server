@@ -231,15 +231,21 @@ class Package extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
         }
 
-        
+        $logs = $package->getLog();
+        $address = $package->getLog();
         $companyData = $package->getCompany();
+        $company = $companyData['company'];
+        $companyAddress = $companyData['companyAddress'];
+
+        
+        
         return $this->respond(
             [
                 'package' => hashId($package->package), 
-                'logs' => hashId($package->getLog()), 
-                'address' => $package->getAddress(),
-                'company' => hashId($companyData['company']),
-                'companyAddress' => $companyData['companyAddress'],
+                'logs' => hashId($logs), 
+                'address' => $address,
+                'company' => hashId($company),
+                'companyAddress' => $companyAddress,
             ],
             200
         );
