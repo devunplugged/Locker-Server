@@ -13,6 +13,7 @@ class Package
     public $package;
     private $packageModel;
     private $packageLogModel;
+    private $packageAddressModel;
     private $request;
 
     public function __construct(?int $packageId = null)
@@ -20,11 +21,34 @@ class Package
 
         $this->packageModel = new PackageModel();
         $this->packageLogModel = new PackageLogModel();
+        $this->packageAddressModel = new PackageAddressModel();
         $this->request = service('request');
 
         if ($packageId != null) {
             $this->package = $this->packageModel->get($packageId);
         }
+    }
+
+    public function getLog()
+    {
+        return $this->packageLogModel->getPackageLog($this->package->id);
+    }
+
+    public function getAddress()
+    {
+        return $this->packageAddressModel->get($this->package->id);
+    }
+
+    public function getCompany()
+    {
+        $apiClientModel = new \App\Models\ApiClientModel();
+        $return = [];
+
+        $return['company'] = $apiClientModel->getCompany($this->package->company_id);
+        if($return['company']){
+            $return['companyAddress'] = (new \App\Models\DetailModel())->get($return['company']->id);
+        }
+        return $return;
     }
 
     public function createFromRequest()
@@ -238,21 +262,21 @@ class Package
 
     public function permissionCheck()
     {
-        if($this->request->decodedJwt->client == 'admin'){
+        if ($this->request->decodedJwt->client == 'admin') {
             return true;
         }
 
-        if($this->request->decodedJwt->companyId){
-            if($this->request->decodedJwt->companyId == $this->package->company_id){
+        if ($this->request->decodedJwt->companyId) {
+            if ($this->request->decodedJwt->companyId == $this->package->company_id) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
 
-        if($this->request->decodedJwt->client == 'company' && $this->request->decodedJwt->clientId == $this->package->company_id){
+        if ($this->request->decodedJwt->client == 'company' && $this->request->decodedJwt->clientId == $this->package->company_id) {
             return true;
-        }else{
+        } else {
             return false;
         }
 

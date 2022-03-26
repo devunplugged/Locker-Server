@@ -221,17 +221,28 @@ class Package extends BaseController
     {
 
         $packageId = decodeHashId($packageId);
+        $package = new \App\Libraries\Packages\Package($packageId);
 
-        $packageModel = new PackageModel();
-        $package = $packageModel->get($packageId);
+        if(!$package->package){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Nie znaleziono paczki']], 404, 123);
+        }
 
-        $packageLogModel = new PackageLogModel();
-        $logs = $packageLogModel->getPackageLog($packageId);
+        if(!$package->permissionCheck()){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
+        }
 
-        $packageAddressModel = new PackageAddressModel();
-        $packageAddress = $packageAddressModel->get($packageId);
-
-        return $this->respond(['package' => hashId($package), 'logs' => hashId($logs), 'address' => $packageAddress], 200);
+        
+        $companyData = $package->getCompany();
+        return $this->respond(
+            [
+                'package' => hashId($package->package), 
+                'logs' => hashId($package->getLog()), 
+                'address' => $package->getAddress(),
+                'company' => hashId($companyData['company']),
+                'companyAddress' => $companyData['companyAddress'],
+            ],
+            200
+        );
     }
 
     public function retrive()
