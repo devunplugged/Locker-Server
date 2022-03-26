@@ -31,11 +31,13 @@ class Package
 
     public function getLog()
     {
+        Logger::log(45,$this->package->id);
         return $this->packageLogModel->getPackageLog($this->package->id);
     }
 
     public function getAddress()
     {
+        Logger::log(46,$this->package->id);
         return $this->packageAddressModel->get($this->package->id);
     }
 
