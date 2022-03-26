@@ -97,7 +97,7 @@ $routes->group("api", function ($routes) {
     $routes->post("client/add", "Client::add", ['filter' => 'jwtAdminAuth']/*, ['filter' => 'jwtAdminAuth']*/); 
     $routes->get("client/get/(:segment)", "Client::get/$1", ['filter' => 'jwtAdminAuth']); 
     $routes->post("client/update", "Client::update", ['filter' => 'jwtAdminAuth']); 
-    $routes->get("client/list", "Client::list", ['filter' => 'jwtAdminAuth']); 
+    $routes->get("client/list", "Client::list"); //, ['filter' => 'jwtAdminAuth']
     $routes->post("client/list", "Client::list", ['filter' => 'jwtAdminAuth']); 
     $routes->post("client/delete", "Client::delete", ['filter' => 'jwtAdminAuth']); 
     $routes->get("client/my-account", "Client::myAccount", ['filter' => 'jwtAuth']); 
