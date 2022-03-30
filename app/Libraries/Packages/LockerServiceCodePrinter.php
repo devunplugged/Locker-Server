@@ -55,10 +55,11 @@ class LockerServiceCodePrinter
             $currentY = $this->pdf->GetY();
 
             $local_name = time() . $i . '.png';
-            (new QRCode)->render($codes[$i]->code, ROOTPATH . "public/tmp/" . $local_name);
+            $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
+            (new QRCode)->render($codes[$i]->code, $imagePath);
 
-            $this->pdf->Image(base_url() . "/tmp/" . $local_name, 15, $this->pdf->GetY() - 35, 28, 28);
-            unlink(ROOTPATH . "public/tmp/" . $local_name);
+            $this->pdf->Image($imagePath, 15, $this->pdf->GetY() - 35, 28, 28);
+            unlink($imagePath);
 
             $this->pdf->SetXY(60, $this->pdf->GetY() - 36);
             $this->pdf->Cell(0, 25, 'Skrytka ' . $codes[$i]->value, 0, 0);
