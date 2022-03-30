@@ -232,7 +232,7 @@ class Locker extends BaseController
         if($newToken){
             $response['token'] = $newToken;
         }
-
+        Logger::log(564, $response, 'response', 'locker', $this->request->decodedJwt->clientId);
         return $this->setResponseFormat('json')->respond($response, 200);
     }
 
