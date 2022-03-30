@@ -27,7 +27,7 @@ class TokenIssuer
     public function checkToken()
     {
         $this->getNewTokenIssueId();
-        Logger::log(79,$this->issue->id, 'after getNewTokenIssueId');
+
         if (!$this->issue) {
             return false;
         }
@@ -38,12 +38,10 @@ class TokenIssuer
         }
 
         if ($this->oldTokenUsed()) {
-            Logger::log(79,'old token used');
             return $this->manageOldTokenUse();
         }
 
         if ($this->newTokenUsed()) {
-            Logger::log(79,'new token used');
             return $this->manageNewTokenUse();
         }
     }
