@@ -68,11 +68,12 @@ class Printer{
         $this->pdf->Code39(10,105,$code,1,15);
  */       
         $local_name = time().'.png';
-        $outQR = (new QRCode)->render($this->package->code, ROOTPATH . "public/tmp/" . $local_name);
+        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
+        $outQR = (new QRCode)->render($this->package->code, $imagePath);
         
         
-        $this->pdf->Image(base_url() . "/tmp/" . $local_name, 100, 3, 30, 30);
-        unlink(ROOTPATH . "public/tmp/" . $local_name);
+        $this->pdf->Image($imagePath, 100, 3, 30, 30);
+        unlink($imagePath);
 
     }
 
