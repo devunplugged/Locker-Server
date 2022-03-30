@@ -54,12 +54,12 @@ class JwtUserFilter implements FilterInterface
             $response = service('response');
             return $response->setJSON(createErrorMsg(401, 2, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
-/* Commented out until new tokens are distributed
+
         if(!JwtHandler::isOnWhiteList($request->decodedJwt->tokenId)){
             $response = service('response');
             return $response->setJSON(createErrorMsg(401, 3, ['auth' => 'Access denied']))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
-*/
+
         if($request->decodedJwt->client !== 'user'){
             $response = service('response');
             return $response->setJSON(createErrorMsg(401, 3, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);

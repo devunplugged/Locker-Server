@@ -103,7 +103,7 @@ class TokenIssuer
     private function cancelOldToken()
     {
         $tokenWhitelistModel = new TokenWhitelistModel();
-        $tokenWhitelistModel->remove($this->issue->old_token_id);
+        $tokenWhitelistModel->removeClientTokensExcept($this->request->decodedJwt->clientId, $this->issue->new_token_id);
     }
 
     private function issueDone()

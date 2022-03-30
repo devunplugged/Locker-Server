@@ -42,29 +42,30 @@ class TokenWhitelistModel extends Model
     protected $afterDelete    = [];
 
 
-    public function create($clientIdHash, $description = ''){
-
+    public function create($clientIdHash, $description = '')
+    {
         $tokenWhitelist = new \App\Entities\TokenWhitelist();
         $tokenWhitelist->client_id = $clientIdHash;
         $tokenWhitelist->description = $description;
         $this->save($tokenWhitelist);
         return $this->getInsertID();
-
     }
 
-    public function isOnWhitelist($tokenId){
-
-        Logger::log(87, $tokenId, 'isOnWhitelist');
-        if($this->find($tokenId)){
-            Logger::log(87, "TRUE", 'isOnWhitelist');
+    public function isOnWhitelist($tokenId)
+    {
+        if ($this->find($tokenId)) {
             return true;
         }
-        Logger::log(87, "FALSE", 'isOnWhitelist');
         return false;
     }
 
-    public function remove($tokenId){
-
+    public function remove($tokenId)
+    {
         $this->where('id', $tokenId)->delete();
+    }
+
+    public function removeClientTokensExcept($clientId, $tokenId)
+    {
+        $this->where('client_id', $clientId)->where('id!=', $tokenId)->delete();
     }
 }
