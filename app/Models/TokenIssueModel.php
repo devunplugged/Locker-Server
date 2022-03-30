@@ -3,19 +3,19 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use App\Libraries\Logger\Logger;
+use App\Libraries\Packages\JwtHandler;
 
-class TokenWhitelistModel extends Model
+class TokenIssueModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'tokenwhitelists';
+    protected $table            = 'tokenissues';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = \App\Entities\TokenWhitelist::class;
+    protected $returnType       = \App\Entities\TokenIssue::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['client_id', 'description'];
+    protected $allowedFields    = ['client_id','old_token_id','new_token_id','new_token','status','old_token_uses'];
 
     // Dates
     protected $useTimestamps = true;
@@ -41,30 +41,24 @@ class TokenWhitelistModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function create($clientId)
+    {
+        $newToken = JwtHandler::generateForClient($clientId);
+        $decodedNewToken = JwtHandler::decode($newToken);
 
-    public function create($clientIdHash, $description = ''){
-
-        $tokenWhitelist = new \App\Entities\TokenWhitelist();
-        $tokenWhitelist->client_id = $clientIdHash;
-        $tokenWhitelist->description = $description;
-        $this->save($tokenWhitelist);
-        return $this->getInsertID();
-
+        $issue = new \App\Entities\TokenIssue();
+        $issue->client_id = $clientId;
+        $issue->new_token_id = $decodedNewToken->tokenId;
+        $issue->new_token = $newToken;
+        $this->save($issue);
     }
 
-    public function isOnWhitelist($tokenId){
-
-        Logger::log(87, $tokenId, 'isOnWhitelist');
-        if($this->find($tokenId)){
-            Logger::log(87, "TRUE", 'isOnWhitelist');
-            return true;
+    public function hasNewTokenIssued($clientId)
+    {
+        $issue = $this->where('client_id', $clientId)->where('status', 'new')->first();
+        if($issue){
+            return $issue;
         }
-        Logger::log(87, "FALSE", 'isOnWhitelist');
         return false;
-    }
-
-    public function remove($tokenId){
-
-        $this->where('id', $tokenId)->delete();
     }
 }

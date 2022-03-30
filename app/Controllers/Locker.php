@@ -22,6 +22,7 @@ use App\Libraries\Packages\LockerRaport;
 use App\Libraries\Packages\LockerSettings;
 use App\Libraries\Packages\Task;
 use App\Libraries\Packages\LockerServiceCodePrinter;
+use App\Libraries\Packages\TokenIssuer;
 use App\Libraries\Logger\Logger;
 
 use App\Exceptions\ValidationException;
@@ -223,7 +224,16 @@ class Locker extends BaseController
 
         Logger::log(10, 'GETTING TASKS', 'FOR', 'locker', $this->request->decodedJwt->clientId);
         $task = new Task($this->request->decodedJwt->clientId);
-        return $this->setResponseFormat('json')->respond(['status' => 200, 'settings' => LockerSettings::get($lockerId), 'tasks' => $task->getForLocker()], 200);
+
+        $response = ['status' => 200, 'settings' => LockerSettings::get($lockerId), 'tasks' => $task->getForLocker()];
+
+        $tokenIssuer = new TokenIssuer();
+        $newToken = $tokenIssuer->checkToken();
+        if($newToken){
+            $response['token'] = $newToken;
+        }
+
+        return $this->setResponseFormat('json')->respond($response, 200);
     }
 
     public function get($id)
