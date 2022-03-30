@@ -54,7 +54,8 @@ class PackageModel extends Model
 
         $codeData = [
             'id' => $id,
-            'code' => $code
+            'code' => $code,
+            'track_code' => md5($id . time()),
         ];
         $this->save($codeData);
         
