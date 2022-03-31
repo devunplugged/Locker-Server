@@ -101,11 +101,10 @@ class Printer
 
 
         $local_name = time() . '.png';
-        (new QRCode)->render($this->package->package->code, ROOTPATH . "public/tmp/" . $local_name);
-
-
-        $this->pdf->Image(base_url() . "/tmp/" . $local_name, 105, 10, 30, 30);
-        unlink(ROOTPATH . "public/tmp/" . $local_name);
+        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
+        (new QRCode)->render($this->package->package->code, $imagePath);
+        $this->pdf->Image($imagePath, 105, 10, 30, 30);
+        unlink($imagePath);
     }
 
     public function output()
