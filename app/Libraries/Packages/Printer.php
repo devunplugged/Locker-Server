@@ -2,6 +2,7 @@
 namespace App\Libraries\Packages;
 
 use App\Models\PackageModel;
+use App\Libraries\Packages\Package;
 use App\Libraries\Fpdf\FpdfExtended;
 use \chillerlan\QRCode\QRCode;
 
@@ -13,8 +14,8 @@ class Printer{
     public function setPackage($packageId){
        
         $packageModel = new PackageModel();
-        $this->package = $packageModel->get($packageId);
-
+        //$this->package = $packageModel->get($packageId);
+        $this->package = new Package($packageId);
     }
 
     public function newDocument(){
@@ -25,7 +26,7 @@ class Printer{
 
     public function generatePackageDocument(){
         
-        if(!$this->package){
+        if(!$this->package->package){
             throw new \Exception("Invalid package ID");
         }
 
@@ -44,7 +45,7 @@ class Printer{
         //$code='CODE 39';
         //$this->pdf->SetXY(35,5);
         //$this->pdf->Write(5,'A set: "'.$code.'"');
-        $this->pdf->Code39(29,7,$this->package->code,1,15);
+        //$this->pdf->Code39(29,7,$this->package->package->code,1,15);
         
 /*
         //B set
@@ -69,7 +70,7 @@ class Printer{
  */       
         $local_name = time().'.png';
         $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
-        $outQR = (new QRCode)->render($this->package->code, $imagePath);
+        $outQR = (new QRCode)->render($this->package->package->code, $imagePath);
         
         
         $this->pdf->Image($imagePath, 100, 3, 30, 30);
@@ -79,7 +80,7 @@ class Printer{
 
     public function output(){
 
-        if(!$this->package){
+        if(!$this->package->package){
             throw new \Exception("No document to output");
         }
 
