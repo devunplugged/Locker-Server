@@ -20,8 +20,17 @@ class Printer
     public function newDocument()
     {
         $this->pdf = new FpdfExtended(); //'P', 'mm', [88, 125]
+        //custom font is needed for polish letters
+        //font has to be generated first from ttf; http://www.fpdf.org/makefont/ or makefont in fpdf src
+        //font has to be placed in fonts folder in fpdf src
+        $this->pdf->AddFont('CustomFont','','Aller_Rg.php');
         $this->pdf->AddPage();
-        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->SetFont('CustomFont','',8);
+    }
+
+    private function fixEncoding($str)
+    {
+        return iconv('UTF-8', 'ISO-8859-2', $str);
     }
 
     public function generatePackageDocument()
@@ -32,23 +41,23 @@ class Printer
         }
 
         $packageAddresses = $this->package->getAddress();
-        $sendersName = isset($packageAddresses['senders_name']) ? $packageAddresses['senders_name'] : '-';
-        $sendersPostcode = isset($packageAddresses['senders_postcode']) ? $packageAddresses['senders_postcode'] : '-';
-        $sendersCity = isset($packageAddresses['senders_city']) ? $packageAddresses['senders_city'] : '-';
-        $sendersStreet = isset($packageAddresses['senders_street']) ? $packageAddresses['senders_street'] : '-';
-        $sendersBuilding = isset($packageAddresses['senders_building']) ? $packageAddresses['senders_building'] : '-';
-        $sendersApartment = isset($packageAddresses['senders_apartment']) ? $packageAddresses['senders_apartment'] : '-';
-        $sendersPhone = isset($packageAddresses['senders_phone']) ? $packageAddresses['senders_phone'] : '-';
-        $sendersEmail = isset($packageAddresses['senders_email']) ? $packageAddresses['senders_email'] : '-';
+        $sendersName = isset($packageAddresses['senders_name']) ? $this->fixEncoding($packageAddresses['senders_name']) : '-';
+        $sendersPostcode = isset($packageAddresses['senders_postcode']) ? $this->fixEncoding($packageAddresses['senders_postcode']) : '-';
+        $sendersCity = isset($packageAddresses['senders_city']) ? $this->fixEncoding($packageAddresses['senders_city']) : '-';
+        $sendersStreet = isset($packageAddresses['senders_street']) ? $this->fixEncoding($packageAddresses['senders_street']) : '-';
+        $sendersBuilding = isset($packageAddresses['senders_building']) ? $this->fixEncoding($packageAddresses['senders_building']) : '-';
+        $sendersApartment = isset($packageAddresses['senders_apartment']) ? $this->fixEncoding($packageAddresses['senders_apartment']) : '-';
+        $sendersPhone = isset($packageAddresses['senders_phone']) ? $this->fixEncoding($packageAddresses['senders_phone']) : '-';
+        $sendersEmail = isset($packageAddresses['senders_email']) ? $this->fixEncoding($packageAddresses['senders_email']) : '-';
 
-        $recipientsName = isset($packageAddresses['recipients_name']) ? $packageAddresses['recipients_name'] : '-';
-        $recipientsPostcode = isset($packageAddresses['recipients_postcode']) ? $packageAddresses['recipients_postcode'] : '-';
-        $recipientsCity = isset($packageAddresses['recipients_city']) ? $packageAddresses['recipients_city'] : '-';
-        $recipientsStreet = isset($packageAddresses['recipients_street']) ? $packageAddresses['recipients_street'] : '-';
-        $recipientsBuilding = isset($packageAddresses['recipients_building']) ? $packageAddresses['recipients_building'] : '-';
-        $recipientsApartment = isset($packageAddresses['recipients_apartment']) ? $packageAddresses['recipients_apartment'] : '-';
-        $recipientsPhone = isset($packageAddresses['recipients_phone']) ? $packageAddresses['recipients_phone'] : '-';
-        $recipientsEmail = isset($packageAddresses['recipients_email']) ? $packageAddresses['recipients_email'] : '-';
+        $recipientsName = isset($packageAddresses['recipients_name']) ? $this->fixEncoding($packageAddresses['recipients_name']) : '-';
+        $recipientsPostcode = isset($packageAddresses['recipients_postcode']) ? $this->fixEncoding($packageAddresses['recipients_postcode']) : '-';
+        $recipientsCity = isset($packageAddresses['recipients_city']) ? $this->fixEncoding($packageAddresses['recipients_city']) : '-';
+        $recipientsStreet = isset($packageAddresses['recipients_street']) ? $this->fixEncoding($packageAddresses['recipients_street']) : '-';
+        $recipientsBuilding = isset($packageAddresses['recipients_building']) ? $this->fixEncoding($packageAddresses['recipients_building']) : '-';
+        $recipientsApartment = isset($packageAddresses['recipients_apartment']) ? $this->fixEncoding($packageAddresses['recipients_apartment']) : '-';
+        $recipientsPhone = isset($packageAddresses['recipients_phone']) ? $this->fixEncoding($packageAddresses['recipients_phone']) : '-';
+        $recipientsEmail = isset($packageAddresses['recipients_email']) ? $this->fixEncoding($packageAddresses['recipients_email']) : '-';
 
         $this->newDocument();
 
