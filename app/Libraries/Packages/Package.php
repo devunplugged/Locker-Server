@@ -6,6 +6,8 @@ use App\Models\PackageModel;
 use App\Models\PackageAddressModel;
 use App\Models\PackageLogModel;
 use App\Libraries\Logger\Logger;
+use App\Libraries\Packages\Mailer;
+use \chillerlan\QRCode\QRCode;
 
 class Package
 {
@@ -15,6 +17,10 @@ class Package
     private $packageLogModel;
     private $packageAddressModel;
     private $request;
+
+    private $addresses;
+    private $logs;
+    private $company;
 
     public function __construct(?int $packageId = null)
     {
@@ -29,28 +35,36 @@ class Package
         }
     }
 
-    public function getLog()
+    public function getLog(bool $reload = false)
     {
-        Logger::log(45,$this->package->id);
-        return $this->packageLogModel->getPackageLog($this->package->id);
-    }
-
-    public function getAddress()
-    {
-        Logger::log(46,$this->package->id);
-        return $this->packageAddressModel->get($this->package->id);
-    }
-
-    public function getCompany()
-    {
-        $apiClientModel = new \App\Models\ApiClientModel();
-        $return = [];
-
-        $return['company'] = $apiClientModel->getCompany($this->package->company_id);
-        if($return['company']){
-            $return['companyAddress'] = (new \App\Models\DetailModel())->get($return['company']->id);
+        //Logger::log(45,$this->package->id);
+        if(!$this->logs || $reload){
+            $this->logs = $this->packageLogModel->getPackageLog($this->package->id);
         }
-        return $return;
+        return $this->logs;
+    }
+
+    public function getAddress(bool $reload = false)
+    {
+        //Logger::log(46,$this->package->id);
+        if(!$this->addresses || $reload){
+            $this->addresses = $this->packageAddressModel->get($this->package->id);
+        }
+        return $this->addresses;
+    }
+
+    public function getCompany(bool $reload = false)
+    {
+        if(!$this->company || $reload){
+            $this->company = [];
+            $apiClientModel = new \App\Models\ApiClientModel();
+            $this->company['company'] = $apiClientModel->getCompany($this->package->company_id);
+            if($this->company['company']){
+                $this->company['companyAddress'] = (new \App\Models\DetailModel())->get($this->company['company']->id);
+            }
+        }
+
+        return $this->company;
     }
 
     public function createFromRequest()
@@ -199,6 +213,8 @@ class Package
         $this->package->status = 'in-locker';
         $this->save();
 
+        $this->sendInLockerEmailToRecipient();
+
         $this->packageLogModel->create($this->package->id, "Paczka w paczkomacie", $this->request->decodedJwt->clientId);
     }
 
@@ -222,6 +238,31 @@ class Package
     public function save()
     {
         $this->packageModel->save($this->package);
+    }
+
+    ////////////EMAILS///////////////
+
+    public function sendInLockerEmailToRecipient()
+    {
+        $packageAddress = $this->getAddress();
+        $mailer = new Mailer();
+        $mailer->addAddress($packageAddress['recipients_email']);
+        $mailer->setSubject('Twoja paczka jest w paczkomacie');
+
+        $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' jest w paczkomacie</h1>';
+
+        $local_name = time() . '.png';
+        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
+        (new QRCode)->render($this->package->recipient_code, $imagePath);
+        $mailer->addEmbeddedImage($imagePath, 'qr-code', $local_name);
+
+        $body .= '<img alt="'.$this->package->recipient_code.'" src="cid:qr-code">';
+        $body .= '<div>Kod odbioru: '.$this->package->recipient_code.'</div>';
+
+        $mailer->setBody($body);
+        $mailer->send();
+
+        unlink($imagePath);
     }
 
     /////////VALIDATIONS//////////////

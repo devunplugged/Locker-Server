@@ -112,6 +112,8 @@ $routes->group("api", function ($routes) {
     $routes->post("token/decode", "Token::decode"); 
     $routes->get("token/get-client", "Token::getClientType", ['filter' => 'jwtAuth']); 
     $routes->post("token/issue-change", "Token::issueChange", ['filter' => 'jwtAdminAuth']); 
+
+    $routes->get("package/mail-test", "Test::testMail"); 
 });
 
 $routes->group("api/my", function ($routes) {
