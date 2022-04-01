@@ -61,6 +61,11 @@ class JwtLockerFilter implements FilterInterface
             return $response->setJSON(createErrorMsg(401, 2, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
+        if(!isset($request->decodedJwt->tokenId)){
+            $response = service('response');
+            return $response->setJSON(createErrorMsg(401, 3, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
+        }
+
         if(!JwtHandler::isOnWhiteList($request->decodedJwt->tokenId)){
             $response = service('response');
             return $response->setJSON(createErrorMsg(401, 3, ['auth' => 'Access denied']))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
