@@ -12,6 +12,11 @@ class Test extends BaseController
     public function testMail()
     {
         $package = new Package(14);
+
+
+
         $package->sendInLockerEmailToRecipient();
+
+        print_r($package);
     }
 }
