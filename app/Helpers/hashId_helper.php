@@ -3,7 +3,7 @@ use Hashids\Hashids;
 
 function hashId($data){
 
-$toHash = ['id', 'locker_id', 'company_id', 'client_id', 'cell_id'];
+$toHash = ['id', 'package_id', 'locker_id', 'company_id', 'client_id', 'cell_id'];
 
     $hashids = new Hashids(HASHID_SALT, 6, HASHID_ALPHABET);
 
