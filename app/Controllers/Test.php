@@ -17,6 +17,6 @@ class Test extends BaseController
 
         $package->sendInLockerEmailToRecipient();
 
-        print_r($package);
+        //print_r($package);
     }
 }
