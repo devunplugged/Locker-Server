@@ -196,34 +196,35 @@ class Locker extends BaseController
 
     public function raport()
     {
-        $rules = [
-            'locker_id' => ['rules' => 'required|max_length[64]|locker_exists'],
-            //'cells' => ['rules' => 'required|cells_status']
-        ];
+        // $rules = [
+        //     'locker_id' => ['rules' => 'required|max_length[64]|locker_exists'],
+        //     //'cells' => ['rules' => 'required|cells_status']
+        // ];
 
-        if (!$this->validate($rules)) {
-            //return $this->setResponseFormat('json')->fail(, 409, 123, 'Invalid Inputs');
-            return $this->setResponseFormat('json')->fail(['generalErrors' => $this->validator->getErrors()], 409);
-        }
+        // if (!$this->validate($rules)) {
+        //     //return $this->setResponseFormat('json')->fail(, 409, 123, 'Invalid Inputs');
+        //     return $this->setResponseFormat('json')->fail(['generalErrors' => $this->validator->getErrors()], 409);
+        // }
 
         $lockerId = decodeHashId($this->request->getVar('locker_id'));
-        Logger::log(10, 'locker raport', $this->request->getVar('locker_id'), 'locker', $lockerId);
-        //Logger::log(88, 'Diagnostics', $this->request->getVar('temperature') . ' ' . $this->request->getVar('humidity') . ' ' . $this->request->getVar('voltage'), 'locker', $lockerId );
+        $lockerId = $this->request->decodedJwt->clientId;
+
+       
         $lockerRaport = new LockerRaport($lockerId, $this->request->getVar('cells'));
         $lockerRaport->ReadRaport();
 
         $diagnosticModel = new DiagnosticModel();
         $diagnosticModel->save(
             [
-                'locker_id' => $this->request->decodedJwt->clientId,
+                'locker_id' => $lockerId,
                 'temperature' => $this->request->getVar('temperature'),
                 'humidity' => $this->request->getVar('humidity'),
                 'voltage' => $this->request->getVar('voltage')
             ]
         );
 
-        Logger::log(10, 'GETTING TASKS', 'FOR', 'locker', $this->request->decodedJwt->clientId);
-        $task = new Task($this->request->decodedJwt->clientId);
+  
+        $task = new Task($lockerId);
 
         $response = ['status' => 200, 'settings' => LockerSettings::get($lockerId), 'tasks' => $task->getForLocker()];
 
@@ -232,7 +233,7 @@ class Locker extends BaseController
         if($newToken){
             $response['token'] = $newToken;
         }
-        Logger::log(564, $response, 'response', 'locker', $this->request->decodedJwt->clientId);
+
         return $this->setResponseFormat('json')->respond($response, 200);
     }
 
