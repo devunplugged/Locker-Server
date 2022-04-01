@@ -251,12 +251,12 @@ class Package
 
         $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' jest w paczkomacie</h1>';
 
-        //$local_name = time() . '.png';
-        //$imagePath = ROOTPATH . "writable/tmp/" . $local_name;
-        //(new QRCode)->render($this->package->recipient_code, $imagePath);
-        //$mailer->addEmbeddedImage($imagePath, 'qr-code', $local_name);
+        $local_name = time() . '.png';
+        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
+        (new QRCode)->render($this->package->recipient_code, $imagePath);
+        $mailer->addEmbeddedImage($imagePath, 'qr-code', $local_name);
 
-        //$body .= '<img alt="'.$this->package->recipient_code.'" src="cid:qr-code">';
+        $body .= '<img alt="'.$this->package->recipient_code.'" src="cid:qr-code">';
         $body .= '<div>Kod odbioru: '.$this->package->recipient_code.'</div>';
 
         echo "<br>TO: " . $packageAddress['recipients_email'];
