@@ -19,7 +19,7 @@ class Mailer
         $this->mailer->SMTPAuth   = true;                                   //Enable SMTP authentication
         $this->mailer->Username   = 'szekchudzik@wp.pl';                     //SMTP username
         $this->mailer->Password   = 'R7uG#r7E#7gyd3rgfU';                               //SMTP password
-        $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+        $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
         $this->mailer->Port       = 465;
 
         $this->mailer->addReplyTo('szekchudzik@wp.pl', 'TestMail');
