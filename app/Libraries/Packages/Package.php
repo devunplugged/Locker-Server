@@ -245,7 +245,7 @@ class Package
     public function sendInLockerEmailToRecipient()
     {
         $packageAddress = $this->getAddress();
-        $mailer = new Mailer();
+        $mailer = new Mailer(true);
         $mailer->addAddress($packageAddress['recipients_email']);
         $mailer->setSubject('Twoja paczka jest w paczkomacie');
 
