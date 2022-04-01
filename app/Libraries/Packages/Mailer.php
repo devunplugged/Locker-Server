@@ -15,14 +15,14 @@ class Mailer
     {
         $this->mailer = new PHPMailer($enableExceptiond);
         $this->mailer->isSMTP();                                            //Send using SMTP
-        $this->mailer->Host       = 'smtp.wp.pl';                     //Set the SMTP server to send through
+        $this->mailer->Host       = EMAIL_HOST;                     //Set the SMTP server to send through
         $this->mailer->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $this->mailer->Username   = 'szekchudzik@wp.pl';                     //SMTP username
-        $this->mailer->Password   = 'R7uG#r7E#7gyd3rgfU';                               //SMTP password
-        $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
-        $this->mailer->Port       = 465;
+        $this->mailer->Username   = EMAIL_USER;                     //SMTP username
+        $this->mailer->Password   = EMAIL_PASS;                               //SMTP password
+        $this->mailer->SMTPSecure = '';            //Enable implicit TLS encryption
+        $this->mailer->Port       = 587;
 
-        $this->mailer->addReplyTo('szekchudzik@wp.pl', 'TestMail');
+        $this->mailer->addReplyTo(EMAIL_USER, 'TestMail');
     }
 
     public function addAddress(string $email, string $name = '')
