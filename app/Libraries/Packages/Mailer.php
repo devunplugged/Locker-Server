@@ -83,6 +83,10 @@ class Mailer
 
     public function send()
     {
-        return $this->mailer->send();
+        if(!$this->mailer->send()){
+            print_r($this->mailer->ErrorInfo);
+        }else{
+            echo "email sent";
+        }
     }
 }
