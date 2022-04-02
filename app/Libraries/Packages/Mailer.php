@@ -14,13 +14,7 @@ class Mailer
     public function __construct($enableExceptiond = false)
     {
         $this->mailer = new PHPMailer($enableExceptiond);
-        $this->mailer->SMTPOptions = [
-            'ssl' => [
-              'verify_peer' => false,
-              'verify_peer_name' => false,
-              'allow_self_signed' => true
-            ]
-        ];
+        
         $this->mailer->isSMTP();                                            //Send using SMTP
         $this->mailer->Host       = EMAIL_HOST;                     //Set the SMTP server to send through
         $this->mailer->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -28,6 +22,13 @@ class Mailer
         $this->mailer->Password   = EMAIL_PASS;                               //SMTP password
         $this->mailer->SMTPSecure = '';            //Enable implicit TLS encryption
         $this->mailer->Port       = 587;
+        $this->mailer->SMTPOptions = [
+            'ssl' => [
+              'verify_peer' => false,
+              'verify_peer_name' => false,
+              'allow_self_signed' => true
+            ]
+        ];
 
         $this->mailer->addReplyTo(EMAIL_USER, 'TestMail');
     }
