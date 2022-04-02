@@ -87,6 +87,10 @@ class AddPackage extends Migration
                 'constraint' => '64',
                 'null' => true,
             ],
+            'insert_cancelled_at' => [
+                'type' => 'TIMESTAMP',
+                'null' => true,
+            ],
             'enter_code_entered_at' => [
                 'type' => 'TIMESTAMP',
                 'null' => true,

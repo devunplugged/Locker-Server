@@ -235,6 +235,14 @@ class Package
         $this->packageLogModel->create($this->package->id, "Paczka w utknęła w skrytce", $this->request->decodedJwt->clientId);
     }
 
+    public function makeCanceled()
+    {
+        $this->package->status = 'canceled';
+        $this->save();
+
+        $this->packageLogModel->create($this->package->id, "Paczka została anulowana", $this->request->decodedJwt->clientId);
+    }
+
     public function save()
     {
         $this->packageModel->save($this->package);
