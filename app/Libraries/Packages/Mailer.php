@@ -30,7 +30,8 @@ class Mailer
             ]
         ];
 
-        $this->mailer->addReplyTo(EMAIL_USER, 'TestMail');
+        $this->mailer->setFrom(EMAIL_USER, 'Lokalnamanufaktura');
+        $this->mailer->addReplyTo(EMAIL_USER, 'Lokalnamanufaktura');
     }
 
     public function addAddress(string $email, string $name = '')
@@ -84,10 +85,6 @@ class Mailer
 
     public function send()
     {
-        if(!$this->mailer->send()){
-            print_r($this->mailer->ErrorInfo);
-        }else{
-            echo "email sent";
-        }
+        return $this->mailer->send();
     }
 }

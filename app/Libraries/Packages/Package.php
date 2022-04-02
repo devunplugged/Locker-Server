@@ -275,10 +275,10 @@ class Package
         $body .= '<img alt="'.$this->package->recipient_code.'" src="cid:qr-code">';
         $body .= '<div>Kod odbioru: '.$this->package->recipient_code.'</div>';
 
-        echo "<br>TO: " . $packageAddress['recipients_email'];
-        echo "<br>subject: " . 'Twoja paczka jest w paczkomacie';
-        echo "<br>body: ";
-        echo $body;
+        // echo "<br>TO: " . $packageAddress['recipients_email'];
+        // echo "<br>subject: " . 'Twoja paczka jest w paczkomacie';
+        // echo "<br>body: ";
+        // echo $body;
 
 
         $mailer->setBody($body);
