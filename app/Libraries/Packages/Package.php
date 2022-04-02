@@ -239,9 +239,11 @@ class Package
     public function makeCanceled()
     {
         //set canceled status only if package is not in locker
-        //if it is in locker, canceled status is set on removal
+        //if it is in locker set remove-ready status, canceled status is set on removal
         if(!in_array($this->package->status, ['in-locker','locked'])){
             $this->package->status = 'canceled';
+        }else{
+            $this->package->status = 'remove-ready';
         }
         $this->package->canceled_at = date("Y-m-d H:i:s");
         $this->save();
