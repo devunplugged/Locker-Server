@@ -238,6 +238,7 @@ class Package
     public function makeCanceled()
     {
         $this->package->status = 'canceled';
+        $this->package->canceled_at = date("Y-m-d H:i:s");
         $this->save();
 
         $this->packageLogModel->create($this->package->id, "Paczka została anulowana", $this->request->decodedJwt->clientId);

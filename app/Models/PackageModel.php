@@ -16,7 +16,7 @@ class PackageModel extends Model
     protected $returnType       = \App\Entities\Package::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_hash', 'code', 'size', 'track_code', 'recipient_code', 'status', 'locker_id', 'cell_sort_id', 'company_id', 'created_by', 'enter_code_entered_at', 'recipient_code_entered_at', 'inserted_at', 'removed_at'];
+    protected $allowedFields    = ['id_hash', 'code', 'size', 'track_code', 'recipient_code', 'status', 'locker_id', 'cell_sort_id', 'company_id', 'created_by', 'enter_code_entered_at', 'recipient_code_entered_at', 'inserted_at', 'removed_at','canceled_at'];
 
     // Dates
     protected $useTimestamps = true;

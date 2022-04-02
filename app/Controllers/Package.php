@@ -12,6 +12,7 @@ use App\Libraries\Packages\Retriver;
 use App\Libraries\Packages\Printer;
 use App\Libraries\Packages\Locker;
 use App\Libraries\Packages\UserRequest;
+use App\Libraries\Packages\Task;
 
 use CodeIgniter\Database\Exceptions\DataException;
 use App\Libraries\Logger\Logger;
@@ -145,7 +146,6 @@ class Package extends BaseController
         } catch (\Exception $e) {
             return $this->setResponseFormat('json')->fail(['errors' => ['package' => $e->getMessage()]], 409);
         }
-
     }
 
     public function listOverdueLockerPackages()
@@ -206,7 +206,7 @@ class Package extends BaseController
         //to do check user permissions for package
         $package = new \App\Libraries\Packages\Package($packageId);
 
-        if(!$package->permissionCheck()){
+        if (!$package->permissionCheck()) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['permissions' => 'Brak dostępu do tej paczki']], 409, 123);
         }
 
@@ -223,11 +223,11 @@ class Package extends BaseController
         $packageId = decodeHashId($packageId);
         $package = new \App\Libraries\Packages\Package($packageId);
 
-        if(!$package->package){
+        if (!$package->package) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Nie znaleziono paczki']], 404, 123);
         }
 
-        if(!$package->permissionCheck()){
+        if (!$package->permissionCheck()) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
         }
 
@@ -237,12 +237,12 @@ class Package extends BaseController
         $company = $companyData['company'];
         $companyAddress = $companyData['companyAddress'];
 
-        
-        
+
+
         return $this->respond(
             [
-                'package' => hashId($package->package), 
-                'logs' => hashId($logs), 
+                'package' => hashId($package->package),
+                'logs' => hashId($logs),
                 'address' => $address,
                 'company' => hashId($company),
                 'companyAddress' => $companyAddress,
@@ -288,5 +288,27 @@ class Package extends BaseController
         } catch (ValidationException $e) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['error' => $e->getMessage()]], $e->getCode(), $e->getErrorCode());
         }
+    }
+
+    public function cancel($packageId)
+    {
+        $packageId = decodeHashId($packageId);
+        $package = new \App\Libraries\Packages\Package($packageId);
+
+        if (!$package->package) {
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Nie znaleziono paczki']], 404, 123);
+        }
+
+        if (!$package->permissionCheck()) {
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
+        }
+
+        if (in_array($package->package->status, ['in-locker', 'locked'])) {
+            $task = new Task($package->package->locker_id);
+            $task->create('open-cell', $package->package->cell_sort_id);
+        }
+
+        $package->makeCanceled();
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'package' => 'Paczka została anulowana'], 200);
     }
 }
