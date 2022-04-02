@@ -220,7 +220,8 @@ class Package
 
     public function makeRemoved()
     {
-        $this->package->status = 'removed';
+        //if canceled_at is set than set status to canceled; removed otherwise
+        $this->package->status = $this->package->canceled_at ? 'canceled' : 'removed';
         $this->package->removed_at = date('Y-m-d H:i:s');
         $this->save();
 
@@ -237,7 +238,11 @@ class Package
 
     public function makeCanceled()
     {
-        $this->package->status = 'canceled';
+        //set canceled status only if package is not in locker
+        //if it is in locker, canceled status is set on removal
+        if(!in_array($this->package->status, ['in-locker','locked'])){
+            $this->package->status = 'canceled';
+        }
         $this->package->canceled_at = date("Y-m-d H:i:s");
         $this->save();
 
