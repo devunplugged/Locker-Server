@@ -11,7 +11,10 @@ class Test extends BaseController
 {
     public function testMail()
     {
+        //gmail
         $package = new Package(14);
+        //delta
+        $package = new Package(30);
 
 
 
