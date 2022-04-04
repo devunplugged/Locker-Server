@@ -31,7 +31,7 @@ class JwtLockerFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        //Logger::log(48, 'FILTER', 'jwtLockerFilter', 'locker', 0);
+        Logger::log(998, 'FILTER', 'jwtLockerFilter', 'locker', 0);
         //$key = getenv('JWT_SECRET');
         //$header = $request->getHeader("Authorization");
         //$token = null;
