@@ -48,7 +48,7 @@ class JwtLockerFilter implements FilterInterface
         // check if token is null or empty
         if(is_null($token) || empty($token)) {
             $response = service('response');
-            Logger::log(48, 'ERROR', 'token empty', 'locker', 0);
+            Logger::log(998, 'ERROR', 'token empty', 'locker', 0);
             return $response->setJSON(createErrorMsg(401, 1, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
  
@@ -58,26 +58,30 @@ class JwtLockerFilter implements FilterInterface
             $request->decodedJwt = JwtHandler::decode($token);
         } catch (\Exception $ex) {
             $response = service('response');
+            Logger::log(998, 'ERROR', 'cant decode token', 'locker', 0);
             return $response->setJSON(createErrorMsg(401, 2, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
         if(!isset($request->decodedJwt->tokenId)){
             $response = service('response');
+            Logger::log(998, 'ERROR', 'no token id', 'locker', 0);
             return $response->setJSON(createErrorMsg(401, 3, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
         if(!JwtHandler::isOnWhiteList($request->decodedJwt->tokenId)){
             $response = service('response');
+            Logger::log(998, 'ERROR', 'token not on whitelist', 'locker', 0);
             return $response->setJSON(createErrorMsg(401, 3, ['auth' => 'Access denied']))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
         //lockers only
         if($request->decodedJwt->client !== 'locker'){// && $request->decodedJwt->client !== 'admin'
             $response = service('response');
+            Logger::log(998, 'ERROR', 'not a locker', 'locker', 0);
             return $response->setJSON(createErrorMsg(401, 3, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
-        //Logger::log(48, 'SUCCESS', 'token correct', 'locker', 0);
+        Logger::log(998, 'SUCCESS', 'token correct', 'locker', 0);
     }
 
     /**
