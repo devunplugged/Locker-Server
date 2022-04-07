@@ -32,18 +32,9 @@ class JwtLockerFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         Logger::log(998, 'FILTER', 'jwtLockerFilter', 'locker', 0);
-        //$key = getenv('JWT_SECRET');
-        //$header = $request->getHeader("Authorization");
-        //$token = null;
+
         $token = JwtHandler::extractFromHeader($request->getHeader("Authorization"));
         helper('errorMsg');
- 
-        // extract the token from the header
-        /*if(!empty($header)) {
-            if (preg_match('/Bearer\s(\S+)/', $header, $matches)) {
-                $token = $matches[1];
-            }
-        }*/
  
         // check if token is null or empty
         if(is_null($token) || empty($token)) {
@@ -53,8 +44,6 @@ class JwtLockerFilter implements FilterInterface
         }
  
         try {
-            //$decoded = JWT::decode($token, $key, array("HS256"));
-            //$request->decodedJwt = $decoded;
             $request->decodedJwt = JwtHandler::decode($token);
         } catch (\Exception $ex) {
             $response = service('response');
