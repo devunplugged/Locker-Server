@@ -25,7 +25,7 @@ class App extends BaseConfig
      */
     //public $baseURL = 'http://ci4-auth-test.local/';
     //public $baseURL = 'http://172.16.16.13/';
-    public $baseURL = 'http://speedbox.com.pl/';
+    public $baseURL = 'https://speedbox.com.pl/';
 
     /**
      * --------------------------------------------------------------------------
