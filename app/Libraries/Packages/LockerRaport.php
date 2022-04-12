@@ -59,9 +59,9 @@ class LockerRaport{
         }
 
         //skip out-of-order cells
-        // if($this->currentCell->status == 'out-of-order'){
-        //     return;
-        // }
+        if($this->currentCell->status == 'out-of-order'){
+            return;
+        }
 
         if($this->currentCell->status != $this->currentRaportedCellStatus){
             $this->cellStatusChanged();
