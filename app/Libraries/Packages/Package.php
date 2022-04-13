@@ -5,6 +5,8 @@ namespace App\Libraries\Packages;
 use App\Models\PackageModel;
 use App\Models\PackageAddressModel;
 use App\Models\PackageLogModel;
+// use App\Models\ApiClientModel;
+// use App\Models\DetailModel;
 use App\Libraries\Logger\Logger;
 use App\Libraries\Packages\Mailer;
 use \chillerlan\QRCode\QRCode;
@@ -175,6 +177,7 @@ class Package
         $this->package->enter_code_entered_at = null;
 
         $this->packageLogModel->create($this->package->id, "Paczka usunięta z paczkomatu", $this->request->decodedJwt->clientId);
+        $this->package->sendResetEmailToSender();
     }
 
     public function resetAndSizeTo($size)
@@ -236,6 +239,7 @@ class Package
         $this->save();
 
         $this->packageLogModel->create($this->package->id, "Paczka w utknęła w skrytce", $this->request->decodedJwt->clientId);
+        $this->sendLockedEmailToRecipient();
     }
 
     public function makeCanceled()
@@ -251,6 +255,7 @@ class Package
         $this->save();
 
         $this->packageLogModel->create($this->package->id, "Paczka została anulowana", $this->request->decodedJwt->clientId);
+        $this->sendCanceledEmailToRecipient();
     }
 
     public function save()
@@ -258,36 +263,7 @@ class Package
         $this->packageModel->save($this->package);
     }
 
-    ////////////EMAILS///////////////
-
-    public function sendInLockerEmailToRecipient()
-    {
-        $packageAddress = $this->getAddress();
-        $mailer = new Mailer(true);
-        $mailer->addAddress($packageAddress['recipients_email']);
-        $mailer->setSubject('Twoja paczka jest w paczkomacie');
-
-        $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' jest w paczkomacie</h1>';
-
-        $local_name = time() . '.png';
-        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
-        (new QRCode)->render($this->package->recipient_code, $imagePath);
-        $mailer->addEmbeddedImage($imagePath, 'qr-code', $local_name);
-
-        $body .= '<img alt="'.$this->package->recipient_code.'" src="cid:qr-code">';
-        $body .= '<div>Kod odbioru: '.$this->package->recipient_code.'</div>';
-
-        // echo "<br>TO: " . $packageAddress['recipients_email'];
-        // echo "<br>subject: " . 'Twoja paczka jest w paczkomacie';
-        // echo "<br>body: ";
-        // echo $body;
-
-
-        $mailer->setBody($body);
-        $mailer->send();
-
-        unlink($imagePath);
-    }
+    
 
     /////////VALIDATIONS//////////////
     public function isRemovedForGood()
@@ -353,4 +329,98 @@ class Package
         //     return false;
         // }
     }
+
+    ////////////EMAILS///////////////
+
+    public function sendInLockerEmailToRecipient()
+    {
+        $packageAddress = $this->getAddress();
+        $mailer = new Mailer(true);
+        $mailer->addAddress($packageAddress['recipients_email']);
+        $mailer->setSubject('Twoja paczka jest w paczkomacie');
+
+        $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' jest w paczkomacie</h1>';
+
+        $local_name = time() . '.png';
+        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
+        (new QRCode)->render($this->package->recipient_code, $imagePath);
+        $mailer->addEmbeddedImage($imagePath, 'qr-code', $local_name);
+
+        $body .= '<p style="background:white;padding:10px;text-align:center;"><img alt="'.$this->package->recipient_code.'" src="cid:qr-code"></p>';
+        $body .= '<div>Kod odbioru: '.$this->package->recipient_code.'</div>';
+
+        // echo "<br>TO: " . $packageAddress['recipients_email'];
+        // echo "<br>subject: " . 'Twoja paczka jest w paczkomacie';
+        // echo "<br>body: ";
+        // echo $body;
+        $locker = new \App\Libraries\Packages\Locker($this->package->locker_id);
+        $lockerDetails = $locker->getDetails();
+
+        $body .= '<p>Adres paczkomatu: '.$lockerDetails['street'].'</p>';
+
+        $mailer->setBody($body);
+        $mailer->send();
+
+        unlink($imagePath);
+    }
+
+    public function sendLockedEmailToRecipient()
+    {
+        $packageAddress = $this->getAddress();
+        $mailer = new Mailer(true);
+        $mailer->addAddress($packageAddress['recipients_email']);
+        $mailer->setSubject('Twoja została zatrzaśnięta w paczkomacie');
+
+        $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' jest zamknięta w paczkomacie</h1>';
+
+
+
+        $body .= '<div>Drzwi paczkomatu nie chcą się otworzyć. Odezwiemy się do Ciebie jak tylko odzyskamy Twoją paczkę.</div>';
+
+        $locker = new \App\Libraries\Packages\Locker($this->package->locker_id);
+        $lockerDetails = $locker->getDetails();
+
+        $body .= '<p>Adres paczkomatu: '.$lockerDetails['street'].'</p>';
+
+        $mailer->setBody($body);
+        $mailer->send();
+
+    }
+
+    public function sendCanceledEmailToRecipient()
+    {
+        $packageAddress = $this->getAddress();
+        $mailer = new Mailer(true);
+        $mailer->addAddress($packageAddress['recipients_email']);
+        $mailer->setSubject('Twoja została anulowana');
+
+        $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' została anulowana</h1>';
+        $body .= '<div>Odezwiemy się do Ciebie jak paczka ruszy w dalszą drogę.</div>';
+
+        $mailer->setBody($body);
+        $mailer->send();
+
+    }
+
+    public function sendResetEmailToSender()
+    {
+        $packageAddress = $this->getAddress();
+        $mailer = new Mailer(true);
+        $mailer->addAddress($packageAddress['senders_email']);
+        $mailer->setSubject('Paczka została zresetowana');
+
+        $body = '<h1>Paczka ('.hashId($this->package->id).') do ' . $packageAddress['recipients_name']. ' ' . $packageAddress['recipients_phone']. 'została zresetowana</h1>';
+
+        $body .= '<p>Paczka została zresetowana z powodu uszkodzenia skrytki. Możesz zeskanaować ją ponownie, aby umieścić ja w innej skrytce.</p>';
+
+        $locker = new \App\Libraries\Packages\Locker($this->package->locker_id);
+        $lockerDetails = $locker->getDetails();
+
+        $body .= '<p>Adres paczkomatu: '.$lockerDetails['street'].'</p>';
+
+        $mailer->setBody($body);
+        $mailer->send();
+    }
+
+    
 }

@@ -9,17 +9,21 @@ use App\Models\HeartbeatModel;
 use App\Models\FailedTaskModel;
 use App\Models\LockerAccessModel;
 use App\Models\TaskModel;
+use App\Models\DetailModel;
+use App\Libraries\Packages\Mailer;
 
 class Locker
 {
 
     public $locker;
+    public $details;
     public $emptyCells = null;
 
     private $heartBeatModel;
     private $apiClientModel;
     private $cellModel;
     private $packageModel;
+    private $detailModel;
     private $failedTaskModel;
 
     public function __construct(int $lockerId)
@@ -30,15 +34,24 @@ class Locker
         $this->cellModel = new CellModel();
         $this->packageModel = new PackageModel();
         $this->failedTaskModel = new FailedTaskModel();
-
+        $this->detailModel = new DetailModel();
         
         $this->locker = $this->apiClientModel->getLocker($lockerId);
-        
+       // $this->details = $this->detailModel->get($lockerId);
         //disabled; locker object has to be accesible to simple user; without company. To retrive the package
         // $request = service('request');
         // if(!$this->companyHasAccess($request->companyData->id)){
         //     throw new \Exception("Company locker access denied");
         // }
+    }
+
+    public function getDetails(bool $reload = false)
+    {
+        //Logger::log(46,$this->package->id);
+        if(!$this->details || $reload){
+            $this->details = $this->detailModel->get($this->locker->id);
+        }
+        return $this->details;
     }
 
     public function getEmptyCells($size)
@@ -102,5 +115,45 @@ class Locker
     {
         $lockerAccessModel = new LockerAccessModel();
         return $lockerAccessModel->setAccess($companyId, $this->locker->id, $hasAccess);
+    }
+
+    ////////////EMAILS///////////////
+
+    public function sendOutOfOrderOpenCellEmailNotification($cellSortId)
+    {
+        $mailer = new Mailer(true);
+        $mailer->addAddress(NOTIFICATION_EMAIL);
+        $mailer->setSubject('Drzwi paczkomatu są otwarte od dłuzszego czasu');
+
+
+        $details = $this->getDetails();
+
+        $body = '<h1>Drzwi paczkomatu są otwarte od dłuzszego czasu</h1>';
+
+        $body .= '<p>Adres paczkomatu: '.$details['street'].'</p>';
+
+        
+
+        $mailer->setBody($body);
+        $mailer->send();
+    }
+
+    public function sendOutOfOrderClosedCellEmailNotification($cellSortId)
+    {
+        $mailer = new Mailer(true);
+        $mailer->addAddress(NOTIFICATION_EMAIL);
+        $mailer->setSubject('Drzwi paczkomatu nie chcą się otworzyć');
+
+
+        $details = $this->getDetails();
+
+        $body = '<h1>Drzwi paczkomatu nie chcą się otworzyć</h1>';
+
+        $body .= '<p>Adres paczkomatu: '.$details['street'].'</p>';
+
+        
+
+        $mailer->setBody($body);
+        $mailer->send();
     }
 }
