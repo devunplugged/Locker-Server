@@ -19,7 +19,7 @@ class Printer
 
     public function newDocument()
     {
-        $this->pdf = new FpdfExtended(); //'P', 'mm', [88, 125]
+        $this->pdf = new FpdfExtended('P', 'mm', [104.648, 153.416]); //'P', 'mm', [88, 125]
         //custom font is needed for polish letters
         //font has to be generated first from ttf; http://www.fpdf.org/makefont/ or makefont in fpdf src
         //font has to be placed in fonts folder in fpdf src
@@ -61,59 +61,69 @@ class Printer
 
         $this->newDocument();
 
-        $this->pdf->SetXY(10, 10);
-        $this->pdf->Cell(125, 88, '', 1);
+        $this->pdf->SetXY(5, 5);
+        // $this->pdf->SetFontSize(20);
+        // $this->pdf->Cell(95, 30, 'ss', 1);
 
         //paczka
-        $this->pdf->SetXY(10, 10);
-        $this->pdf->SetFontSize(18);
-        $this->pdf->Cell(95, 10, 'Paczka: ' . hashId($this->package->package->id), 1, 2);
+        $this->pdf->SetXY(5, 5);
+        $this->pdf->SetFontSize(12);
+        $this->pdf->Cell(55, 10, 'Paczka: ' . hashId($this->package->package->id), 1, 2);
         $this->pdf->SetFontSize(8);
-        $this->pdf->Cell(45, 6, 'Paczkomat: ' . hashId($this->package->package->locker_id), 1, 0);
-        $this->pdf->Cell(50, 6, 'Kod: ' . $this->package->package->code, 1, 2);
+        $this->pdf->Cell(55, 6, 'Paczkomat: ' . hashId($this->package->package->locker_id), 1, 2);
+        $this->pdf->Cell(55, 6, 'Ref. kod: ' . $this->package->package->ref_code, 1, 2);
+
+        //QR
+        $local_name = time().'.png';
+        $outQR = (new QRCode)->render($this->package->package->code, ROOTPATH . "public/tmp/" . $local_name);
+        $this->pdf->Image(base_url() . "/tmp/" . $local_name, 65, 3, 30, 30);
+        unlink(ROOTPATH . "public/tmp/" . $local_name);
+
+
+        //kod ref
+        $this->pdf->SetXY(70, 30);
+        $this->pdf->Cell(55, 6, $this->package->package->code, 0, 2);
 
         //ramka paczki
-        $this->pdf->SetXY(10, 10);
+        $this->pdf->SetXY(5, 5);
         $this->pdf->Cell(95, 30, '', 1, 2);
 
         //nadawca
-        $this->pdf->SetXY(10, 40);
+        $this->pdf->SetXY(5, 35);
         $this->pdf->SetFontSize(12);
         $this->pdf->Cell(62, 6, 'Nadawca', 0, 2);
         $this->pdf->SetFontSize(8);
-
-        $this->pdf->Cell(62, 6, 'Nazwa: ' . $sendersName, 0, 2);
-        $this->pdf->Cell(62, 6, 'Poczta: ' . $sendersPostcode . ' ' . $sendersCity, 0, 2);
-        $this->pdf->Cell(62, 6, 'Adres: ' . $sendersStreet . ' ' . $sendersBuilding . ' / ' . $sendersApartment, 0, 2);
-        $this->pdf->Cell(62, 6, 'Telefon: ' . $sendersPhone, 0, 2);
-        $this->pdf->Cell(62, 6, 'E-mail: ' . $sendersEmail, 0, 2);
+        
+        $this->pdf->Cell(62, 5, 'Nazwa: ' . $sendersName, 0, 2);
+        $this->pdf->Cell(62, 5, 'Poczta: ' . $sendersPostcode . ' ' . $sendersCity, 0, 2);
+        $this->pdf->Cell(62, 5, 'Adres: ' . $sendersStreet . ' ' . $sendersBuilding . ' / ' . $sendersApartment, 0, 2);
+        $this->pdf->Cell(62, 5, 'Telefon: ' . $sendersPhone, 0, 2);
+        $this->pdf->Cell(62, 5, 'E-mail: ' . $sendersEmail, 0, 2);
 
         //ramka nadawcy
-        $this->pdf->SetXY(10, 40);
-        $this->pdf->Cell(62, 36, '', 1);
+        $this->pdf->SetXY(5, 35);
+        $this->pdf->Cell(48, 31, '', 1);
 
         //odbiorca
-        $this->pdf->SetXY(72, 40);
+        $this->pdf->SetXY(53, 35);
         $this->pdf->SetFontSize(12);
         $this->pdf->Cell(63, 6, 'Odbiorca', 0, 2);
         $this->pdf->SetFontSize(8);
-
-        $this->pdf->Cell(63, 6, 'Nazwa: ' . $recipientsName, 0, 2);
-        $this->pdf->Cell(63, 6, 'Poczta: ' . $recipientsPostcode . ' ' . $recipientsCity, 0, 2);
-        $this->pdf->Cell(63, 6, 'Adres: ' . $recipientsStreet . ' ' . $recipientsBuilding . ' / ' . $recipientsApartment, 0, 2);
-        $this->pdf->Cell(63, 6, 'Telefon: ' . $recipientsPhone, 0, 2);
-        $this->pdf->Cell(63, 6, 'E-mail: ' . $recipientsEmail, 0, 2);
+        
+        $this->pdf->Cell(63, 5, 'Nazwa: ' . $recipientsName, 0, 2);
+        $this->pdf->Cell(63, 5, 'Poczta: ' . $recipientsPostcode . ' ' . $recipientsCity, 0, 2);
+        $this->pdf->Cell(63, 5, 'Adres: ' . $recipientsStreet . ' ' . $recipientsBuilding . ' / ' . $recipientsApartment, 0, 2);
+        $this->pdf->Cell(63, 5, 'Telefon: ' . $recipientsPhone, 0, 2);
+        $this->pdf->Cell(63, 5, 'E-mail: ' . $recipientsEmail, 0, 2);
 
         //ramka odbiorcy
-        $this->pdf->SetXY(72, 40);
-        $this->pdf->Cell(63, 36, '', 1);
+        $this->pdf->SetXY(53, 35);
+        $this->pdf->Cell(47, 31, '', 1, 1);
 
-
-        $local_name = time() . '.png';
-        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
-        (new QRCode)->render($this->package->package->code, $imagePath);
-        $this->pdf->Image($imagePath, 105, 10, 30, 30);
-        unlink($imagePath);
+        //notka rodo
+        $this->pdf->SetFontSize(6);
+        $this->pdf->SetXY(5, 66);
+        $this->pdf->MultiCell(95, 2, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 1, 2);
     }
 
     public function output()
