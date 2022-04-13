@@ -71,6 +71,7 @@ class Package
     {
         $data = [
             'size'    => $this->request->getVar('size'),
+            'ref_code' => $this->request->getVar('ref_code'),
             'status' => 'new',
             'locker_id' => decodeHashId($this->request->getVar('locker_id')),
             'cell_sort_id' => NULL,
@@ -101,6 +102,7 @@ class Package
         $data = [
             'id'            => decodeHashId($this->request->getVar('id')),
             'size'          => $this->request->getVar('size'),
+            'ref_code'          => $this->request->getVar('ref_code'),
         ];
 
         $packageId = $this->packageModel->save($data);

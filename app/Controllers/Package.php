@@ -27,6 +27,7 @@ class Package extends BaseController
         $rules = [
             'locker_id' => ['rules' => 'required|max_length[255]|locker_exists'],
             'size' => ['rules' => 'required|max_length[1]'],
+            'ref_code' => ['rules' => 'required|max_length[255]'],
 
             'senders_name' => ['rules' => 'required|max_length[255]'],
             'senders_postcode' => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
@@ -100,7 +101,8 @@ class Package extends BaseController
     {
         $rules = [
             'id' => ['rules' => 'required|max_length[64]|is_not_unique_hash[packages.id]'],
-            'size' => ['rules' => 'permit_empty|max_length[1]'],
+            'size' => ['rules' => 'required|max_length[1]'],
+            'ref_code' => ['rules' => 'required|max_length[255]'],
             'status' => ['rules' => 'permit_empty|max_length[16]'],
             'locker_id' => ['rules' => 'permit_empty|max_length[64]|is_not_unique_hash[apiclients.id]'],
             'cell_sort_id' => ['rules' => 'permit_empty|max_length[255]|numeric'],

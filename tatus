@@ -1,0 +1,254 @@
+[33mcommit 601644f63d3792f803acf6801aa8f172cc19d8a7[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Tue Apr 12 15:58:14 2022 +0200
+
+    tracking outoforder bug 5
+
+[33mcommit 9a241ffe16a5dacce0836d07a28139851029d587[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Tue Apr 12 15:49:37 2022 +0200
+
+    tracking outoforder bug 4
+
+[33mcommit 4b4e729ae7d4b1edaa624954862a42ff807c9275[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Tue Apr 12 15:37:36 2022 +0200
+
+    tracking outoforder bug 3
+
+[33mcommit 31d870aaaf82e27470fa6aac92377bf15c5a347f[m
+Merge: 16c7092 e3b7248
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Tue Apr 12 15:34:00 2022 +0200
+
+    Merge branch 'main' of https://github.com/devunplugged/Locker-Server into main
+
+[33mcommit 16c709226f99af003fa56f40aa68cf3c77d2442a[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Tue Apr 12 15:32:15 2022 +0200
+
+    tracking outoforder bug 2
+
+[33mcommit e3b7248d24e3be88de24ea0866630e9e4cb487b7[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Tue Apr 12 12:16:19 2022 +0200
+
+    repo change test
+
+[33mcommit 5afde7b7b59519a2f4095ee30f53e4db83d57b31[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Tue Apr 12 09:47:48 2022 +0200
+
+    cell outoforder bug hunt
+
+[33mcommit e63e0d77628b5416e9b48271ae6df7cf95990e92[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Thu Apr 7 14:02:39 2022 +0200
+
+    address change
+
+[33mcommit b3b6d0ffbbe65d9ecec4fe98eb37b6e1aebe3a25[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Mon Apr 4 14:07:06 2022 +0200
+
+    Update JwtLockerFilter.php
+
+[33mcommit 95929e2981b4475a4c9027129c77ad3ac3e09ca9[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Mon Apr 4 14:01:01 2022 +0200
+
+    locker raport tests
+
+[33mcommit 56a620f3d6527db76938863f9b05c890218c5d52[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 12:43:27 2022 +0200
+
+    Update Test.php
+
+[33mcommit d3f7c9fd74e25a0ac15970ef44a6ad6b3a6282bf[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 12:42:35 2022 +0200
+
+    mailer
+    
+    - mailer settings
+
+[33mcommit 0848057f032ecedd0f9ba0dfb354f989ca3fdfc9[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 12:33:31 2022 +0200
+
+    Update Test.php
+
+[33mcommit aa387f645c7de62201bb5b7215ab1c9641e11c97[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 12:26:30 2022 +0200
+
+    Update Mailer.php
+
+[33mcommit e0f7de3872d093a4cff83ab4950944536819a105[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 12:21:06 2022 +0200
+
+    Update Package.php
+
+[33mcommit 4854ab13ff3374ac1b769cfc827321a5d4b190ab[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 12:15:24 2022 +0200
+
+    Update Package.php
+
+[33mcommit b0c205510e4c0a69a537b5ac58f87b49813ee5df[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 11:43:08 2022 +0200
+
+    Cancel package
+
+[33mcommit 96dd0aea1f23310bba236f182d8d8fa9ca8a8909[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Sat Apr 2 08:21:46 2022 +0200
+
+    DB update
+
+[33mcommit d67ec0f0d5e519d4d7491e31b36729caf2033590[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:59:55 2022 +0200
+
+    Update Mailer.php
+
+[33mcommit a63d90bd052017adda061de9cca3dac8333bc338[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:56:56 2022 +0200
+
+    Update Test.php
+
+[33mcommit ecdb603c6a69820f6775e6515164bb99f390f136[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:56:37 2022 +0200
+
+    Update Package.php
+
+[33mcommit 1cc334ed63a7c90c9284089a98feed121c30d6aa[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:55:04 2022 +0200
+
+    Update Package.php
+
+[33mcommit 483a94aa111410d690389da2237dbb348c05b911[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:51:21 2022 +0200
+
+    Update Mailer.php
+
+[33mcommit 67d56580c5d17ffaa3a7a9f75dbcb60d40bfe693[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:47:21 2022 +0200
+
+    Update Mailer.php
+
+[33mcommit bbedd5532083d719f9870b584262da6f31d0e0c4[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:11:53 2022 +0200
+
+    Update Mailer.php
+
+[33mcommit fdf979bdc99b99313d07cdda6f2e1032f2d6a723[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:10:45 2022 +0200
+
+    Update Package.php
+
+[33mcommit 53497f0ef86b8aa9ed620534dafee0807150bee5[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:08:45 2022 +0200
+
+    Update Package.php
+
+[33mcommit 9b74d137f71ada10b8cd3e3f13925bfad7fb7131[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 15:06:01 2022 +0200
+
+    Update Test.php
+
+[33mcommit 5007ac96596b6002d2d51e0283fe2aa1bc5f95ac[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 14:21:34 2022 +0200
+
+    in-locker email
+
+[33mcommit baa912a54a85c97473a96b6c82e183006344ecbf[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 12:19:33 2022 +0200
+
+    Locker filter & raport
+    
+    - locker raport doesnt't use locker_id from json; uses client_id from token
+    - JwtLockerFilter lets only locker tokens through; even admin is not valid
+
+[33mcommit 49de4e1a682a7ee603f1d71a464d5895b1f3eba7[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 09:54:13 2022 +0200
+
+    Update hashId_helper.php
+    
+    - created_by added to hashed values
+
+[33mcommit 3d0a53e925673f444d411786c5bceb3955d5ba15[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 09:52:41 2022 +0200
+
+    Update hashId_helper.php
+    
+    add package_id to list of hashed values
+
+[33mcommit 0621d82bcb1b36f23e8c2c833fef0bcb95d307dd[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 09:44:35 2022 +0200
+
+    Filters update
+
+[33mcommit e4fd594b7678dc54884e06831135f439e5c29db7[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Fri Apr 1 08:57:09 2022 +0200
+
+    Update Printer.php
+
+[33mcommit 17bae58553feb3f1dfca89edf223f41cafdfe99c[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Thu Mar 31 11:47:40 2022 +0200
+
+    Update Printer.php
+
+[33mcommit 00b5f5a8a82c7d8466fd28252879f268e427dc4e[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Thu Mar 31 11:45:19 2022 +0200
+
+    Update Printer.php
+
+[33mcommit 64490d57f489fa43f5c124075550b2ba531cb2fa[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Thu Mar 31 10:19:39 2022 +0200
+
+    Update Printer.php
+
+[33mcommit 0d6222fa541225c4a6fda5395551d80730742dfc[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Wed Mar 30 14:24:54 2022 +0200
+
+    Old token removal
+    
+    - all old tokens are invalidated on new token use
+
+[33mcommit e3074a7bc03ac152cdf5b6b08c17ee966cae4acc[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Wed Mar 30 13:54:49 2022 +0200
+
+    Update Locker.php
+
+[33mcommit c50ebe7d5ea81b5309f3bd3fbd5771b41918ea3d[m
+Author: devunplugged <66313338+devunplugged@users.noreply.github.com>
+Date:   Wed Mar 30 13:52:06 2022 +0200
+
+    Update TokenIssuer.php
+
+[33mcommit a84be9094e47d614b85c985f1ce7e3876183549b[m
+Author: devunplugged <66313338+devunplugged@user
