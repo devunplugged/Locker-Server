@@ -74,10 +74,11 @@ class Printer
         $this->pdf->Cell(55, 6, 'Ref. kod: ' . $this->package->package->ref_code, 1, 2);
 
         //QR
-        $local_name = time().'.png';
-        $outQR = (new QRCode)->render($this->package->package->code, ROOTPATH . "public/tmp/" . $local_name);
-        $this->pdf->Image(base_url() . "/tmp/" . $local_name, 65, 3, 30, 30);
-        unlink(ROOTPATH . "public/tmp/" . $local_name);
+        $local_name = time() . '.png';
+        $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
+        (new QRCode)->render($this->package->package->code, $imagePath);
+        $this->pdf->Image($imagePath, 105, 10, 30, 30);
+        unlink($imagePath);
 
 
         //kod ref
