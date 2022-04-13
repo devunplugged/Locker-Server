@@ -11,6 +11,7 @@ use App\Models\LockerAccessModel;
 use App\Models\TaskModel;
 use App\Models\DetailModel;
 use App\Libraries\Packages\Mailer;
+use App\Libraries\Logger\Logger;
 
 class Locker
 {
@@ -136,6 +137,7 @@ class Locker
 
         $mailer->setBody($body);
         $mailer->send();
+        Logger::log(661,'sendOutOfOrderOpenCellEmailNotification','email sent');
     }
 
     public function sendOutOfOrderClosedCellEmailNotification($cellSortId)
@@ -155,5 +157,6 @@ class Locker
 
         $mailer->setBody($body);
         $mailer->send();
+        Logger::log(661,'sendOutOfOrderClosedCellEmailNotification','email sent');
     }
 }

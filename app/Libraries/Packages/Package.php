@@ -240,6 +240,7 @@ class Package
 
         $this->packageLogModel->create($this->package->id, "Paczka w utknęła w skrytce", $this->request->decodedJwt->clientId);
         $this->sendLockedEmailToRecipient();
+        $this->sendLockedEmailToSender();
     }
 
     public function makeCanceled()
@@ -362,6 +363,7 @@ class Package
         $mailer->send();
 
         unlink($imagePath);
+        Logger::log(661,'sendInLockerEmailToRecipient','email sent');
     }
 
     public function sendLockedEmailToRecipient()
@@ -384,7 +386,30 @@ class Package
 
         $mailer->setBody($body);
         $mailer->send();
+        Logger::log(661,'sendLockedEmailToRecipient','email sent');
+    }
 
+    public function sendLockedEmailToSender()
+    {
+        $packageAddress = $this->getAddress();
+        $mailer = new Mailer(true);
+        $mailer->addAddress($packageAddress['recipients_email']);
+        $mailer->setSubject('Twoja została zatrzaśnięta w paczkomacie');
+
+        $body = '<h1>Paczka od ' . $packageAddress['senders_name']. ' jest zamknięta w paczkomacie</h1>';
+
+
+
+        $body .= '<div>Drzwi paczkomatu nie chcą się otworzyć.</div>';
+
+        $locker = new \App\Libraries\Packages\Locker($this->package->locker_id);
+        $lockerDetails = $locker->getDetails();
+
+        $body .= '<p>Adres paczkomatu: '.$lockerDetails['street'].'</p>';
+
+        $mailer->setBody($body);
+        $mailer->send();
+        Logger::log(661,'sendLockedEmailToSender','email sent');
     }
 
     public function sendCanceledEmailToRecipient()
@@ -399,7 +424,7 @@ class Package
 
         $mailer->setBody($body);
         $mailer->send();
-
+        Logger::log(661,'sendCanceledEmailToRecipient','email sent');
     }
 
     public function sendResetEmailToSender()
@@ -420,6 +445,7 @@ class Package
 
         $mailer->setBody($body);
         $mailer->send();
+        Logger::log(661,'sendResetEmailToSender','email sent');
     }
 
     
