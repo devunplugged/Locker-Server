@@ -78,7 +78,7 @@ class Printer
         $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
         (new QRCode)->render($this->package->package->code, $imagePath);
         $this->pdf->Image($imagePath, 105, 10, 30, 30);
-        unlink($imagePath);
+        
 
 
         //kod ref
@@ -125,6 +125,8 @@ class Printer
         $this->pdf->SetFontSize(6);
         $this->pdf->SetXY(5, 66);
         $this->pdf->MultiCell(95, 2, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 1, 2);
+
+        unlink($imagePath);
     }
 
     public function output()
