@@ -181,14 +181,14 @@ class LockerRaport{
             $this->cellModel->save($this->currentCell);
             Logger::log(661, 'Saving Skrytka uszkodzona', '', 'locker', $this->lockerId);
             $this->locker->sendOutOfOrderClosedCellEmailNotification($this->currentCell->cell_sort_id);
-            //fail unfinished only for closed cell; open cell can be closed anytime
-            $this->task->failUnfinished($this->currentCell->cell_sort_id);
+            
         }elseif($this->currentCell->status == 'open'){
             Logger::log(661, 'sendOutOfOrderOpenCellEmailNotification', '', 'locker', $this->lockerId);
             $this->locker->sendOutOfOrderOpenCellEmailNotification($this->currentCell->cell_sort_id);
         }
         
-        
+        //fail unfinished 
+        $this->task->failUnfinished($this->currentCell->cell_sort_id);
 
     }
 
