@@ -22,6 +22,7 @@ class Mailer
         $this->mailer->Password   = EMAIL_PASS;                               //SMTP password
         $this->mailer->SMTPSecure = '';            //Enable implicit TLS encryption
         $this->mailer->Port       = 587;
+        $this->mailer->CharSet = 'UTF-8';
 
         //fix damned server settings already
         $this->mailer->SMTPOptions = [
