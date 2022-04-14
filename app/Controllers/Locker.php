@@ -122,7 +122,8 @@ class Locker extends BaseController
             'code' => ['rules' => 'required'],
         ];
 
-        //Logger::log(48, 'CODE1-5', $this->request->getVar('code'), 'locker', $this->request->decodedJwt->clientId);
+        Logger::log(331, 'CODE SENT', $this->request->getVar('code'), 'locker', $this->request->decodedJwt->clientId);
+        
         if (!$this->validate($rules)) {
             $response = [
                 'status' => 'error',
