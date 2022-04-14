@@ -123,7 +123,7 @@ class Locker extends BaseController
         ];
 
         Logger::log(331, 'CODE SENT', $this->request->getVar('code'), 'locker', $this->request->decodedJwt->clientId);
-        
+
         if (!$this->validate($rules)) {
             $response = [
                 'status' => 'error',
@@ -210,7 +210,7 @@ class Locker extends BaseController
         $lockerId = decodeHashId($this->request->getVar('locker_id'));
         $lockerId = $this->request->decodedJwt->clientId;
 
-       
+
         $lockerRaport = new LockerRaport($lockerId, $this->request->getVar('cells'));
         $lockerRaport->ReadRaport();
 
@@ -224,14 +224,14 @@ class Locker extends BaseController
             ]
         );
 
-  
+
         $task = new Task($lockerId);
 
         $response = ['status' => 200, 'settings' => LockerSettings::get($lockerId), 'tasks' => $task->getForLocker()];
 
         $tokenIssuer = new TokenIssuer();
         $newToken = $tokenIssuer->checkToken();
-        if($newToken){
+        if ($newToken) {
             $response['token'] = $newToken;
         }
 
@@ -318,6 +318,22 @@ class Locker extends BaseController
         return $this->respond(['result' => 'success', 'cell' => hashId($cell)], 200);
     }
 
+    public function resetCell()
+    {
+        $rules = [
+            'cell_id' => ['rules' => 'required|max_length[64]|cell_exists'],
+        ];
+
+        if (!$this->validate($rules)) {
+            return $this->setResponseFormat('json')->fail($this->validator->getErrors(), 409, 123, 'Invalid Inputs');
+        }
+
+        $cellModel = new CellModel();
+        $cell = $cellModel->get(decodeHashId($this->request->getVar('cell_id')));
+        $cell->status = 'closed';
+        $cellModel->save($cell);
+    }
+
 
     public function generateLockerServiceCodes($lockerId)
     {
@@ -325,14 +341,14 @@ class Locker extends BaseController
         $apiClientModel = new ApiClientModel();
         $locker = $apiClientModel->getLocker($lockerId);
 
-        if(!$locker){
+        if (!$locker) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['locker' => 'not found']], 409, 123, 'Invalid Inputs');
         }
 
         $lockerServiceCodeModel = new LockerServiceCodeModel();
         $codes = [];
         $codes['open-cell'] = $lockerServiceCodeModel->generateForLockerCells($lockerId, 'open-cell');
-        
+
         return $this->setResponseFormat('json')->respond(['status' => 200, 'codes' => $codes], 200);
     }
 

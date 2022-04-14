@@ -68,6 +68,7 @@ $routes->group("api", function ($routes) {
     //$routes->get("locker/heartbeat", "Locker::heartbeat", ['filter' => 'jwtLockerAuth']);
     $routes->post("locker/raport", "Locker::raport", ['filter' => 'jwtLockerAuth']);
     $routes->post("locker/open-cell/", "Locker::createOpenCellTask", ['filter' => 'jwtAdminAuth']);
+    $routes->post("locker/reset-cell/", "Locker::resetCell", ['filter' => 'jwtAdminAuth']);
     $routes->get("locker/get/(:segment)", "Locker::get/$1", ['filter' => 'jwtAuth']);
     $routes->get("locker/generate-codes/(:segment)", "Locker::generateLockerServiceCodes/$1", ['filter' => 'jwtAdminAuth']);
     $routes->get("locker/print-codes/(:segment)", "Locker::printLockerServiceCodes/$1", ['filter' => 'jwtAdminAuth']);
