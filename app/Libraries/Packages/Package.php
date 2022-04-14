@@ -230,6 +230,8 @@ class Package
         $this->package->removed_at = date('Y-m-d H:i:s');
         $this->save();
 
+        $this->sendRemovedEmailToRecipient();
+
         $this->packageLogModel->create($this->package->id, "Paczka odebrana", $this->request->decodedJwt->clientId);
     }
 
@@ -364,6 +366,25 @@ class Package
 
         unlink($imagePath);
         Logger::log(661,'sendInLockerEmailToRecipient','email sent');
+    }
+
+    public function sendRemovedEmailToRecipient()
+    {
+        $packageAddress = $this->getAddress();
+        $mailer = new Mailer(true);
+        $mailer->addAddress($packageAddress['recipients_email']);
+        $mailer->setSubject('Twoja paczka została wyjęta');
+
+        $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' została wyjęta z paczkomatu</h1>';
+
+
+        $locker = new \App\Libraries\Packages\Locker($this->package->locker_id);
+        $body .= '<p>Adres paczkomatu: '.$locker->getAddressString().' '.$locker->getPostcodeString().'</p>';
+
+        $mailer->setBody($body);
+        $mailer->send();
+
+        Logger::log(661,'sendRemovedEmailToRecipient','email sent');
     }
 
     public function sendLockedEmailToRecipient()
