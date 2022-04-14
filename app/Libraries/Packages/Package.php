@@ -10,6 +10,7 @@ use App\Models\PackageLogModel;
 use App\Libraries\Logger\Logger;
 use App\Libraries\Packages\Mailer;
 use \chillerlan\QRCode\QRCode;
+use \chillerlan\QRCode\QROptions;
 
 class Package
 {
@@ -346,7 +347,7 @@ class Package
 
         $local_name = time() . '.png';
         $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
-        (new QRCode)->render($this->package->recipient_code, $imagePath);
+        (new QRCode(new QROptions([ 'imageTransparent'    => false ])))->render($this->package->recipient_code, $imagePath);
         $mailer->addEmbeddedImage($imagePath, 'qr-code', $local_name);
 
         $body .= '<p style="background:white;padding:10px;text-align:center;"><img alt="'.$this->package->recipient_code.'" src="cid:qr-code"></p>';
