@@ -62,7 +62,7 @@ $routes->group("api", function ($routes) {
     $routes->post("locker/add", "Locker::add", ['filter' => 'jwtLockerAuth']);
     $routes->post("locker/code", "Locker::code", ['filter' => 'jwtLockerAuth']); //locker sends QR code
     //$routes->post("locker/test", "Locker::test", ['filter' => 'jwtLockerAuth']);
-    $routes->get("locker/list", "Locker::list", ['filter' => 'jwtAdminAuth']);
+    $routes->get("locker/list", "Locker::list", ['filter' => 'jwtAuth']);
     $routes->get("locker/info/(:segment)", "Locker::info/$1", ['filter' => 'jwtAdminAuth']);
     $routes->get("locker/tasks", "Locker::task", ['filter' => 'jwtLockerAuth']);
     //$routes->get("locker/heartbeat", "Locker::heartbeat", ['filter' => 'jwtLockerAuth']);

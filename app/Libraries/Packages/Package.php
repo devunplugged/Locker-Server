@@ -399,7 +399,7 @@ class Package
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
         $mailer->addAddress($packageAddress['recipients_email']);
-        $mailer->setSubject('Twoja została zatrzaśnięta w paczkomacie');
+        $mailer->setSubject('Twoja paczka została zatrzaśnięta w paczkomacie');
 
         $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' jest zamknięta w paczkomacie</h1>';
 
@@ -422,7 +422,7 @@ class Package
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
         $mailer->addAddress($packageAddress['recipients_email']);
-        $mailer->setSubject('Twoja została zatrzaśnięta w paczkomacie');
+        $mailer->setSubject('Twoja paczka została zatrzaśnięta w paczkomacie');
 
         $body = '<h1>Paczka od ' . $packageAddress['senders_name']. ' jest zamknięta w paczkomacie</h1>';
 
@@ -445,7 +445,7 @@ class Package
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
         $mailer->addAddress($packageAddress['recipients_email']);
-        $mailer->setSubject('Twoja została anulowana');
+        $mailer->setSubject('Twoja paczka została anulowana');
 
         $body = '<h1>Twoja paczka od ' . $packageAddress['senders_name']. ' została anulowana</h1>';
         $body .= '<div>Odezwiemy się do Ciebie jak paczka ruszy w dalszą drogę.</div>';
