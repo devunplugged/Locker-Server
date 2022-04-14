@@ -36,9 +36,9 @@ class Locker
         $this->packageModel = new PackageModel();
         $this->failedTaskModel = new FailedTaskModel();
         $this->detailModel = new DetailModel();
-        
+
         $this->locker = $this->apiClientModel->getLocker($lockerId);
-       // $this->details = $this->detailModel->get($lockerId);
+        // $this->details = $this->detailModel->get($lockerId);
         //disabled; locker object has to be accesible to simple user; without company. To retrive the package
         // $request = service('request');
         // if(!$this->companyHasAccess($request->companyData->id)){
@@ -49,10 +49,34 @@ class Locker
     public function getDetails(bool $reload = false)
     {
         //Logger::log(46,$this->package->id);
-        if(!$this->details || $reload){
+        if (!$this->details || $reload) {
             $this->details = $this->detailModel->get($this->locker->id);
         }
         return $this->details;
+    }
+
+    public function getAddressString()
+    {
+        $lockerDetails = $this->getDetails();
+        $lockerAddress = $lockerDetails['street'];
+        if (isset($lockerDetails['building']) && !empty($lockerDetails['building'])) {
+            $lockerAddress .= ' ' . $lockerDetails['building'];
+        }
+        if (isset($lockerDetails['apartment']) && !empty($lockerDetails['apartment'])) {
+            $lockerAddress .= '/' . $lockerDetails['apartment'];
+        }
+
+        return $lockerAddress;
+    }
+
+    public function getPostcodeString()
+    {
+        $lockerDetails = $this->getDetails();
+        $lockerPost = $lockerDetails['post_code'];
+        if (isset($lockerDetails['city']) && !empty($lockerDetails['city'])) {
+            $lockerPost .= ' ' . $lockerDetails['city'];
+        }
+        return $lockerPost;
     }
 
     public function getEmptyCells($size)
@@ -131,13 +155,13 @@ class Locker
 
         $body = '<h1>Drzwi paczkomatu są otwarte od dłuzszego czasu</h1>';
 
-        $body .= '<p>Adres paczkomatu: '.$details['street'].'</p>';
+        $body .= '<p>Adres paczkomatu: ' . $details['street'] . '</p>';
 
-        
+
 
         $mailer->setBody($body);
         $mailer->send();
-        Logger::log(661,'sendOutOfOrderOpenCellEmailNotification','email sent');
+        Logger::log(661, 'sendOutOfOrderOpenCellEmailNotification', 'email sent');
     }
 
     public function sendOutOfOrderClosedCellEmailNotification($cellSortId)
@@ -151,12 +175,12 @@ class Locker
 
         $body = '<h1>Drzwi paczkomatu nie chcą się otworzyć</h1>';
 
-        $body .= '<p>Adres paczkomatu: '.$details['street'].'</p>';
+        $body .= '<p>Adres paczkomatu: ' . $details['street'] . '</p>';
 
-        
+
 
         $mailer->setBody($body);
         $mailer->send();
-        Logger::log(661,'sendOutOfOrderClosedCellEmailNotification','email sent');
+        Logger::log(661, 'sendOutOfOrderClosedCellEmailNotification', 'email sent');
     }
 }
