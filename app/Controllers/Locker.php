@@ -328,10 +328,22 @@ class Locker extends BaseController
             return $this->setResponseFormat('json')->fail($this->validator->getErrors(), 409, 123, 'Invalid Inputs');
         }
 
+        //reset cell
         $cellModel = new CellModel();
         $cell = $cellModel->get(decodeHashId($this->request->getVar('cell_id')));
         $cell->status = 'closed';
         $cellModel->save($cell);
+
+        //reset packages locked inside
+        $packageModel = new PackageModel;
+        $package = $packageModel->geLockedPackagesForCell($cell->locker_id, $cell->cell_sort_id);
+
+        if(count($package) > 1){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'more than one package found']], 404);
+        }
+        $package[0]->status = 'in-locker';
+        $packageModel->save($package[0]);
+
         return $this->respond(['result' => 'success', 'cell' => hashId($cell)], 200);
     }
 
