@@ -81,8 +81,8 @@ class Printer
         $this->pdf->Cell(55, 4, 'Ref. kod: ' . $this->package->package->ref_code, 1, 2);
         $this->pdf->Cell(55, 4, 'Adres: ' . $lockerAddress, 1, 2);
         $this->pdf->Cell(55, 4, 'Poczta: ' . $lockerPostcode, 1, 2);
-        $this->pdf->SetFontSize(10);
-        $this->pdf->Cell(55, 10, $this->package->package->size, 1, 2);
+        $this->pdf->SetFontSize(12);
+        $this->pdf->Cell(55, 10, strtoupper($this->package->package->size), 1, 2, 'C');
 
         //QR
         $local_name = $packageIdHash . '_' . time() . '.png';
