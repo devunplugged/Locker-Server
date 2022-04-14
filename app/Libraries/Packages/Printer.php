@@ -3,6 +3,7 @@
 namespace App\Libraries\Packages;
 
 use App\Libraries\Packages\Package;
+use App\Libraries\Packages\Locker;
 use App\Libraries\Fpdf\FpdfExtended;
 use \chillerlan\QRCode\QRCode;
 
@@ -59,6 +60,8 @@ class Printer
         $recipientsPhone = isset($packageAddresses['recipients_phone']) ? $this->fixEncoding($packageAddresses['recipients_phone']) : '-';
         $recipientsEmail = isset($packageAddresses['recipients_email']) ? $this->fixEncoding($packageAddresses['recipients_email']) : '-';
 
+        $locker = new Locker($this->package->package->locker_id);
+        $lockerDetails = $locker->getDetails();
         $packageIdHash = hashId($this->package->package->id);
 
         $this->newDocument();
