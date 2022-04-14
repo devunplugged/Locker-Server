@@ -54,11 +54,11 @@ class Task{
         foreach($tasks as $task){
 
             if($task->type == 'open-cell' && $task->sent_at != NULL){ //wszystkie nie zakonczone 'open-cell' (done_at / failed_at NULL)
-                Logger::log(48, 'open-cell', 'task', 'locker', $this->lockerId);
+                Logger::log(881, 'open-cell', 'task', 'locker', $this->lockerId);
                 foreach($cells as $cell){
 
                     if($cell->cell_sort_id == $task->value && $cell->status == 'open'){
-    
+                        Logger::log(881, 'status open', 'task', 'locker', $this->lockerId);
                         $this->taskModel->save(['id' => $task->id, 'done_at' => date('Y-m-d H:i:s')]);
 
                         $this->create('close-cell', $cell->cell_sort_id);
