@@ -58,8 +58,9 @@ class LockerRaport{
             return;
         }
 
-        //skip out-of-order cells
+        //skip out-of-order cells and fail tasks
         if($this->currentCell->status == 'out-of-order'){
+            $this->task->failUnfinished($this->currentCell->cell_sort_id);
             return;
         }
 
