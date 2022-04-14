@@ -106,7 +106,8 @@ class LockerRaport{
     }
 
     private function manageFailedAttempt(){
-        Logger::log(661, 'manageFailedAttempt', '', 'locker', $this->lockerId);
+        Logger::log(661, 'manageFailedAttempt', $this->currentCell->cell_sort_id, 'locker', $this->lockerId);
+        Logger::log(661, 'manageFailedAttempt', $this->currentRaportedCellSortId, 'locker', $this->lockerId);
         if($this->locker->isCellOutOfOrder($this->currentRaportedCellSortId)){
             Logger::log(661, 'BROKEN CELL', $this->currentRaportedCellSortId, 'locker', $this->lockerId);
             $this->cellOutOfOrder();
