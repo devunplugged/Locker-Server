@@ -23,6 +23,7 @@ use App\Libraries\Packages\LockerSettings;
 use App\Libraries\Packages\Task;
 use App\Libraries\Packages\LockerServiceCodePrinter;
 use App\Libraries\Packages\TokenIssuer;
+use App\Libraries\Packages\Package;
 use App\Libraries\Logger\Logger;
 
 use App\Exceptions\ValidationException;
@@ -335,14 +336,12 @@ class Locker extends BaseController
         $cellModel->save($cell);
 
         //reset packages locked inside
-        $packageModel = new PackageModel;
-        $package = $packageModel->geLockedPackagesForCell($cell->locker_id, $cell->cell_sort_id);
-
-        if(count($package) > 1){
-            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'more than one package found']], 404);
+        $package = new Package();
+        if(!$package->loadLockedFromLockerAndCellSortId($cell->locker_id, $cell->cell_sort_id)){
+            return $this->respond(['result' => 'success', 'cell' => hashId($cell)], 200);
         }
-        $package[0]->status = 'in-locker';
-        $packageModel->save($package[0]);
+
+        $package->makeInLocker();
 
         return $this->respond(['result' => 'success', 'cell' => hashId($cell)], 200);
     }

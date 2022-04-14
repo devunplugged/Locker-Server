@@ -144,12 +144,12 @@ class PackageModel extends Model
         return $this->orderBy('id DESC')->find();
     }
 
-    public function getPackageToInsert($lockerId, $cellId){
-        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellId)->where('inserted_at', NULL)->where('removed_at', NULL)->orderBy('id DESC')->first();
+    public function getPackageToInsert($lockerId, $cellSortId){
+        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellSortId)->where('inserted_at', NULL)->where('removed_at', NULL)->orderBy('id DESC')->first();
     }
 
-    public function getPackageToRemove($lockerId, $cellId){
-        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellId)->where('inserted_at!=', NULL)->where('removed_at', NULL)->where('status','remove-ready')->orderBy('id DESC')->first();
+    public function getPackageToRemove($lockerId, $cellSortId){
+        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellSortId)->where('inserted_at!=', NULL)->where('removed_at', NULL)->where('status','remove-ready')->orderBy('id DESC')->first();
         //->where('recipient_code_entered_at!=',NULL)
     }
 
@@ -157,8 +157,8 @@ class PackageModel extends Model
         return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellSortId)->groupStart()->where('status', 'insert-ready')->orWhere('status', 'remove-ready')->orWhere('status', 'in-locker')->groupEnd()->findAll();
     }
 
-    public function getLockedPackagesForCell($lockerId, $cellSortId){
-        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellSortId)->where('status', 'locked')->where('removed_at', NULL)->findAll();
+    public function geLockedPackageForCell($lockerId, $cellSortId){
+        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellSortId)->where('status', 'locked')->where('removed_at', NULL)->first();
     }
 
     public function insertOrRemoveReadyPackagesExistForCell($lockerId, $cellSortId){

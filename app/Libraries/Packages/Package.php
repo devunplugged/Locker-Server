@@ -162,6 +162,12 @@ class Package
         $this->package = $this->packageModel->getPackageToRemove($lockerId, $cellSortId);
         return $this->exists();
     }
+
+    public function loadLockedFromLockerAndCellSortId($lockerId, $cellSortId)
+    {
+        $this->package = $this->packageModel->geLockedPackageForCell($lockerId, $cellSortId);
+        return $this->exists();
+    }
     /////////END Package loaders///////////////////
 
     public function changeSizeTo($size)
