@@ -181,6 +181,7 @@ class LockerRaport{
             Logger::log(778, 'Saving Skrytka uszkodzona', '', 'locker', $this->lockerId);
             $this->locker->sendOutOfOrderClosedCellEmailNotification($this->currentCell->cell_sort_id);
         }elseif($this->currentCell->status == 'open'){
+            Logger::log(661, 'sendOutOfOrderOpenCellEmailNotification', '', 'locker', $this->lockerId);
             $this->locker->sendOutOfOrderOpenCellEmailNotification($this->currentCell->cell_sort_id);
         }
         
