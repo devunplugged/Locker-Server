@@ -332,6 +332,7 @@ class Locker extends BaseController
         $cell = $cellModel->get(decodeHashId($this->request->getVar('cell_id')));
         $cell->status = 'closed';
         $cellModel->save($cell);
+        return $this->respond(['result' => 'success', 'cell' => hashId($cell)], 200);
     }
 
 
