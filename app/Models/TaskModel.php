@@ -80,12 +80,12 @@ class TaskModel extends Model
     public function cellHasFailed($lockerId, $cellSortId){
 
         $task = $this->where('locker_id', $lockerId)->where('value', $cellSortId)->where('done_at', NULL)->where('failed_at', NULL)->orderBy('id','DESC')->first();
-        Logger::log(777, $task, $cellSortId, '$task', $lockerId);
+        Logger::log(661, $task, $cellSortId, '$task', $lockerId);
         if($task){
-            Logger::log(777, 'cellHasFailed ' . "$task->attempts > ". MAX_FAILED_TASKS , $cellSortId, 'YES', $lockerId);
+            Logger::log(661, 'cellHasFailed ' . "$task->attempts > ". MAX_FAILED_TASKS , $cellSortId, 'YES', $lockerId);
             return $task->attempts > MAX_FAILED_TASKS;
         }else{ 
-            Logger::log(777, 'cellHasFailed', $cellSortId, 'NO', $lockerId);
+            Logger::log(661, 'cellHasFailed', $cellSortId, 'NO', $lockerId);
             return false;
         }
         /*
