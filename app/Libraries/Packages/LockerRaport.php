@@ -106,9 +106,9 @@ class LockerRaport{
     }
 
     private function manageFailedAttempt(){
-        Logger::log(777, 'manageFailedAttempt', '', 'locker', $this->lockerId);
+        Logger::log(661, 'manageFailedAttempt', '', 'locker', $this->lockerId);
         if($this->locker->isCellOutOfOrder($this->currentRaportedCellSortId)){
-            Logger::log(777, 'BROKEN CELL', $this->currentRaportedCellSortId, 'locker', $this->lockerId);
+            Logger::log(661, 'BROKEN CELL', $this->currentRaportedCellSortId, 'locker', $this->lockerId);
             $this->cellOutOfOrder();
         }
         
@@ -158,7 +158,7 @@ class LockerRaport{
     }
 */
     private function cellOutOfOrder(){
-        Logger::log(778, 'cellOutOfOrder', '', 'locker', $this->lockerId);
+        Logger::log(661, 'cellOutOfOrder', '', 'locker', $this->lockerId);
 
         //manage packages only once; currentCell->status is not yet out-of-order
         if($this->currentCell->status != 'out-of-order'){
@@ -168,9 +168,9 @@ class LockerRaport{
                     case 'insert-ready': $this->cellOutOfOrderInsertReadyPackage(); break;
                     case 'remove-ready': $this->cellOutOfOrderRemoveReadyPackage(); break;
                 }
-                Logger::log(778, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona', '', 'locker', $this->lockerId);
+                Logger::log(661, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona', '', 'locker', $this->lockerId);
             }else{
-                Logger::log(778, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona, ale brak paczki w środku', '', 'locker', $this->lockerId);
+                Logger::log(661, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona, ale brak paczki w środku', '', 'locker', $this->lockerId);
             }
         }
         
@@ -178,7 +178,7 @@ class LockerRaport{
         if($this->currenCell->status == 'closed'){
             $this->currentCell->status = 'out-of-order';
             $this->cellModel->save($this->currentCell);
-            Logger::log(778, 'Saving Skrytka uszkodzona', '', 'locker', $this->lockerId);
+            Logger::log(661, 'Saving Skrytka uszkodzona', '', 'locker', $this->lockerId);
             $this->locker->sendOutOfOrderClosedCellEmailNotification($this->currentCell->cell_sort_id);
         }elseif($this->currentCell->status == 'open'){
             Logger::log(661, 'sendOutOfOrderOpenCellEmailNotification', '', 'locker', $this->lockerId);
