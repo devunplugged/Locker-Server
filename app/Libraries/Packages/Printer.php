@@ -74,9 +74,10 @@ class Printer
         $this->pdf->SetXY(5, 5);
         $this->pdf->SetFontSize(12);
         $this->pdf->Cell(55, 10, 'Paczka: ' . $packageIdHash, 1, 2);
-        $this->pdf->SetFontSize(8);
-        $this->pdf->Cell(55, 6, 'Paczkomat: ' . hashId($this->package->package->locker_id), 1, 2);
-        $this->pdf->Cell(55, 6, 'Ref. kod: ' . $this->package->package->ref_code, 1, 2);
+        $this->pdf->SetFontSize(6);
+        $this->pdf->Cell(55, 4, 'Paczkomat: ' . hashId($this->package->package->locker_id), 1, 2);
+        $this->pdf->Cell(55, 4, 'Ref. kod: ' . $this->package->package->ref_code, 1, 2);
+        $this->pdf->Cell(55, 4, 'Adres: ' . $lockerDetails['street'], 1, 2);
 
         //QR
         $local_name = $packageIdHash . '_' . time() . '.png';
@@ -92,10 +93,10 @@ class Printer
 
         //ramka paczki
         $this->pdf->SetXY(5, 5);
-        $this->pdf->Cell(95, 30, '', 1, 2);
+        $this->pdf->Cell(95, 50, '', 1, 2);
 
         //nadawca
-        $this->pdf->SetXY(5, 35);
+        $this->pdf->SetXY(5, 55);
         $this->pdf->SetFontSize(8);
         $this->pdf->Cell(62, 4, 'Nadawca', 0, 2);
         $this->pdf->SetFontSize(6);
@@ -107,11 +108,11 @@ class Printer
         $this->pdf->Cell(62, 3, 'E-mail: ' . $sendersEmail, 0, 2);
 
         //ramka nadawcy
-        $this->pdf->SetXY(5, 35);
+        $this->pdf->SetXY(5, 55);
         $this->pdf->Cell(48, 20, '', 1);
 
         //odbiorca
-        $this->pdf->SetXY(53, 35);
+        $this->pdf->SetXY(53, 55);
         $this->pdf->SetFontSize(8);
         $this->pdf->Cell(63, 4, 'Odbiorca', 0, 2);
         $this->pdf->SetFontSize(6);
@@ -123,14 +124,14 @@ class Printer
         $this->pdf->Cell(63, 3, 'E-mail: ' . $recipientsEmail, 0, 2);
 
         //ramka odbiorcy
-        $this->pdf->SetXY(53, 35);
+        $this->pdf->SetXY(53, 55);
         $this->pdf->Cell(47, 20, '', 1, 1);
 
         //notka rodo
         $this->pdf->SetFontSize(4);
-        $this->pdf->SetXY(5, 55);
+        $this->pdf->SetXY(5, 75);
         $this->pdf->Cell(95, 4, '', 1, 1);
-        $this->pdf->SetXY(5, 56);
+        $this->pdf->SetXY(5, 76);
         $this->pdf->MultiCell(95, 2, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 0, 2);      
         
         
