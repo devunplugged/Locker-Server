@@ -93,7 +93,7 @@ class Printer
 
 
         //kod paczki
-        $this->pdf->SetFontSize(4);
+        $this->pdf->SetFontSize(6);
         $this->pdf->SetXY(70, 30);
         $this->pdf->Cell(55, 6, $this->package->package->code, 0, 2);
 
