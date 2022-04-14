@@ -59,6 +59,8 @@ class Printer
         $recipientsPhone = isset($packageAddresses['recipients_phone']) ? $this->fixEncoding($packageAddresses['recipients_phone']) : '-';
         $recipientsEmail = isset($packageAddresses['recipients_email']) ? $this->fixEncoding($packageAddresses['recipients_email']) : '-';
 
+        $packageIdHash = hashId($this->package->package->id);
+
         $this->newDocument();
 
         $this->pdf->SetXY(5, 5);
@@ -68,17 +70,17 @@ class Printer
         //paczka
         $this->pdf->SetXY(5, 5);
         $this->pdf->SetFontSize(12);
-        $this->pdf->Cell(55, 10, 'Paczka: ' . hashId($this->package->package->id), 1, 2);
+        $this->pdf->Cell(55, 10, 'Paczka: ' . $packageIdHash, 1, 2);
         $this->pdf->SetFontSize(8);
         $this->pdf->Cell(55, 6, 'Paczkomat: ' . hashId($this->package->package->locker_id), 1, 2);
         $this->pdf->Cell(55, 6, 'Ref. kod: ' . $this->package->package->ref_code, 1, 2);
 
         //QR
-        $local_name = time() . '.png';
+        $local_name = $packageIdHash . '_' . time() . '.png';
         $imagePath = ROOTPATH . "writable/tmp/" . $local_name;
         (new QRCode)->render($this->package->package->code, $imagePath);
-        $this->pdf->Image($imagePath, 105, 10, 30, 30);
-        //unlink($imagePath);
+        $this->pdf->Image($imagePath, 65, 3, 30, 30);
+        unlink($imagePath);
 
 
         //kod ref
@@ -122,9 +124,11 @@ class Printer
         $this->pdf->Cell(47, 20, '', 1, 1);
 
         //notka rodo
-        $this->pdf->SetFontSize(6);
+        $this->pdf->SetFontSize(4);
         $this->pdf->SetXY(5, 55);
-        $this->pdf->MultiCell(95, 3, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 1, 2);    
+        $this->pdf->Cell(95, 4, '', 1, 1);
+        $this->pdf->SetXY(5, 56);
+        $this->pdf->MultiCell(95, 2, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 0, 2);      
         
         
     }
