@@ -174,9 +174,9 @@ class LockerRaport{
                 Logger::log(661, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona, ale brak paczki w środku', '', 'locker', $this->lockerId);
             }
         }
-        Logger::log(661, 'cellOutOfOrder cell status', $this->currenCell->status, 'locker', $this->lockerId);
+        Logger::log(661, 'cellOutOfOrder cell status', $this->currentCell->status, 'locker', $this->lockerId);
         //set out of order only for closed cells
-        if($this->currenCell->status == 'closed'){
+        if($this->currentCell->status == 'closed'){
             $this->currentCell->status = 'out-of-order';
             $this->cellModel->save($this->currentCell);
             Logger::log(661, 'Saving Skrytka uszkodzona', '', 'locker', $this->lockerId);
