@@ -61,7 +61,8 @@ class Printer
         $recipientsEmail = isset($packageAddresses['recipients_email']) ? $this->fixEncoding($packageAddresses['recipients_email']) : '-';
 
         $locker = new Locker($this->package->package->locker_id);
-        
+        $lockerAddress = $this->fixEncoding($locker->getAddressString());
+        $lockerPostcode = $this->fixEncoding($locker->getPostcodeString());
 
         $packageIdHash = hashId($this->package->package->id);
 
@@ -78,8 +79,10 @@ class Printer
         $this->pdf->SetFontSize(6);
         $this->pdf->Cell(55, 4, 'Paczkomat: ' . hashId($this->package->package->locker_id), 1, 2);
         $this->pdf->Cell(55, 4, 'Ref. kod: ' . $this->package->package->ref_code, 1, 2);
-        $this->pdf->Cell(55, 4, 'Adres: ' . $locker->getAddressString(), 1, 2);
-        $this->pdf->Cell(55, 4, 'Poczta: ' . $locker->getPostcodeString(), 1, 2);
+        $this->pdf->Cell(55, 4, 'Adres: ' . $lockerAddress, 1, 2);
+        $this->pdf->Cell(55, 4, 'Poczta: ' . $lockerPostcode, 1, 2);
+        $this->pdf->SetFontSize(10);
+        $this->pdf->Cell(55, 10, $this->package->package->size, 1, 2);
 
         //QR
         $local_name = $packageIdHash . '_' . time() . '.png';
