@@ -114,7 +114,7 @@ class Task{
     }
 
     public function failUnfinished($cellSortId){
-        Logger::log(49, 'failUnfinished', $cellSortId, 'locker', $this->lockerId);
+        Logger::log(661, 'failUnfinished', $cellSortId, 'locker', $this->lockerId);
         $this->taskModel->failUnfinished($this->lockerId, $cellSortId);
     }
 
