@@ -153,8 +153,8 @@ class PackageModel extends Model
         //->where('recipient_code_entered_at!=',NULL)
     }
 
-    public function getInsertOrRemoveReadyPackagesForCell($lockerId, $cellSortId){
-        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellSortId)->groupStart()->where('status', 'insert-ready')->orWhere('status', 'remove-ready')->groupEnd()->findAll();
+    public function getInsertRemoveReadyInLockerPackagesForCell($lockerId, $cellSortId){
+        return $this->where('locker_id', $lockerId)->where('cell_sort_id', $cellSortId)->groupStart()->where('status', 'insert-ready')->orWhere('status', 'remove-ready')->orWhere('status', 'in-locker')->groupEnd()->findAll();
     }
 
     public function insertOrRemoveReadyPackagesExistForCell($lockerId, $cellSortId){

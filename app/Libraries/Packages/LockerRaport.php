@@ -80,7 +80,7 @@ class LockerRaport{
     }
 
     private function cellStatusNotChanged(){
-        $packages = $this->packageModel->getInsertOrRemoveReadyPackagesForCell($this->lockerId, $this->currentCell->cell_sort_id);
+        $packages = $this->packageModel->getInsertRemoveReadyInLockerPackagesForCell($this->lockerId, $this->currentCell->cell_sort_id);
         Logger::log(13, $packages, "cellStatusNotChanged ".$this->lockerId.", ".$this->currentCell->cell_sort_id, 'locker', $this->lockerId);
 
 
