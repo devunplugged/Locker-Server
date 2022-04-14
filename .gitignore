@@ -126,3 +126,4 @@ nb-configuration.xml
 /.phpunit.*.cache
 
 app/Config/Constants.php
+app/Config/.gitignore
