@@ -174,7 +174,7 @@ class LockerRaport{
                 }
                 Logger::log(992, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona', '', 'locker', $this->lockerId);
             }else{
-                Logger::log(661, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona, ale brak paczki w środku', '', 'locker', $this->lockerId);
+                Logger::log(992, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona, ale brak paczki w środku', '', 'locker', $this->lockerId);
             }
         }
         Logger::log(661, 'cellOutOfOrder cell status', $this->currentCell->status, 'locker', $this->lockerId);
