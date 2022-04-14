@@ -91,41 +91,41 @@ class Printer
 
         //nadawca
         $this->pdf->SetXY(5, 35);
-        $this->pdf->SetFontSize(12);
-        $this->pdf->Cell(62, 6, 'Nadawca', 0, 2);
         $this->pdf->SetFontSize(8);
+        $this->pdf->Cell(62, 4, 'Nadawca', 0, 2);
+        $this->pdf->SetFontSize(6);
         
-        $this->pdf->Cell(62, 5, 'Nazwa: ' . $sendersName, 0, 2);
-        $this->pdf->Cell(62, 5, 'Poczta: ' . $sendersPostcode . ' ' . $sendersCity, 0, 2);
-        $this->pdf->Cell(62, 5, 'Adres: ' . $sendersStreet . ' ' . $sendersBuilding . ' / ' . $sendersApartment, 0, 2);
-        $this->pdf->Cell(62, 5, 'Telefon: ' . $sendersPhone, 0, 2);
-        $this->pdf->Cell(62, 5, 'E-mail: ' . $sendersEmail, 0, 2);
+        $this->pdf->Cell(62, 3, 'Nazwa: ' . $sendersName, 0, 2);
+        $this->pdf->Cell(62, 3, 'Poczta: ' . $sendersPostcode . ' ' . $sendersCity, 0, 2);
+        $this->pdf->Cell(62, 3, 'Adres: ' . $sendersStreet . ' ' . $sendersBuilding . ' / ' . $sendersApartment, 0, 2);
+        $this->pdf->Cell(62, 3, 'Telefon: ' . $sendersPhone, 0, 2);
+        $this->pdf->Cell(62, 3, 'E-mail: ' . $sendersEmail, 0, 2);
 
         //ramka nadawcy
         $this->pdf->SetXY(5, 35);
-        $this->pdf->Cell(48, 31, '', 1);
+        $this->pdf->Cell(48, 20, '', 1);
 
         //odbiorca
         $this->pdf->SetXY(53, 35);
-        $this->pdf->SetFontSize(12);
-        $this->pdf->Cell(63, 6, 'Odbiorca', 0, 2);
         $this->pdf->SetFontSize(8);
+        $this->pdf->Cell(63, 4, 'Odbiorca', 0, 2);
+        $this->pdf->SetFontSize(6);
         
-        $this->pdf->Cell(63, 5, 'Nazwa: ' . $recipientsName, 0, 2);
-        $this->pdf->Cell(63, 5, 'Poczta: ' . $recipientsPostcode . ' ' . $recipientsCity, 0, 2);
-        $this->pdf->Cell(63, 5, 'Adres: ' . $recipientsStreet . ' ' . $recipientsBuilding . ' / ' . $recipientsApartment, 0, 2);
-        $this->pdf->Cell(63, 5, 'Telefon: ' . $recipientsPhone, 0, 2);
-        $this->pdf->Cell(63, 5, 'E-mail: ' . $recipientsEmail, 0, 2);
+        $this->pdf->Cell(63, 3, 'Nazwa: ' . $recipientsName, 0, 2);
+        $this->pdf->Cell(63, 3, 'Poczta: ' . $recipientsPostcode . ' ' . $recipientsCity, 0, 2);
+        $this->pdf->Cell(63, 3, 'Adres: ' . $recipientsStreet . ' ' . $recipientsBuilding . ' / ' . $recipientsApartment, 0, 2);
+        $this->pdf->Cell(63, 3, 'Telefon: ' . $recipientsPhone, 0, 2);
+        $this->pdf->Cell(63, 3, 'E-mail: ' . $recipientsEmail, 0, 2);
 
         //ramka odbiorcy
         $this->pdf->SetXY(53, 35);
-        $this->pdf->Cell(47, 31, '', 1, 1);
+        $this->pdf->Cell(47, 20, '', 1, 1);
 
         //notka rodo
         $this->pdf->SetFontSize(6);
-        $this->pdf->SetXY(5, 66);
-        $this->pdf->MultiCell(95, 2, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 1, 2);
-
+        $this->pdf->SetXY(5, 55);
+        $this->pdf->MultiCell(95, 3, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 1, 2);    
+        
         unlink($imagePath);
     }
 
