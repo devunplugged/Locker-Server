@@ -166,12 +166,13 @@ class LockerRaport{
         if($this->currentCell->status != 'out-of-order'){
             
             if($this->package){
+                Logger::log(992, 'SWITCH', $this->package->package->status, 'locker', $this->lockerId);
                 switch($this->package->package->status){
                     case 'insert-ready': $this->cellOutOfOrderInsertReadyPackage(); break;
                     case 'remove-ready': $this->cellOutOfOrderRemoveReadyPackage(); break;
                     case 'in-locker': $this->cellOutOfOrderInLockerPackage(); break;
                 }
-                Logger::log(661, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona', '', 'locker', $this->lockerId);
+                Logger::log(992, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona', '', 'locker', $this->lockerId);
             }else{
                 Logger::log(661, 'Skrytka '.$this->currentCell->id.' ('.$this->currentCell->cell_sort_id.') uszkodzona, ale brak paczki w środku', '', 'locker', $this->lockerId);
             }
@@ -220,10 +221,10 @@ class LockerRaport{
     }
 
     private function cellOutOfOrderInLockerPackage(){
-        Logger::log(99, 'cellOutOfOrderInLockerPackage', '');
-        Logger::log(99, $this->currentCell->status, 'current cell status');
+        Logger::log(992, 'cellOutOfOrderInLockerPackage', '');
+        Logger::log(992, $this->currentCell->status, 'current cell status');
         if($this->currentCell->status == 'closed'){
-            Logger::log(99, 'Nie da się wyciągnąć paczki '.$this->package->package->id.' ze skrytki ' . $this->currentCell->id, '', 'locker',  $this->lockerId);
+            
             //$package->status = 'locked';
             //$this->packageModel->save($package);
             $this->package->makeLocked();
