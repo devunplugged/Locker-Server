@@ -170,30 +170,39 @@ class Package
     }
     /////////END Package loaders///////////////////
 
-    public function changeSizeTo($size)
+    public function resize($size)
     {
         $this->package->size = $size;
 
         $this->packageLogModel->create($this->package->id, "Rozmiar zmieniony na $size", $this->request->decodedJwt->clientId);
     }
 
-    public function resetPackage()
+    public function reset()
     {
         $this->package->status = 'new';
         $this->package->cell_sort_id = null;
         $this->package->enter_code_entered_at = null;
 
-        $this->packageLogModel->create($this->package->id, "Paczka usunięta z paczkomatu", $this->request->decodedJwt->clientId);
+        $this->packageLogModel->create($this->package->id, "Paczka zresetowana", $this->request->decodedJwt->clientId);
+        
+    }
+
+    public function resetPackage()
+    {
+        $this->reset();
+        //save added; package would not reset when doors wont close
+        $this->save();
         $this->package->sendResetEmailToSender();
+        
     }
 
     public function resetAndSizeTo($size)
     {
-        $this->resetPackage();
-        $this->changeSizeTo($size);
+        $this->reset();
+        $this->resize($size);
         $this->save();
 
-        $this->packageLogModel->create($this->package->id, "Paczka w paczkomacie", $this->request->decodedJwt->clientId);
+        $this->package->sendResetEmailToSender();
     }
 
     public function makeInsertReady($cellId)
