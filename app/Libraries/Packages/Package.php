@@ -182,9 +182,10 @@ class Package
         $this->package->status = 'new';
         $this->package->cell_sort_id = null;
         $this->package->enter_code_entered_at = null;
-
+        $this->package->inserted_at = null;
+        $this->package->removed_at = null;
+        $this->package->canceled_at = null;
         $this->packageLogModel->create($this->package->id, "Paczka zresetowana", $this->request->decodedJwt->clientId);
-        
     }
 
     public function resetPackage()

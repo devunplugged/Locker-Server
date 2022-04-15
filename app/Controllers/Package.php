@@ -331,7 +331,12 @@ class Package extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
         }
         
-        if($package->package->status == 'new' && $package->package->cell_sort_id == null && $package->package->enter_code_entered_at == null){
+        if(
+            $package->package->status == 'new' && 
+            $package->package->cell_sort_id == null && 
+            $package->package->enter_code_entered_at == null &&
+            $package->package->canceled_at != null
+        ){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka jest już zresetowana']], 409, 123);
         }
 
