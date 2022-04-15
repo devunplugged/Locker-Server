@@ -335,7 +335,9 @@ class Package extends BaseController
             $package->package->status == 'new' && 
             $package->package->cell_sort_id == null && 
             $package->package->enter_code_entered_at == null &&
-            $package->package->canceled_at != null
+            $package->package->inserted_at == null &&
+            $package->package->removed_at == null &&
+            $package->package->canceled_at == null
         ){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka jest już zresetowana']], 409, 123);
         }
