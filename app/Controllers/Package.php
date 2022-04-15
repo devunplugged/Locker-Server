@@ -304,6 +304,10 @@ class Package extends BaseController
         if (!$package->permissionCheck()) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
         }
+        
+        if($package->package->canceled_at != null){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka jest już anulowana']], 409, 123);
+        }
 
         if (in_array($package->package->status, ['in-locker', 'locked'])) {
             $task = new Task($package->package->locker_id);
@@ -326,15 +330,16 @@ class Package extends BaseController
         if (!$package->permissionCheck()) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
         }
+        
+        if($package->package->status == 'new' && $package->package->cell_sort_id == null && $package->package->enter_code_entered_at == null){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka jest już zresetowana']], 409, 123);
+        }
 
         if (in_array($package->package->status, ['in-locker', 'locked'])) {
             $task = new Task($package->package->locker_id);
             $task->create('open-cell', $package->package->cell_sort_id);
         }
 
-        if($package->package->status == 'new' && $package->package->cell_sort_id == null && $package->package->enter_code_entered_at == null){
-            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka jest już zresetowana']], 409, 123);
-        }
 
         $package->resetPackage();
         return $this->setResponseFormat('json')->respond(['status' => 200, 'package' => 'Paczka została zresetowana'], 200);
