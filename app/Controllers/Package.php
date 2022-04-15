@@ -138,7 +138,7 @@ class Package extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return $this->setResponseFormat('json')->fail($this->validator->getErrors(), 409, 123, 'Invalid Inputs');
+            return $this->setResponseFormat('json')->fail(['validationErrors' => $this->validator->getErrors()], 409, 123, 'Invalid Inputs');
         }
 
         try {
@@ -146,7 +146,7 @@ class Package extends BaseController
             $package->updateFromRequest();
             return $this->setResponseFormat('json')->respond(['status' => '200', 'package' => hashId($package->package)], 200);
         } catch (\Exception $e) {
-            return $this->setResponseFormat('json')->fail(['errors' => ['package' => $e->getMessage()]], 409);
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => $e->getMessage()]], 409);
         }
     }
 
