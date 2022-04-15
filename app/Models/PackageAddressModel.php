@@ -75,15 +75,17 @@ class PackageAddressModel extends Model
         if($detail){ //if exists update
             if($detail->value != $value){
                 $detail->value = $value;
+                $this->save($detail);
             }
         }else{//save new
             $detail = new \App\Entities\Detail();
             $detail->package_id = $packageId;
             $detail->name = $field;
             $detail->value = $value;
+            $this->save($detail);
         }
 
-        $this->save($detail);
+        
     }
 
     public function get($packageId){
