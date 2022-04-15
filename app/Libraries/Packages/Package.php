@@ -192,7 +192,7 @@ class Package
         $this->reset();
         //save added; package would not reset when doors wont close
         $this->save();
-        $this->package->sendResetEmailToSender();
+        $this->sendResetEmailToSender();
         
     }
 
@@ -202,7 +202,7 @@ class Package
         $this->resize($size);
         $this->save();
 
-        $this->package->sendResetEmailToSender();
+        $this->sendResetEmailToSender();
     }
 
     public function makeInsertReady($cellId)
