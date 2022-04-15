@@ -332,7 +332,7 @@ class Package extends BaseController
             $task->create('open-cell', $package->package->cell_sort_id);
         }
 
-        if($package->status == 'new' && $package->cell_sort_id == null && $package->enter_code_entered_at == null){
+        if($package->package->status == 'new' && $package->package->cell_sort_id == null && $package->package->enter_code_entered_at == null){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka jest już zresetowana']], 409, 123);
         }
 
