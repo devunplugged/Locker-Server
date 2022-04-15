@@ -64,7 +64,7 @@ class Task{
                         $this->create('close-cell', $cell->cell_sort_id);
 
                         //nieudane proby sa zliczane po uplywie TASK_FAIL_TIME sekund, X nieudanych prob zablokuje skrytke w LockerRaport
-                    }elseif($cell->cell_sort_id == $task->value && $cell->status != 'open' && $task->sent_at < date('Y-m-d H:i:s', time() - TASK_FAIL_TIME)){
+                    }elseif($cell->cell_sort_id == $task->value && $cell->status != 'open' && $task->sent_at < date('Y-m-d H:i:s', time() - OPEN_CELL_TASK_FAIL_TIME)){
 
                         $this->taskModel->save(['id' => $task->id, 'attempts' => $task->attempts+1]);
 
@@ -87,7 +87,7 @@ class Task{
                         $this->taskModel->save(['id' => $task->id, 'done_at' => date('Y-m-d H:i:s')]);
 
                         //nieudane proby sa zliczane po uplywie TASK_FAIL_TIME sekund, X nieudanych prob zablokuje skrytke w LockerRaport
-                    }elseif($cell->cell_sort_id == $task->value && $cell->status != 'closed' && $task->created_at < date('Y-m-d H:i:s', time() - TASK_FAIL_TIME)){
+                    }elseif($cell->cell_sort_id == $task->value && $cell->status != 'closed' && $task->created_at < date('Y-m-d H:i:s', time() - CLOSE_CELL_TASK_FAIL_TIME)){
                         
                         $this->taskModel->save(['id' => $task->id, 'attempts' => $task->attempts+1]);
 

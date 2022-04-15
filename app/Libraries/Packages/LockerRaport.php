@@ -209,11 +209,11 @@ class LockerRaport
     private function cellOutOfOrderInsertReadyPackage()
     {
         //reset package when cell wont open
-        if($this->currentCell->status == 'closed'){
+        //if($this->currentCell->status == 'closed'){
             $this->package->resetPackage();
             Logger::log(99, 'Skrytka i status paczki ' . $this->package->package->id . ' zresetowane ze wzgledu na uszkodzenie skrytki', '', 'package', $this->package->package->id);
 
-        }
+        //}
         
         //do nothing if cell wont close; manual package reset required
         // if($this->currentCell->status == 'open'){
