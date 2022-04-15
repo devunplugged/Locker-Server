@@ -102,13 +102,29 @@ class Package
 
     public function updateFromRequest()
     {
-        $data = [
-            'id'            => decodeHashId($this->request->getVar('id')),
-            'size'          => $this->request->getVar('size'),
-            'ref_code'          => $this->request->getVar('ref_code'),
-        ];
+        // $data = [
+        //     'id'            => decodeHashId($this->request->getVar('id')),
+        //     'size'          => $this->request->getVar('size'),
+        //     'ref_code'          => $this->request->getVar('ref_code'),
+        // ];
+        $this->package = $this->packageModel->get(decodeHashId($this->request->getVar('id')));
 
-        $packageId = $this->packageModel->save($data);
+        if(!$this->package){
+            throw new \Exception('Paczka nie istnieje');
+        }
+
+        if(!$this->permissionCheck()){
+            throw new \Exception('Brak uprawnień do edycji tej paczki');
+        }
+
+        if(!in_array($this->package->status, ['new'])){
+            throw new \Exception('Edytować można tylko paczki ze statusem "nowa"');
+        }
+
+        $this->package->size = $this->request->getVar('size');
+        $this->package->ref_code = $this->request->getVar('ref_code');
+
+        $packageId = $this->packageModel->save($this->package);
 
         if (!$packageId) {
             //return $this->setResponseFormat('json')->fail(['errors' => ['package' => 'Błąd podczas tworzenia paczki']] , 409);
