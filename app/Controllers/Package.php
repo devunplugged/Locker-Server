@@ -313,4 +313,26 @@ class Package extends BaseController
         $package->makeCanceled();
         return $this->setResponseFormat('json')->respond(['status' => 200, 'package' => 'Paczka została anulowana'], 200);
     }
+
+    public function reset($packageId)
+    {
+        $packageId = decodeHashId($packageId);
+        $package = new \App\Libraries\Packages\Package($packageId);
+
+        if (!$package->package) {
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Nie znaleziono paczki']], 404, 123);
+        }
+
+        if (!$package->permissionCheck()) {
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
+        }
+
+        if (in_array($package->package->status, ['in-locker', 'locked'])) {
+            $task = new Task($package->package->locker_id);
+            $task->create('open-cell', $package->package->cell_sort_id);
+        }
+
+        $package->resetPackage();
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'package' => 'Paczka została zresetowana'], 200);
+    }
 }
