@@ -33,7 +33,7 @@ class AddEmailLog extends Migration
             'type' => [
                 'type' => 'ENUM',
                 'constraint' => array('in-locker', 'removed', 'canceled', 'other'),
-                'default' => 'new'
+                'default' => 'other'
             ],
             'auto' => [
                 'type' => 'TINYINT',
