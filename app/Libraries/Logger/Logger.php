@@ -26,7 +26,7 @@ class Logger{
     private static function to_file($importance, $content, $description, $clientType, $clientId, $type){
         $fp = fopen(ROOTPATH . 'logs' . DIRECTORY_SEPARATOR .$type.'-log.txt', 'a');//opens file in append mode.
         $text = "LOG (".date("Y-m-d H:i:s")."): Type: $type | Importance: $importance\n ";
-        $text = "Client type: $ClientType | Client id: $clientId\n ";
+        $text = "Client type: $clientType | Client id: $clientId\n ";
         $text .= "$content\n ";
         $text .= "Description: $description\n ";
         $text .= "------------------------------------------------------------\n ";
