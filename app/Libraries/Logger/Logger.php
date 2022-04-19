@@ -56,7 +56,7 @@ class Logger{
         $logModel->save($log);
     }
 
-    public static function emailLog($sendersId, $recipientsEmail, $type = 'other', $packageId = null, $auto = 1)
+    public static function emailLog($sendersId, $recipientsEmail, $type = 'other', $packageId = null, $auto = true)
     {
         $emailLogModel = new EmailLogModel();
         $emailLog = new \App\Entities\EmailLog();
@@ -64,7 +64,7 @@ class Logger{
         $emailLog->recipients_email = $recipientsEmail;
         $emailLog->packageId = $packageId;
         $emailLog->type = $type;
-        $emailLog->auto = $auto;
+        $emailLog->auto = (int)$auto;
         $emailLogModel->save($emailLog);
     }
 }
