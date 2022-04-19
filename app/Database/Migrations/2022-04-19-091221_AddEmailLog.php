@@ -17,13 +17,13 @@ class AddEmailLog extends Migration
             ],
             'senders_id' => [
                 'type' => 'BIGINT',
-                'null' => false,
+                'null' => true,
                 'constraint' => 255,
             ],
-            'recipients_id' => [
-                'type' => 'BIGINT',
+            'recipients_email' => [
+                'type' => 'VARCHAR',
                 'null' => false,
-                'constraint' => 255,
+                'constraint' => 128,
             ],
             'package_id' => [
                 'type' => 'BIGINT',
@@ -38,6 +38,7 @@ class AddEmailLog extends Migration
             'auto' => [
                 'type' => 'TINYINT',
                 'null' => false,
+                'default' => 0,
                 'constraint' => 1,
             ],
             'created_at' => [
@@ -51,7 +52,7 @@ class AddEmailLog extends Migration
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addKey('senders_id');
-        $this->forge->addKey('recipients_id');
+        $this->forge->addKey('recipients_email');
         $this->forge->addKey('package_id');
         $this->forge->addKey('type');
         $this->forge->addKey('auto');

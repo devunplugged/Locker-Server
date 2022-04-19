@@ -5,6 +5,7 @@ namespace App\Libraries\Packages;
 use App\Models\PackageModel;
 use App\Models\PackageAddressModel;
 use App\Models\PackageLogModel;
+//use App\Models\EmailLogModel;
 // use App\Models\ApiClientModel;
 // use App\Models\DetailModel;
 use App\Libraries\Logger\Logger;
@@ -368,7 +369,7 @@ class Package
 
     ////////////EMAILS///////////////
 
-    public function sendInLockerEmailToRecipient()
+    public function sendInLockerEmailToRecipient($auto = true)
     {
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
@@ -399,6 +400,7 @@ class Package
 
         unlink($imagePath);
         Logger::log(661,'sendInLockerEmailToRecipient','email sent');
+        Logger::emailLog($this->package->company_id, $packageAddress['recipients_email'], 'in-locker', $auto);
     }
 
     public function sendRemovedEmailToRecipient()
@@ -500,6 +502,7 @@ class Package
         $mailer->setBody($body);
         $mailer->send();
         Logger::log(661,'sendResetEmailToSender','email sent');
+        
     }
 
     

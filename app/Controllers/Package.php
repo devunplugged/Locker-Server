@@ -7,6 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\PackageModel;
 use App\Models\PackageAddressModel;
 use App\Models\PackageLogModel;
+use App\Models\EmailLogModel;
 //use App\Libraries\Packages\Package;
 use App\Libraries\Packages\Retriver;
 use App\Libraries\Packages\Printer;
@@ -350,5 +351,38 @@ class Package extends BaseController
 
         $package->resetPackage();
         return $this->setResponseFormat('json')->respond(['status' => 200, 'package' => $package->package], 200);
+    }
+
+    public function emailRecipient($type, $packageId)
+    {
+        $allowedTypes = ['in-locker'];
+
+        if(!in_array($type, $allowedTypes)){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['type' => 'Niedozwolony typ']], 409, 123);
+        }
+
+        $package = new \App\Libraries\Packages\Package(decodeHashId($packageId));
+
+        if(!$package){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['type' => 'Nie znaleziono paczki']], 409, 123);
+        }
+
+        if(!$package->permissionCheck()){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['type' => 'Nie masz uprawnień do zarządzania tą paczką']], 409, 123);
+        }
+
+        $emailLogModel = new EmailLogModel();
+        $count = $emailLogModel->countRecentManualOfTypeForPackage($type, $packageId);
+
+        if($count > MANUAL_NOTIFICATIONS_MAX_COUNT){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['email' => 'Przekroczyłeś maksymalną liczbę wiadomości. Odczekaj chwilę.']], 409, 123);
+        }
+
+        if($package->package->status != 'in-locker'){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka nie ma statusu "w-paczkomacie"']], 409, 123);
+        }
+
+        $package->sendInLockerEmailToRecipient();
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'message' => 'Wysłano wiadomość'], 200);
     }
 }

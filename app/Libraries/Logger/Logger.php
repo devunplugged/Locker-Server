@@ -2,6 +2,7 @@
 namespace App\Libraries\Logger;
 
 use App\Models\LogModel;
+use App\Models\EmailLogModel;
 
 class Logger{
 
@@ -53,5 +54,17 @@ class Logger{
         $log->client_type = $clientType;
         $log->client_id = $clientId;
         $logModel->save($log);
+    }
+
+    public static function emailLog($sendersId, $recipientsEmail, $type = 'other', $packageId = null, $auto = 1)
+    {
+        $emailLogModel = new EmailLogModel();
+        $emailLog = new \App\Entities\EmailLog();
+        $emailLog->senders_id = $sendersId;
+        $emailLog->recipients_email = $recipientsEmail;
+        $emailLog->packageId = $packageId;
+        $emailLog->type = $type;
+        $emailLog->auto = $auto;
+        $emailLogModel->save($emailLog);
     }
 }

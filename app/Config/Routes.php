@@ -85,6 +85,7 @@ $routes->group("api", function ($routes) {
     $routes->get("package/details/(:segment)", "Package::details/$1", ['filter' => 'jwtAuth']);
     $routes->get("package/cancel/(:segment)", "Package::cancel/$1", ['filter' => 'jwtStaffAuth']);
     $routes->get("package/reset/(:segment)", "Package::reset/$1", ['filter' => 'jwtStaffAuth']);
+    $routes->get('package/notify/recipient/(:segment)/(:segment)', 'Package::emailRecipient/$1/$2', ['filter' => 'loginAuthAndToken']);
     
     $routes->post("package/retrive", "Package::retrive"/*, ['filter' => 'jwtAuth']*/);
     $routes->post("package/insert", "Package::insert", ['filter' => 'jwtStaffAuth']);

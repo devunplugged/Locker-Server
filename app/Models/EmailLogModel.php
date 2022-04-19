@@ -11,10 +11,10 @@ class EmailLogModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\EmailLog::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['senders_id','recipients_email','package_id','type', 'auto'];
 
     // Dates
     protected $useTimestamps = true;
@@ -39,4 +39,13 @@ class EmailLogModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function countRecentManualOfTypeForPackage($type, $packageId)
+    {
+        $recent = date("y-m-d h:i:s", time() - MANUAL_NOTIFICATIONS_COUNT_TIMESPAN); //60*15 = 900
+        $results = $this->where('type', $type)->where('package_id', $packageId)->where('auto', 1)->where('created_at>', $recent)->findAll();
+        return count($results);
+    }
+
+
 }
