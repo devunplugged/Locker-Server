@@ -162,6 +162,7 @@ class Locker
         $mailer->setBody($body);
         $mailer->send();
         Logger::log(661, 'sendOutOfOrderOpenCellEmailNotification', 'email sent');
+        Logger::emailLog(null, NOTIFICATION_EMAIL, 'open-cell', null, true);
     }
 
     public function sendOutOfOrderClosedCellEmailNotification($cellSortId)
@@ -182,5 +183,6 @@ class Locker
         $mailer->setBody($body);
         $mailer->send();
         Logger::log(661, 'sendOutOfOrderClosedCellEmailNotification', 'email sent');
+        Logger::emailLog(null, NOTIFICATION_EMAIL, 'locked-cell', null, true);
     }
 }

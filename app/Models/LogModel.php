@@ -39,4 +39,19 @@ class LogModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    
+    public function create($importance, $content, $description, $clientType, $clientId, $type)
+    {
+        $log = new \App\Entities\Log();
+        $log->importance = $importance;
+        $log->content = $content;
+        $log->type = $type;
+        $log->description = $description;
+        $log->client_type = $clientType;
+        $log->client_id = $clientId;
+
+        $this->save($log);
+        return $this->getInsertID();
+    }
 }

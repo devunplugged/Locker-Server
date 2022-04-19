@@ -40,6 +40,19 @@ class EmailLogModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function create($sendersId, $recipientsEmail, $type = 'other', $packageId = null, bool $auto = true)
+    {
+        $emailLog = new \App\Entities\PackageLog();
+        $emailLog->senders_id = $sendersId;
+        $emailLog->recipients_email = $recipientsEmail;
+        $emailLog->packageId = $packageId;
+        $emailLog->type = $type;
+        $emailLog->auto = $auto;
+
+        $this->save($emailLog);
+        return $this->getInsertID();
+    }
+
     public function countRecentManualOfTypeForPackage($type, $packageId)
     {
         $recent = date("y-m-d h:i:s", time() - MANUAL_NOTIFICATIONS_COUNT_TIMESPAN); //60*15 = 900

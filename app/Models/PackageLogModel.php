@@ -41,7 +41,8 @@ class PackageLogModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function create($packageId, $content, $createdBy = NULL){
+    public function create($packageId, $content, $createdBy = NULL)
+    {
         $packageLog = new \App\Entities\PackageLog();
         $packageLog->package_id = $packageId;
         $packageLog->content = $content;
@@ -51,7 +52,8 @@ class PackageLogModel extends Model
         return $this->getInsertID();
     }
 
-    public function getPackageLog($packageId){
+    public function getPackageLog($packageId)
+    {
         return $this->where('package_id', $packageId)->findAll();
     }
 }

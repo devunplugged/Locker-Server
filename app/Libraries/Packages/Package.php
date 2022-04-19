@@ -96,7 +96,8 @@ class Package
         $this->package = $this->packageModel->get($packageId);
 
 
-        $this->packageLogModel->create($packageId, "Utworzono paczkę", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($packageId, "Utworzono paczkę", $this->request->decodedJwt->clientId);
+        Logger::packageLog($packageId, "Utworzono paczkę", $this->request->decodedJwt->clientId);
 
         return $packageId;
     }
@@ -138,7 +139,8 @@ class Package
         $this->package = $this->packageModel->get($packageId);
 
 
-        $this->packageLogModel->create($packageId, "Aktualizowano paczkę", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($packageId, "Aktualizowano paczkę", $this->request->decodedJwt->clientId);
+        Logger::packageLog($packageId, "Aktualizowano paczkę", $this->request->decodedJwt->clientId);
 
         return $packageId;
     }
@@ -191,7 +193,8 @@ class Package
     {
         $this->package->size = $size;
 
-        $this->packageLogModel->create($this->package->id, "Rozmiar zmieniony na $size", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($this->package->id, "Rozmiar zmieniony na $size", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Rozmiar zmieniony na $size", $this->request->decodedJwt->clientId);
     }
 
     public function reset()
@@ -202,7 +205,8 @@ class Package
         $this->package->inserted_at = null;
         $this->package->removed_at = null;
         $this->package->canceled_at = null;
-        $this->packageLogModel->create($this->package->id, "Paczka zresetowana", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($this->package->id, "Paczka zresetowana", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Paczka zresetowana", $this->request->decodedJwt->clientId);
     }
 
     public function resetPackage()
@@ -230,7 +234,8 @@ class Package
         $this->package->enter_code_entered_at = date('Y-m-d H:i:s');
         $this->save();
 
-        $this->packageLogModel->create($this->package->id, "Podano kod włożenia paczki", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($this->package->id, "Podano kod włożenia paczki", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Podano kod włożenia paczki", $this->request->decodedJwt->clientId);
     }
 
     public function makeRemoveReady()
@@ -242,7 +247,8 @@ class Package
         //request JWT might be empty for package retrival
         $clientId = isset($this->request->decodedJwt->clientId) ? $this->request->decodedJwt->clientId : 0;
 
-        $this->packageLogModel->create($this->package->id, "Podano kod wyjęcia paczki", $clientId);
+        //$this->packageLogModel->create($this->package->id, "Podano kod wyjęcia paczki", $clientId);
+        Logger::packageLog($this->package->id, "Podano kod wyjęcia paczki", $clientId);
     }
 
     public function makeInLocker()
@@ -254,7 +260,8 @@ class Package
 
         $this->sendInLockerEmailToRecipient();
 
-        $this->packageLogModel->create($this->package->id, "Paczka w paczkomacie", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($this->package->id, "Paczka w paczkomacie", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Paczka w paczkomacie", $this->request->decodedJwt->clientId);
     }
 
     public function makeRemoved()
@@ -266,7 +273,8 @@ class Package
 
         $this->sendRemovedEmailToRecipient();
 
-        $this->packageLogModel->create($this->package->id, "Paczka odebrana", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($this->package->id, "Paczka odebrana", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Paczka odebrana", $this->request->decodedJwt->clientId);
     }
 
     public function makeLocked()
@@ -274,7 +282,8 @@ class Package
         $this->package->status = 'locked';
         $this->save();
 
-        $this->packageLogModel->create($this->package->id, "Paczka w utknęła w skrytce", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($this->package->id, "Paczka w utknęła w skrytce", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Paczka w utknęła w skrytce", $this->request->decodedJwt->clientId);
         $this->sendLockedEmailToRecipient();
         $this->sendLockedEmailToSender();
     }
@@ -291,7 +300,8 @@ class Package
         $this->package->canceled_at = date("Y-m-d H:i:s");
         $this->save();
 
-        $this->packageLogModel->create($this->package->id, "Paczka została anulowana", $this->request->decodedJwt->clientId);
+        //$this->packageLogModel->create($this->package->id, "Paczka została anulowana", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Paczka została anulowana", $this->request->decodedJwt->clientId);
         $this->sendCanceledEmailToRecipient();
     }
 
@@ -399,11 +409,12 @@ class Package
         $mailer->send();
 
         unlink($imagePath);
-        Logger::log(661,'sendInLockerEmailToRecipient','email sent');
+        //Logger::log(661,'sendInLockerEmailToRecipient','email sent');
         Logger::emailLog($this->package->company_id, $packageAddress['recipients_email'], 'in-locker', $this->package->id, $auto);
+        Logger::packageLog($this->package->id, "Wysłano wiadomość do odbiorcy o umieszczeniu paczki w paczkomacie", $this->request->decodedJwt->clientId);
     }
 
-    public function sendRemovedEmailToRecipient()
+    public function sendRemovedEmailToRecipient($auto = true)
     {
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
@@ -419,10 +430,13 @@ class Package
         $mailer->setBody($body);
         $mailer->send();
 
-        Logger::log(661,'sendRemovedEmailToRecipient','email sent');
+        //Logger::log(661,'sendRemovedEmailToRecipient','email sent');
+        Logger::emailLog($this->package->company_id, $packageAddress['recipients_email'], 'removed', $this->package->id, $auto);
+        Logger::packageLog($this->package->id, "Wysłano wiadomość o odebraniu paczki do odbiorcy", $this->request->decodedJwt->clientId);
+        
     }
 
-    public function sendLockedEmailToRecipient()
+    public function sendLockedEmailToRecipient($auto = true)
     {
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
@@ -442,14 +456,16 @@ class Package
 
         $mailer->setBody($body);
         $mailer->send();
-        Logger::log(661,'sendLockedEmailToRecipient','email sent');
+        //Logger::log(661,'sendLockedEmailToRecipient','email sent');
+        Logger::emailLog($this->package->company_id, $packageAddress['recipients_email'], 'locked', $this->package->id, $auto);
+        Logger::packageLog($this->package->id, "Wysłano wiadomość o zablokowaniu paczki do odbiorcy", $this->request->decodedJwt->clientId);
     }
 
-    public function sendLockedEmailToSender()
+    public function sendLockedEmailToSender($auto = true)
     {
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
-        $mailer->addAddress($packageAddress['recipients_email']);
+        $mailer->addAddress($packageAddress['senders_email']);
         $mailer->setSubject('Twoja paczka została zatrzaśnięta w paczkomacie');
 
         $body = '<h1>Paczka od ' . $packageAddress['senders_name']. ' jest zamknięta w paczkomacie</h1>';
@@ -465,10 +481,11 @@ class Package
 
         $mailer->setBody($body);
         $mailer->send();
-        Logger::log(661,'sendLockedEmailToSender','email sent');
+        //Logger::log(661,'sendLockedEmailToSender','email sent');
+        Logger::emailLog($this->package->company_id, $packageAddress['senders_email'], 'locked', $this->package->id, $auto);
     }
 
-    public function sendCanceledEmailToRecipient()
+    public function sendCanceledEmailToRecipient($auto = true)
     {
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
@@ -481,9 +498,11 @@ class Package
         $mailer->setBody($body);
         $mailer->send();
         Logger::log(661,'sendCanceledEmailToRecipient','email sent');
+        Logger::emailLog($this->package->company_id, $packageAddress['recipients_email'], 'canceled', $this->package->id, $auto);
+        Logger::packageLog($this->package->id, "Wysłano wiadomość o anulowaniu paczki do odbiorcy", $this->request->decodedJwt->clientId);
     }
 
-    public function sendResetEmailToSender()
+    public function sendResetEmailToSender($auto = true)
     {
         $packageAddress = $this->getAddress();
         $mailer = new Mailer(true);
@@ -501,8 +520,9 @@ class Package
 
         $mailer->setBody($body);
         $mailer->send();
-        Logger::log(661,'sendResetEmailToSender','email sent');
-        
+        //Logger::log(661,'sendResetEmailToSender','email sent');
+        Logger::emailLog($this->package->company_id, $packageAddress['senders_email'], 'reset', $this->package->id, $auto);
+        Logger::packageLog($this->package->id, "Wysłano wiadomość o resecie paczki do odbiorcy", $this->request->decodedJwt->clientId);
     }
 
     

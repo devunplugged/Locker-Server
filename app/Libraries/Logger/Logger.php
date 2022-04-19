@@ -3,6 +3,8 @@ namespace App\Libraries\Logger;
 
 use App\Models\LogModel;
 use App\Models\EmailLogModel;
+use App\Models\PackageLogModel;
+use App\Models\PackageModel;
 
 class Logger{
 
@@ -46,25 +48,18 @@ class Logger{
 
     private static function to_database($importance, $content, $description, $clientType, $clientId, $type){
         $logModel = new LogModel();
-        $log = new \App\Entities\Log();
-        $log->importance = $importance;
-        $log->content = $content;
-        $log->type = $type;
-        $log->description = $description;
-        $log->client_type = $clientType;
-        $log->client_id = $clientId;
-        $logModel->save($log);
+        return $logModel->create($importance, $content, $description, $clientType, $clientId, $type);
     }
 
     public static function emailLog($sendersId, $recipientsEmail, $type = 'other', $packageId = null, bool $auto = true)
     {
         $emailLogModel = new EmailLogModel();
-        $emailLog = new \App\Entities\EmailLog();
-        $emailLog->senders_id = $sendersId;
-        $emailLog->recipients_email = $recipientsEmail;
-        $emailLog->packageId = $packageId;
-        $emailLog->type = $type;
-        $emailLog->auto = $auto;
-        $emailLogModel->save($emailLog);
+        return $emailLogModel->create($sendersId, $recipientsEmail, $type, $packageId, $auto);
+    }
+
+    public static function packageLog($packageId, $desc, $clientId)
+    {
+        $packageLogModel = new PackageLogModel();
+        return $packageLogModel->create($packageId, $desc, $clientId);
     }
 }
