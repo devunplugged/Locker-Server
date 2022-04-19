@@ -64,7 +64,7 @@ class Logger{
         $emailLog->recipients_email = $recipientsEmail;
         $emailLog->packageId = $packageId;
         $emailLog->type = $type;
-        $emailLog->auto = $auto === true ? 1 : 0;
+        $emailLog->auto = $auto;
         $emailLogModel->save($emailLog);
     }
 }
