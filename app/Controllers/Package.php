@@ -382,7 +382,7 @@ class Package extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package' => 'Paczka nie ma statusu "w-paczkomacie"']], 409, 123);
         }
 
-        $package->sendInLockerEmailToRecipient();
+        $package->sendInLockerEmailToRecipient(false);
         return $this->setResponseFormat('json')->respond(['status' => 200, 'message' => 'Wysłano wiadomość'], 200);
     }
 }
