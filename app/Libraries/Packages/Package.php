@@ -400,7 +400,6 @@ class Package
 
         unlink($imagePath);
         Logger::log(661,'sendInLockerEmailToRecipient','email sent');
-        Logger::log(113, $auto, 'sendInLockerEmailToRecipient auto');
         Logger::emailLog($this->package->company_id, $packageAddress['recipients_email'], 'in-locker', $this->package->id, $auto);
     }
 

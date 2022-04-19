@@ -43,7 +43,7 @@ class EmailLogModel extends Model
     public function countRecentManualOfTypeForPackage($type, $packageId)
     {
         $recent = date("y-m-d h:i:s", time() - MANUAL_NOTIFICATIONS_COUNT_TIMESPAN); //60*15 = 900
-        $results = $this->where('type', $type)->where('package_id', $packageId)->where('auto', 1)->where('created_at>', $recent)->findAll();
+        $results = $this->where('type', $type)->where('package_id', $packageId)->where('auto', 0)->where('created_at>', $recent)->findAll();
         return count($results);
     }
 
