@@ -22,7 +22,7 @@ class Client extends BaseController
     public function add()
     {
 
-        if (!$this->request->getVar('type')) {
+        if ($this->request->getVar('type') === null) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['type' => 'type is required']], 409, 123, 'Invalid Inputs');
         }
 
