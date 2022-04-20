@@ -23,7 +23,7 @@ class Client extends BaseController
     {
 
         if (!$this->request->getVar('type')) {
-            return $this->setResponseFormat('json')->fail(['type' => 'type is required'], 409, 123, 'Invalid Inputs');
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['type' => 'type is required']], 409, 123, 'Invalid Inputs');
         }
 
         $clientValidationRules = new ClientValidationRules();
