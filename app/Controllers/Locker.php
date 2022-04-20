@@ -273,6 +273,12 @@ class Locker extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['id' => 'no locker found']], 404);
         }
 
+        $locker = new \App\Libraries\Packages\Locker($lockerId);
+
+        if($locker->companyHasAccess($this->request->decodedJwt->companyId)){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['client' => 'Nie masz uprawnień do zarządzania tym paczkomatem']], 404);
+        }
+
         $task = new Task($lockerId);
         $tasks = $task->getForLocker(false);
 
