@@ -497,7 +497,7 @@ class Package
 
         $mailer->setBody($body);
         $mailer->send();
-        Logger::log(661,'sendCanceledEmailToRecipient','email sent');
+        //Logger::log(661,'sendCanceledEmailToRecipient','email sent');
         Logger::emailLog($this->package->company_id, $packageAddress['recipients_email'], 'canceled', $this->package->id, $auto);
         Logger::packageLog($this->package->id, "Wysłano wiadomość o anulowaniu paczki do odbiorcy", $this->request->decodedJwt->clientId);
     }

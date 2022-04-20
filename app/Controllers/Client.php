@@ -55,7 +55,7 @@ class Client extends BaseController
         $token = $jwtGenerator->generateToken();*/
         $token = JwtHandler::generateForClient($clientId);
 
-        $response = ['status' => 200, 'message' => 'Client added Successfully', 'id' => hashId($clientId), 'token' => $token, 'details' => $detailModel->get($clientId)];
+        $response = ['status' => 200, 'message' => 'Poprawnie dodano klienta', 'id' => hashId($clientId), 'token' => $token, 'details' => $detailModel->get($clientId)];
 
         if ($apiClient->type == 'company') {
             $serviceCodeGenerator = new ServiceCodeGenerator($clientId);
@@ -111,7 +111,7 @@ class Client extends BaseController
         }
         $detailModel->updateFromRequest($this->request, decodeHashId($this->request->getVar('id')));
 
-        $response = ['status' => 200, 'message' => 'Client updated Successfully', 'client' => hashId($client), 'details' => $detailModel->get(decodeHashId($this->request->getVar('id')))];
+        $response = ['status' => 200, 'message' => 'Klient zaktualizowany', 'client' => hashId($client), 'details' => $detailModel->get(decodeHashId($this->request->getVar('id')))];
 
         if ($client->type == 'company' && $this->request->getVar('regenerate_servicecodes')) {
             $serviceCodeGenerator = new ServiceCodeGenerator($client->id);
@@ -198,7 +198,7 @@ class Client extends BaseController
 
         $apiClientModel = new ApiClientModel();
         if ($apiClientModel->delete(decodeHashId($this->request->getVar('id')))) {
-            return $this->setResponseFormat('json')->respond(['status' => 200, 'result' => 'deleted'], 200);
+            return $this->setResponseFormat('json')->respond(['status' => 200, 'message' => 'Usunięto klienta', 'result' => 'deleted'], 200);
         } else {
             return $this->setResponseFormat('json')->respond(['status' => 409, 'result' => 'failed'], 409);
         }
