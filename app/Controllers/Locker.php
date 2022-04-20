@@ -318,7 +318,12 @@ class Locker extends BaseController
         $cellModel = new CellModel();
         $cell = $cellModel->get(decodeHashId($this->request->getVar('cell_id')));
 
-        //to do: czy ta osoba moze zarzadzac paczkomatem??
+        //czy ta osoba moze zarzadzac paczkomatem??
+        $locker = new \App\Libraries\Packages\Locker($cell->locker_id);
+
+        if($locker->companyHasAccess($this->request->decodedJwt->companyId)){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['client' => 'Nie masz uprawnień do zarządzania tym paczkomatem']], 404);
+        }
 
         $this->task = new Task($cell->locker_id);
         $this->task->create('open-cell', $cell->cell_sort_id);
