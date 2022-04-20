@@ -351,8 +351,10 @@ class Locker extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['client' => 'Nie masz uprawnień do zarządzania tym paczkomatem']], 404);
         }
 
-        $cell->status = 'closed';
-        $cellModel->save($cell);
+        if($cell->status != 'closed'){
+            $cell->status = 'closed';
+            $cellModel->save($cell);
+        }
 
         //reset packages locked inside
         $package = new Package();
@@ -362,7 +364,7 @@ class Locker extends BaseController
 
         $package->makeInLocker();
 
-        return $this->respond(['result' => 'success', 'cell' => hashId($cell)], 200);
+        return $this->respond(['status' => 200, 'message' => 'Skrytka zresetowana', 'cell' => hashId($cell)], 200);
     }
 
 
