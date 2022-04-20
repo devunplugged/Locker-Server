@@ -63,7 +63,7 @@ $routes->group("api", function ($routes) {
     $routes->post("locker/code", "Locker::code", ['filter' => 'jwtLockerAuth']); //locker sends QR code
     //$routes->post("locker/test", "Locker::test", ['filter' => 'jwtLockerAuth']);
     $routes->get("locker/list", "Locker::list", ['filter' => 'jwtAuth']);
-    $routes->get("locker/info/(:segment)", "Locker::info/$1", ['filter' => 'jwtAdminAuth']);
+    $routes->get("locker/info/(:segment)", "Locker::info/$1", ['filter' => 'jwtStaffAuth']);
     $routes->get("locker/tasks", "Locker::task", ['filter' => 'jwtLockerAuth']);
     //$routes->get("locker/heartbeat", "Locker::heartbeat", ['filter' => 'jwtLockerAuth']);
     $routes->post("locker/raport", "Locker::raport", ['filter' => 'jwtLockerAuth']);
@@ -71,16 +71,16 @@ $routes->group("api", function ($routes) {
     $routes->post("locker/reset-cell/", "Locker::resetCell", ['filter' => 'jwtAdminAuth']);
     $routes->get("locker/get/(:segment)", "Locker::get/$1", ['filter' => 'jwtAuth']);
     $routes->get("locker/generate-codes/(:segment)", "Locker::generateLockerServiceCodes/$1", ['filter' => 'jwtAdminAuth']);
-    $routes->get("locker/print-codes/(:segment)", "Locker::printLockerServiceCodes/$1", ['filter' => 'jwtAdminAuth']);
+    $routes->get("locker/print-codes/(:segment)", "Locker::printLockerServiceCodes/$1", ['filter' => 'jwtStaffAuth']);
     
     
-    $routes->post("package/add", "Package::add", ['filter' => 'jwtAdminAuth']);
-    $routes->post("package/update", "Package::update", ['filter' => 'jwtAdminAuth']);
+    $routes->post("package/add", "Package::add", ['filter' => 'jwtStaffAuth']);
+    $routes->post("package/update", "Package::update", ['filter' => 'jwtCompanyAuth']);
     //$routes->post("package/retrive", "Package::retrive", ['filter' => 'jwtLockerAuth']);
-    $routes->post("package/list/overdue", "Package::listOverdueLockerPackages", ['filter' => 'jwtAuth']);
+    $routes->post("package/list/overdue", "Package::listOverdueLockerPackages", ['filter' => 'jwtStaffAuth']);
     $routes->post("package/list", "Package::list", ['filter' => 'jwtAdminAuth']);
     //$routes->get("package/delete", "Package::delete", ['filter' => 'jwtAdminAuth']);
-    $routes->post("package/cancel/insert", "Package::cancelInsert", ['filter' => 'jwtLockerAuth']);
+    $routes->post("package/cancel/insert", "Package::cancelInsert", ['filter' => 'jwtStaffAuth']);
     $routes->get("package/print/(:segment)", "Package::print/$1", ['filter' => 'jwtStaffAuth']);
     $routes->get("package/details/(:segment)", "Package::details/$1", ['filter' => 'jwtAuth']);
     $routes->get("package/cancel/(:segment)", "Package::cancel/$1", ['filter' => 'jwtStaffAuth']);
