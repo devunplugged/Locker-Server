@@ -312,7 +312,7 @@ class Locker extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return $this->setResponseFormat('json')->fail($this->validator->getErrors(), 409, 123, 'Invalid Inputs');
+            return $this->setResponseFormat('json')->fail(['generalErrors' => $this->validator->getErrors()], 409, 123, 'Invalid Inputs');
         }
 
         $cellModel = new CellModel();
@@ -337,7 +337,7 @@ class Locker extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return $this->setResponseFormat('json')->fail($this->validator->getErrors(), 409, 123, 'Invalid Inputs');
+            return $this->setResponseFormat('json')->fail(['generalErrors' => $this->validator->getErrors()], 409, 123, 'Invalid Inputs');
         }
 
         //reset cell
