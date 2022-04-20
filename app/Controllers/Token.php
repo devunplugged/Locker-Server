@@ -28,11 +28,13 @@ class Token extends BaseController
         $apiClientModel = new ApiClientModel();
         $client = $apiClientModel->get($clientId);
 
-        if(!$client){
-            return $this->setResponseFormat('json')->fail(['generalErrors' => ['client_id' => 'Klient o takim id nie istnieje'], 'validationErrors' => ['client_id' => 'Klient o takim id nie istnieje']] , 409);
-        }
-
-        if( ($this->request->decodedJwt->company_id != $client->company_id && $this->request->decodedJwt->client == 'company') || $this->request->decodedJwt->client == 'admin'){
+        if( 
+            (
+                $this->request->decodedJwt->company_id != $client->company_id && 
+                $this->request->decodedJwt->client == 'company'
+            ) || 
+            $this->request->decodedJwt->client == 'admin'
+        ){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['company_id' => 'brak uprawnień do wykonania tej akcji']] , 409);
         }
 
