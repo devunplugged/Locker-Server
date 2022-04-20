@@ -321,7 +321,7 @@ class Locker extends BaseController
         //czy ta osoba moze zarzadzac paczkomatem??
         $locker = new \App\Libraries\Packages\Locker($cell->locker_id);
 
-        if($locker->companyHasAccess($this->request->decodedJwt->companyId)){
+        if(!$locker->companyHasAccess($this->request->decodedJwt->companyId)){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['client' => 'Nie masz uprawnień do zarządzania tym paczkomatem']], 404);
         }
 
