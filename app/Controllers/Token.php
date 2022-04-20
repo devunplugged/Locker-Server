@@ -7,6 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 //use App\Libraries\Packages\JwtGenerator;
 use App\Libraries\Packages\JwtHandler;
 use App\Libraries\Packages\TokenIssuer;
+use App\Models\ApiClientModel;
 
 class Token extends BaseController
 {
@@ -19,14 +20,19 @@ class Token extends BaseController
         ];
 
         if(!$this->validate($rules)){
-            $response = [
-                'errors' => $this->validator->getErrors(),
-                'message' => 'Invalid Inputs'
-            ];
-            return $this->setResponseFormat('json')->fail($response , 409);
+            return $this->setResponseFormat('json')->fail(['generalErrors' => $this->validator->getErrors(), 'validationErrors' => $this->validator->getErrors()]  , 409);
         }
 
-        return $this->setResponseFormat('json')->respond(['token' => JwtHandler::generateForClient(decodeHashId($this->request->getVar('client_id')))], 200);
+        $clientId = decodeHashId($this->request->getVar('client_id'));
+
+        $apiClientModel = new ApiClientModel();
+        $client = $apiClientModel->get($clientId);
+
+        if( ($this->request->decodedJwt->company_id != $client->company_id && $this->request->decodedJwt->client == 'company') || $this->request->decodedJwt->client == 'admin'){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['company_id' => 'brak uprawnień do wykonania tej akcji']] , 409);
+        }
+
+        return $this->setResponseFormat('json')->respond(['token' => JwtHandler::generateForClient($clientId)], 200);
     }
 
     public function decode()

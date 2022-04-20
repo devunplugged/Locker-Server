@@ -50,12 +50,10 @@ class Client extends BaseController
         $detailModel->saveFromRequest($this->request, $clientId);
 
 
-        /*
-        $jwtGenerator = new JwtGenerator($client['idHash']);
-        $token = $jwtGenerator->generateToken();*/
-        $token = JwtHandler::generateForClient($clientId);
+        
+        //$token = JwtHandler::generateForClient($clientId);
 
-        $response = ['status' => 200, 'message' => 'Poprawnie dodano klienta', 'id' => hashId($clientId), 'token' => $token, 'details' => $detailModel->get($clientId)];
+        $response = ['status' => 200, 'message' => 'Poprawnie dodano klienta', 'id' => hashId($clientId), /*'token' => $token, */'details' => $detailModel->get($clientId)];
 
         if ($apiClient->type == 'company') {
             $serviceCodeGenerator = new ServiceCodeGenerator($clientId);
