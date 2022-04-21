@@ -26,7 +26,7 @@ class Package extends BaseController
     public function add()
     {
         $rules = [
-            'locker_id' => ['rules' => 'required|max_length[255]|locker_exists'],
+            'locker_id' => ['rules' => 'required|max_length[255]|locker_exists|has_locker_access'],
             'size' => ['rules' => 'required|max_length[1]'],
             'ref_code' => ['rules' => 'required|max_length[255]'],
 

@@ -161,6 +161,15 @@ class ApiClientModel extends Model
     {
 
         if ($this->save($data)) {
+            $id = $this->getInsertID();
+
+            //save ID as company_id for company client type
+            if($data->type == 'company'){
+                $data->id = $id;
+                $data->company_id = $id;
+                $this->save($data);
+            }
+
             return $this->getInsertID();
         }
 

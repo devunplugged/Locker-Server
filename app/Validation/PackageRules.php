@@ -2,7 +2,7 @@
 namespace App\Validation;
 
 use App\Models\ApiClientModel;
-
+use App\Libraries\Packages\Locker;
 
 class PackageRules
 {
@@ -13,6 +13,18 @@ class PackageRules
         if($locker){
             return true;
         }
+        return false;
+    }
+
+    public function has_locker_access(string $id): bool
+    {
+        $locker = new Locker((int)$id);
+        $request = service('request');
+        
+        if($locker->companyHasAccess($request->decodedJwt->companyId)){
+            return true;
+        }
+
         return false;
     }
 }
