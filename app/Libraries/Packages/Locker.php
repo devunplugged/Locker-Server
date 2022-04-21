@@ -18,15 +18,12 @@ use App\Libraries\Logger\Logger;
 class Locker extends Client
 {
 
-    public $client;
-    public $details;
     public $emptyCells = null;
 
     private $heartBeatModel;
     private $apiClientModel;
     private $cellModel;
     private $packageModel;
-    private $detailModel;
     private $task;
     //private $failedTaskModel;
 
@@ -37,7 +34,7 @@ class Locker extends Client
         $this->apiClientModel = new ApiClientModel();
         $this->cellModel = new CellModel();
         $this->packageModel = new PackageModel();
-        $this->failedTaskModel = new FailedTaskModel();
+        //$this->failedTaskModel = new FailedTaskModel();
         $this->detailModel = new DetailModel();
         
 
