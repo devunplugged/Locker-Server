@@ -168,6 +168,7 @@ class Client extends BaseController
         ];
 
 $response['client'] = $client;
+$response['company'] = $company;
 
         if ($client->getClient()->type == 'company') {
             $response['workers'] = hashId($client->getWorkers());
