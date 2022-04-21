@@ -56,12 +56,18 @@ class ApiClientModel extends Model
     {
         $offset = $data['limit'] * ($data['page'] - 1);
         $results = [];
-        if($data['type'] != 'all'){
-            $results['results'] = $this->where('type', $data['type'])->limit($data['limit'], $offset)->find();
-        }else{
-            $results['results'] = $this->limit($data['limit'], $offset)->find();
+
+        $query = $this;
+
+        if(isset($data['company'])){
+            $query = $query->where('company_id', $data['company']);
         }
-        
+
+        if($data['type'] != 'all'){
+            $results['results'] = $query->where('type', $data['type']);
+        }
+
+        $results['results'] = $query->limit($data['limit'], $offset)->find();
         $results['count'] = $this->countAllResults();
         return $results;
     }

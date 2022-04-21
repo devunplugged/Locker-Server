@@ -128,6 +128,11 @@ class Client extends BaseController
         $data['type'] = $this->request->getVar('type') ?? 'all';
 
         $apiClientModel = new ApiClientModel();
+
+        if(in_array($this->request->decodedJwt->client, ['staff', 'company'])){
+            $data['company'] = $this->request->decodedJwt->companyId;
+        }
+
         $clients = $apiClientModel->getClients($data);
         return $this->setResponseFormat('json')->respond(['status' => 200, 'results' => hashId($clients['results']), 'count' => $clients['count'], 'post' => $data], 200);
     }
