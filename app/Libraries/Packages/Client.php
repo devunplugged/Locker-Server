@@ -35,11 +35,11 @@ class Client
         return $this->client;
     }
 
-    public function getDetails(bool $reload = false)
+    public function getDetails(bool $reload = false, $forPublic = false)
     {
         //Logger::log(46,$this->package->id);
         if (!$this->details || $reload) {
-            $this->details = $this->detailModel->getDetails($this->client->id);
+            $this->details = $this->detailModel->getDetails($this->client->id, $forPublic);
         }
         return $this->details;
     }

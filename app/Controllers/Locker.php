@@ -258,18 +258,11 @@ class Locker extends BaseController
 
     public function info($id)
     {
-        //not used anymore?
-        //get locker data from user controller
-
-
         $lockerId = decodeHashId($id);
 
-        $cellModel = new CellModel();
-        $cellsAndPackages = $cellModel->getLockerCellsAndPackages($lockerId);
-        //save result to file (cache) ??
+        $locker = \App\Libraries\Packages\ClientFactory::create($lockerId);
 
-        if (!$cellsAndPackages) {
-            //return $this->setResponseFormat('json')->fail(['locker_id' => 'no locker found'], 409, 123, 'Invalid Inputs');
+        if (!$locker->getClient()) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['id' => 'no locker found']], 404);
         }
 
@@ -279,25 +272,16 @@ class Locker extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['client' => 'Nie masz uprawnień do zarządzania tym paczkomatem']], 404);
         }
 
-        $task = new Task($lockerId);
-        $tasks = $task->getForLocker(false);
-
-        $apiClientModel = new ApiClientModel();
-        $locker = $apiClientModel->getLocker($lockerId);
-        $company = $apiClientModel->getCompany($locker->company_id);
-
-        $detailModel = new DetailModel();
-        $lockerDetails = $detailModel->getDetails($locker->id, true);
-        $companyDetails = $detailModel->getDetails($locker->company_id, true);
+        $company = new \App\Libraries\Packages\Client($locker->getClient()->company_id);
 
         return $this->respond(
             [
-                'info' => hashId($cellsAndPackages),
-                'tasks' => $tasks,
-                'locker' => hashId($locker),
-                'lockerDetails' => $lockerDetails,
-                'company' => hashId($company),
-                'companyDetails' => $companyDetails
+                'info' => hashId($locker->getCellsAndPackages()),
+                'tasks' => $locker->getTasks(),
+                'locker' => hashId($locker->getClient()),
+                'lockerDetails' => $locker->getDetails(false, true),
+                'company' => hashId($company->getClient()),
+                'companyDetails' => $company->getDetails(false,true),
             ],
             200
         );
