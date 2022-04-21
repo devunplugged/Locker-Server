@@ -30,7 +30,7 @@ class Locker extends Client
     {
         $this->apiClientModel = new ApiClientModel();
         $this->detailModel = new DetailModel();
-        
+
         $this->heartBeatModel = new HeartbeatModel();
         $this->cellModel = new CellModel();
         $this->packageModel = new PackageModel();
@@ -112,6 +112,12 @@ class Locker extends Client
 
     public function companyHasAccess($companyId)
     {
+        $request = service('request');
+
+        if($request->decodedJwt->client == 'admin'){
+            return true;
+        }
+
         $lockerAccessModel = new LockerAccessModel();
         return $lockerAccessModel->companyHasAccess($companyId, $this->client->id);
     }
