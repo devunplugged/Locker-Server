@@ -21,7 +21,6 @@ class Locker extends Client
     public $emptyCells = null;
 
     private $heartBeatModel;
-    private $apiClientModel;
     private $cellModel;
     private $packageModel;
     private $task;
@@ -29,13 +28,14 @@ class Locker extends Client
 
     public function __construct(int $lockerId)
     {
-
-        $this->heartBeatModel = new HeartbeatModel();
         $this->apiClientModel = new ApiClientModel();
+        $this->detailModel = new DetailModel();
+        
+        $this->heartBeatModel = new HeartbeatModel();
         $this->cellModel = new CellModel();
         $this->packageModel = new PackageModel();
         //$this->failedTaskModel = new FailedTaskModel();
-        $this->detailModel = new DetailModel();
+        
         
 
         $this->client = $this->apiClientModel->getLocker($lockerId);
