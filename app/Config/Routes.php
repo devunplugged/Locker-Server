@@ -50,7 +50,7 @@ $routes->get('dashboard/package/(:segment)', 'Dashboard::package/$1');//, ['filt
 $routes->get('dashboard/locker/(:segment)', 'Dashboard::locker/$1');//, ['filter' => 'loginAuth']
 $routes->get('dashboard/print', 'Dashboard::print');//, ['filter' => 'loginAuth']
 
-$routes->get('dashboard/test', 'Dashboard::test');//, ['filter' => 'loginAuth']
+$routes->get('test', 'Test::test');//, ['filter' => 'loginAuth']
 
 $routes->post('ajax/get-clients-by-type/', 'Ajax::clientsByType', ['filter' => 'loginAuth']);
 $routes->get('ajax/get-clients-by-type/', 'Ajax::clientsByType', ['filter' => 'loginAuth']);
