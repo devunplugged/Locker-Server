@@ -78,7 +78,7 @@ $routes->group("api", function ($routes) {
     $routes->post("package/update", "Package::update", ['filter' => 'jwtCompanyAuth']);
     //$routes->post("package/retrive", "Package::retrive", ['filter' => 'jwtLockerAuth']);
     $routes->post("package/list/overdue", "Package::listOverdueLockerPackages", ['filter' => 'jwtStaffAuth']);
-    $routes->post("package/list", "Package::list", ['filter' => 'jwtAdminAuth']);
+    $routes->post("package/list", "Package::list", ['filter' => 'jwtStaffAuth']);
     //$routes->get("package/delete", "Package::delete", ['filter' => 'jwtAdminAuth']);
     $routes->post("package/cancel/insert", "Package::cancelInsert", ['filter' => 'jwtStaffAuth']);
     $routes->get("package/print/(:segment)", "Package::print/$1", ['filter' => 'jwtStaffAuth']);

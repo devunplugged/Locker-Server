@@ -135,7 +135,15 @@ class PackageModel extends Model
     public function getPackages($data){
         $offset = $data['limit'] * ( $data['page'] - 1 );
         $results = [];
-        $results['results'] = $this->limit($data['limit'], $offset)->find();
+        
+
+        $query = $this;
+
+        if(isset($data['company'])){
+            $query = $query->where('company_id', $data['company']);
+        }
+        
+        $results['results'] = $query->limit($data['limit'], $offset)->find();
         $results['count'] = $this->countAllResults();
         return $results;
     }

@@ -174,7 +174,12 @@ class Package extends BaseController
         $data['limit'] = $this->request->getVar('limit') ?? 20;
 
         $packageModel = new PackageModel();
+
+        if($this->request->decodedJwt->client != 'admin'){
+            $data['company'] = $this->request->decodedJwt->companyId;
+        }
         $packages = $packageModel->getPackages($data);
+
         return $this->setResponseFormat('json')->respond(['status' => 200, 'results' => hashId($packages['results']), 'count' => $packages['count'], 'post' => $data], 200);
     }
 
