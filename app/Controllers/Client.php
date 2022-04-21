@@ -203,17 +203,13 @@ class Client extends BaseController
 
     public function myAccount()
     {
+        $client = new \App\Libraries\Packages\Client($this->request->decodedJwt->clientId);
 
-        $apiClientModel = new ApiClientModel();
-        $client = $apiClientModel->get($this->request->decodedJwt->clientId);
-
-        if (!$client) {
+        if (!$client->getClient()) {
             return $this->setResponseFormat('json')->respond(['status' => 404, 'error' => 'Invalid client'], 404);
         }
 
-        $detailModel = new DetailModel();
-        $details = $detailModel->getDetails($client->id, true);
-        return $this->setResponseFormat('json')->respond(['status' => 200, 'client' => hashId($client), 'details' => $details], 200);
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'client' => hashId($client), 'details' => $client->getDetails()], 200);
     }
 
     public function getAccountTypeFromToken()
