@@ -11,8 +11,8 @@ use App\Libraries\Logger\Logger;
 
 class Client
 {
-    private $apiClientModel;
-    private $detailModel;
+    protected $apiClientModel;
+    protected $detailModel;
 
     public $client;
     public $details;
