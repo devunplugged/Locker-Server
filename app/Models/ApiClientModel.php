@@ -148,8 +148,8 @@ class ApiClientModel extends Model
     public function getCompanyAccessLockers($companyId)
     {
         //return $this->where('company_id', $companyId)->where('type', 'locker')->find();
-        echo $this->join('lockeraccesses', 'lockeraccesses.locker_id = apiclients.id', 'left')->where('apiclients.type', 'locker')->where('lockeraccesses.company_id', $companyId)->getCompiledSelect();
-        die;
+        return $this->join('lockeraccesses', 'lockeraccesses.locker_id = apiclients.id', 'left')->where('apiclients.type', 'locker')->where('lockeraccesses.company_id', $companyId)->getCompiledSelect();
+
         // $lockersList = [];
         // foreach($lockers as $locker){
         //     $lockersList[] = new \App\Entities\ApiClient($locker);
