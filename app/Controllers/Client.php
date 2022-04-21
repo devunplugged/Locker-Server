@@ -164,7 +164,7 @@ class Client extends BaseController
             'client' => hashId($client->getClient()),
             'details' => $client->getDetails(),
             'company' => hashId($company->getClient()),
-            'companyDetails' => $company->getDetails(),
+            //'companyDetails' => $company->getDetails(),
         ];
 
 
