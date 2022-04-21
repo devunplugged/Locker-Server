@@ -149,12 +149,12 @@ class ApiClientModel extends Model
     {
         //return $this->where('company_id', $companyId)->where('type', 'locker')->find();
         $lockers = $this->join('lockeraccesses', 'lockeraccesses.locker_id = apiclients.id', 'left')->where('apiclients.type', 'locker')->where('lockeraccesses.company_id', $companyId)->find();
-
+        echo '<pre>'; print_r($lockers); echo '</pre>';
         $lockersList = [];
         foreach($lockers as $locker){
             $lockersList[] = new \App\Entities\ApiClient($locker);
         }
-        echo '<pre>'; print_r($lockers); echo '</pre>';die;
+        echo '<pre>'; print_r($lockersList); echo '</pre>';die;
         return $lockersList;
     }
 
