@@ -100,7 +100,7 @@ class DetailModel extends Model
         
     }
 
-    public function get($clientId, $forPublic = false){
+    public function getDetails($clientId, $forPublic = false){
 
         $details = $this->where('client_id', $clientId)->findAll();
         $detailsArray = [];

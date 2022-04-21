@@ -39,7 +39,7 @@ class Client
     {
         //Logger::log(46,$this->package->id);
         if (!$this->details || $reload) {
-            $this->details = $this->detailModel->get($this->client->id);
+            $this->details = $this->detailModel->getDetails($this->client->id);
         }
         return $this->details;
     }
