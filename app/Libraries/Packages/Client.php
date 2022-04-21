@@ -39,7 +39,7 @@ class Client
     {
         //Logger::log(46,$this->package->id);
         if (!$this->details || $reload) {
-            $this->details = $this->detailModel->get($this->locker->id);
+            $this->details = $this->detailModel->get($this->client->id);
         }
         return $this->details;
     }
@@ -77,7 +77,7 @@ class Client
         if (!$this->workers || $reload) {
             $this->workers = $this->apiClientModel->getWorkers($this->client->id, $withPersonalData);
         }
-        
+
         return $this->workers;
     }
 
