@@ -78,6 +78,7 @@ class Locker extends BaseController
     {
         $apiClientModel = new ApiClientModel;
         $lockers = $this->request->decodedJwt->client == 'admin' ? $apiClientModel->getLockers() : $apiClientModel->getCompanyAccessLockers($this->request->decodedJwt->companyId);
+        
         return $this->respond(['lockers' => hashId($lockers)], 200);
     }
 

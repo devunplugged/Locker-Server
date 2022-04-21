@@ -98,7 +98,13 @@ class Company extends BaseController
     {
 
         $apiClientModel = new ApiClientModel();
-        return $this->setResponseFormat('json')->respond(['status' => 200, 'companies' => hashId($apiClientModel->getCompanies())], 200);
+        if($this->request->decodedJwt->client == 'admin'){
+            $companies = $apiClientModel->getCompanies();
+        }else{
+            $companies = [];
+            $companies[]= $apiClientModel->getCompany($this->request->decodedJwt->companyId);
+        }
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'companies' => hashId($companies)], 200);
     }
 
     public function get($companyId)
