@@ -3,7 +3,7 @@ use Hashids\Hashids;
 
 function hashId($data){
 
-$toHash = ['id', 'package_id', 'locker_id', 'company_id', 'client_id', 'cell_id', 'created_by'];
+    $toHash = ['id', 'package_id', 'locker_id', 'company_id', 'client_id', 'cell_id', 'created_by'];
 
     $hashids = new Hashids(HASHID_SALT, 6, HASHID_ALPHABET);
 
@@ -16,6 +16,7 @@ $toHash = ['id', 'package_id', 'locker_id', 'company_id', 'client_id', 'cell_id'
             }
         }
     }elseif(is_object($data)){
+        $data = clone $data;
         foreach($toHash as $variableToHash){
             if(isset($data->$variableToHash)){
                 $data->$variableToHash = $hashids->encode($data->$variableToHash);
