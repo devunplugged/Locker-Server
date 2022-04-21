@@ -209,7 +209,7 @@ class Client extends BaseController
             return $this->setResponseFormat('json')->respond(['status' => 404, 'error' => 'Invalid client'], 404);
         }
 
-        return $this->setResponseFormat('json')->respond(['status' => 200, 'client' => hashId($client), 'details' => $client->getDetails()], 200);
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'client' => hashId($client->getClient()), 'details' => $client->getDetails()], 200);
     }
 
     public function getAccountTypeFromToken()
