@@ -10,13 +10,15 @@ use App\Models\FailedTaskModel;
 use App\Models\LockerAccessModel;
 use App\Models\TaskModel;
 use App\Models\DetailModel;
+use App\Libraries\Packages\Client;
 use App\Libraries\Packages\Mailer;
+use App\Libraries\Packages\Task;
 use App\Libraries\Logger\Logger;
 
-class Locker
+class Locker extends Client
 {
 
-    public $locker;
+    public $client;
     public $details;
     public $emptyCells = null;
 
@@ -25,7 +27,8 @@ class Locker
     private $cellModel;
     private $packageModel;
     private $detailModel;
-    private $failedTaskModel;
+    private $task;
+    //private $failedTaskModel;
 
     public function __construct(int $lockerId)
     {
@@ -36,8 +39,11 @@ class Locker
         $this->packageModel = new PackageModel();
         $this->failedTaskModel = new FailedTaskModel();
         $this->detailModel = new DetailModel();
+        
 
-        $this->locker = $this->apiClientModel->getLocker($lockerId);
+        $this->client = $this->apiClientModel->getLocker($lockerId);
+        $this->task = new Task($lockerId);
+
         // $this->details = $this->detailModel->get($lockerId);
         //disabled; locker object has to be accesible to simple user; without company. To retrive the package
         // $request = service('request');
@@ -46,42 +52,19 @@ class Locker
         // }
     }
 
-    public function getDetails(bool $reload = false)
-    {
-        //Logger::log(46,$this->package->id);
-        if (!$this->details || $reload) {
-            $this->details = $this->detailModel->get($this->locker->id);
-        }
-        return $this->details;
-    }
-
-    public function getAddressString()
-    {
-        $lockerDetails = $this->getDetails();
-        $lockerAddress = $lockerDetails['street'];
-        if (isset($lockerDetails['building']) && !empty($lockerDetails['building'])) {
-            $lockerAddress .= ' ' . $lockerDetails['building'];
-        }
-        if (isset($lockerDetails['apartment']) && !empty($lockerDetails['apartment'])) {
-            $lockerAddress .= '/' . $lockerDetails['apartment'];
-        }
-
-        return $lockerAddress;
-    }
-
-    public function getPostcodeString()
-    {
-        $lockerDetails = $this->getDetails();
-        $lockerPost = $lockerDetails['post_code'];
-        if (isset($lockerDetails['city']) && !empty($lockerDetails['city'])) {
-            $lockerPost .= ' ' . $lockerDetails['city'];
-        }
-        return $lockerPost;
-    }
-
     public function getEmptyCells($size)
     {
-        return $this->cellModel->getEmptyCells($this->locker->id, $size);
+        return $this->cellModel->getEmptyCells($this->client->id, $size);
+    }
+
+    public function getCellsAndPackages()
+    {
+        return $this->cellModel->getLockerCellsAndPackages($this->client->id);
+    }
+
+    public function getTasks($markSent = true)
+    {
+        return $this->task->getForLocker($markSent);
     }
 
     public function isNoEmptyCells($size)
@@ -94,19 +77,19 @@ class Locker
 
     public function isBusyWithPackageOtherThan($packageId)
     {
-        return $this->packageModel->insertOrRemoveReadyPackagesExistForLockerExcept($this->locker->id, $packageId);
+        return $this->packageModel->insertOrRemoveReadyPackagesExistForLockerExcept($this->client->id, $packageId);
     }
 
     public function isCellOutOfOrder($cellSortId)
     {
-        //return $this->failedTaskModel->countTaskAttempts($this->locker->id, $cellSortId) > MAX_FAILED_TASKS;
+        //return $this->failedTaskModel->countTaskAttempts($this->client->id, $cellSortId) > MAX_FAILED_TASKS;
         $taskModel = new TaskModel();
-        return $taskModel->cellHasFailed($this->locker->id, $cellSortId);
+        return $taskModel->cellHasFailed($this->client->id, $cellSortId);
     }
 
     public function getCellBySortId($cellSortId)
     {
-        return $this->cellModel->getCellByLockerAndSortId($this->locker->id, $cellSortId);
+        return $this->cellModel->getCellByLockerAndSortId($this->client->id, $cellSortId);
     }
 
     public function saveCell($cell)
@@ -116,7 +99,7 @@ class Locker
 
     public function hasHeartbeat()
     {
-        $beat = $this->heartBeatModel->get($this->locker->id);
+        $beat = $this->heartBeatModel->get($this->client->id);
 
         if (!$beat) {
             return false;
@@ -127,19 +110,19 @@ class Locker
 
     public function saveHeartBeat()
     {
-        $this->heartBeatModel->create($this->locker->id);
+        $this->heartBeatModel->create($this->client->id);
     }
 
     public function companyHasAccess($companyId)
     {
         $lockerAccessModel = new LockerAccessModel();
-        return $lockerAccessModel->companyHasAccess($companyId, $this->locker->id);
+        return $lockerAccessModel->companyHasAccess($companyId, $this->client->id);
     }
 
     public function companySetAccess($companyId, $hasAccess)
     {
         $lockerAccessModel = new LockerAccessModel();
-        return $lockerAccessModel->setAccess($companyId, $this->locker->id, $hasAccess);
+        return $lockerAccessModel->setAccess($companyId, $this->client->id, $hasAccess);
     }
 
     ////////////EMAILS///////////////

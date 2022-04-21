@@ -139,47 +139,43 @@ class Client extends BaseController
 
     public function get($clientIdHash)
     {
-        $apiClientModel = new ApiClientModel();
-        $detailModel = new DetailModel();
+        // $apiClientModel = new ApiClientModel();
+        // $detailModel = new DetailModel();
 
         $clientId = decodeHashId($clientIdHash);
 
-        $client = $apiClientModel->get($clientId);
+       // $client = $apiClientModel->get($clientId);
+        $client = \App\Libraries\Packages\ClientFactory::create($clientId);
 
         //to do check if user is authorized to get the data
 
-        if (!$client) {
+        if (!$client->getClient()) {
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['client' => 'not found']], 409, 123, 'Invalid Inputs');
         }
 
-        $companyId = $client->company_id;
+        if(!$client->clientCanView($this->request->decodedJwt->clientId)){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['uprawnienia' => 'brak uprawnień']], 409, 123, 'Invalid Inputs');
+        }
+
+        $company = new \App\Libraries\Packages\Client($client->getClient()->company_id);
 
         $response = [
             'status' => 200,
-            'client' => hashId($client),
-            'details' => $detailModel->get($clientId),
-            'company' => hashId($apiClientModel->get($companyId)),
-            'companyDetails' => $detailModel->get($companyId),
+            'client' => hashId($client->getClient()),
+            'details' => $client->getDetails(),
+            'company' => hashId($company->getClient()),
+            'companyDetails' => $company->getDetails(),
         ];
 
 
 
-        if ($client->type == 'company') {
-            $response['workers'] = hashId($apiClientModel->getWorkers($clientId, true));
+        if ($client->getClient()->type == 'company') {
+            $response['workers'] = hashId($client->getWorkers());
         }
 
-        if ($client->type == 'locker') {
-            $cellModel = new CellModel();
-            $response['cells'] = hashId($cellModel->getLockerCellsAndPackages($clientId));
-            //save result to file (cache) ??
-
-            //this is used after locker creation when no cells have been added
-            // if (!$response['cells']) {
-            //     return $this->setResponseFormat('json')->fail(['generalErrors' => ['cells' => 'no cells found']], 409, 123, 'Invalid Inputs');
-            // }
-
-            $task = new Task($clientId);
-            $response['tasks'] = $task->getForLocker(false);
+        if ($client->getClient()->type == 'locker') {
+            $response['cells'] = hashId($client->getCellsAndPackages());
+            $response['tasks'] = $client->getTasks(false);
         }
 
         return $this->setResponseFormat('json')->respond(
