@@ -154,6 +154,7 @@ class ApiClientModel extends Model
         foreach($lockers as $locker){
             $lockersList[] = new \App\Entities\ApiClient($locker);
         }
+        echo '<pre>'; print_r($lockers); echo '</pre>';die;
         return $lockersList;
     }
 
