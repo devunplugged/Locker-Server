@@ -101,6 +101,7 @@ class Client
                     }
                 break;
             case 'locker':
+                    //this is implemented inside Locker
                     return false;
                 break;
         }
@@ -128,9 +129,8 @@ class Client
                     }
                 break;
             case 'locker':
-                    if(in_array($client->getClient()->type, ['company', 'staff'])){
-                        return $client->getClient()->company_id == $this->client->company_id;
-                    }
+                    //this is implemented inside Locker
+                    return false;
                 break;
         }
         return false;

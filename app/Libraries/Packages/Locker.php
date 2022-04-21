@@ -128,6 +128,32 @@ class Locker extends Client
         return $lockerAccessModel->setAccess($companyId, $this->client->id, $hasAccess);
     }
 
+    public function clientCanEdit($clientId)
+    {
+        $client = new Client($clientId);
+
+        if($client->getClient()->type == 'admin'){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function clientCanView($clientId)
+    {
+        $client = new Client($clientId);
+
+        if($client->getClient()->type == 'admin'){
+            return true;
+        }
+
+        if(in_array($client->getClient()->type, ['company', 'staff'])){
+            return $this->companyHasAccess($client->getClient()->company_id);
+        }
+
+        return false;
+    }
+
     ////////////EMAILS///////////////
 
     public function sendOutOfOrderOpenCellEmailNotification($cellSortId)
