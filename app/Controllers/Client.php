@@ -162,7 +162,7 @@ class Client extends BaseController
         $response = [
             'status' => 200,
             'client' => hashId($client->getClient()),
-            //'details' => $client->getDetails(),
+            'details' => $client->getDetails(),
             'company' => hashId($company->getClient()),
             'companyDetails' => $company->getDetails(),
         ];
