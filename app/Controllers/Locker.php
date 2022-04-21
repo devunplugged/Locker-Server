@@ -252,7 +252,7 @@ class Locker extends BaseController
         }
 
         $detailModel = new DetailModel();
-        $details = $detailModel->get($lockerId, true);
+        $details = $detailModel->getDetails($lockerId, true);
         return $this->respond(['locker' => hashId($locker), 'details' => $details], 200);
     }
 
@@ -287,8 +287,8 @@ class Locker extends BaseController
         $company = $apiClientModel->getCompany($locker->company_id);
 
         $detailModel = new DetailModel();
-        $lockerDetails = $detailModel->get($locker->id, true);
-        $companyDetails = $detailModel->get($locker->company_id, true);
+        $lockerDetails = $detailModel->getDetails($locker->id, true);
+        $companyDetails = $detailModel->getDetails($locker->company_id, true);
 
         return $this->respond(
             [

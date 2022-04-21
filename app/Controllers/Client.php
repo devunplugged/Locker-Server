@@ -53,7 +53,7 @@ class Client extends BaseController
         
         //$token = JwtHandler::generateForClient($clientId);
 
-        $response = ['status' => 200, 'message' => 'Poprawnie dodano klienta', 'id' => hashId($clientId), /*'token' => $token, */'details' => $detailModel->get($clientId)];
+        $response = ['status' => 200, 'message' => 'Poprawnie dodano klienta', 'id' => hashId($clientId), /*'token' => $token, */'details' => $detailModel->getDetails($clientId)];
 
         if ($apiClient->type == 'company') {
             $serviceCodeGenerator = new ServiceCodeGenerator($clientId);
@@ -109,7 +109,7 @@ class Client extends BaseController
         }
         $detailModel->updateFromRequest($this->request, decodeHashId($this->request->getVar('id')));
 
-        $response = ['status' => 200, 'message' => 'Klient zaktualizowany', 'client' => hashId($client), 'details' => $detailModel->get(decodeHashId($this->request->getVar('id')))];
+        $response = ['status' => 200, 'message' => 'Klient zaktualizowany', 'client' => hashId($client), 'details' => $detailModel->getDetails(decodeHashId($this->request->getVar('id')))];
 
         if ($client->type == 'company' && $this->request->getVar('regenerate_servicecodes')) {
             $serviceCodeGenerator = new ServiceCodeGenerator($client->id);
@@ -214,7 +214,7 @@ class Client extends BaseController
         }
 
         $detailModel = new DetailModel();
-        $details = $detailModel->get($client->id, true);
+        $details = $detailModel->getDetails($client->id, true);
         return $this->setResponseFormat('json')->respond(['status' => 200, 'client' => hashId($client), 'details' => $details], 200);
     }
 

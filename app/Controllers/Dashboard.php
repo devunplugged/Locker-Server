@@ -210,7 +210,7 @@ class Dashboard extends BaseController
 
     public function settings($lockerId){
         $detailModel = new DetailModel();
-        $details = $detailModel->get(decodeHashId($lockerId));
+        $details = $detailModel->getDetails(decodeHashId($lockerId));
 
         return view(
             'Views\locker-settings',

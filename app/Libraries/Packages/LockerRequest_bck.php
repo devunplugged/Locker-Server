@@ -362,7 +362,7 @@ class LockerRequest{
     private function isLockerWorkingHours(){
         //CHECK IF ITS OPEN HOURS FOR THAT LOCKER
         $detailModel = new DetailModel();
-        $details = $detailModel->get($this->request->decodedJwt->clientId);
+        $details = $detailModel->getDetails($this->request->decodedJwt->clientId);
 
         if(!isset($details['works_from']) && !isset($details['works_to'])){
             throw new ValidationException('Locker has no working hours set');
