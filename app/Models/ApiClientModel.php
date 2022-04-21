@@ -140,9 +140,15 @@ class ApiClientModel extends Model
         return $this->where('id_hash', $lockerIdHash)->where('type', 'locker')->first();
     }
 
-    public function getCompanyLockers($companyIdHash)
+    public function getCompanyLockers($companyId)
     {
-        return $this->where('company_id', $companyIdHash)->where('type', 'locker')->find();
+        return $this->where('company_id', $companyId)->where('type', 'locker')->find();
+    }
+
+    public function getCompanyAccessLockers($companyId)
+    {
+        //return $this->where('company_id', $companyId)->where('type', 'locker')->find();
+        return $this->join('lockeraccesses', 'lockeraccesses.locker_id = apiclients.id')->where('apiclients.type', 'locker')->where('apiclients.id',$companyId)->find();
     }
 
     public function getAllLockers()

@@ -105,7 +105,7 @@ class Package extends BaseController
             'size' => ['rules' => 'required|max_length[1]'],
             'ref_code' => ['rules' => 'required|max_length[255]'],
             'status' => ['rules' => 'permit_empty|max_length[16]'],
-            'locker_id' => ['rules' => 'permit_empty|max_length[64]|is_not_unique_hash[apiclients.id]'],
+            'locker_id' => ['rules' => 'permit_empty|max_length[64]|locker_exists|has_locker_access'],
             'cell_sort_id' => ['rules' => 'permit_empty|max_length[255]|numeric'],
             'company_id' => ['rules' => 'permit_empty|max_length[64]|is_not_unique_hash[companies.id]'],
             'created_by' => ['rules' => 'permit_empty|max_length[64]|is_not_unique_hash[apiclients.id]'],

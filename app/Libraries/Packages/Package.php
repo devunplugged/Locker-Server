@@ -357,11 +357,7 @@ class Package
         }
 
         if ($this->request->decodedJwt->companyId) {
-            if ($this->request->decodedJwt->companyId == $this->package->company_id) {
-                return true;
-            } else {
-                return false;
-            }
+            return $this->request->decodedJwt->companyId == $this->package->company_id;
         }
 
         if ($this->request->decodedJwt->client == 'company' && $this->request->decodedJwt->clientId == $this->package->company_id) {
