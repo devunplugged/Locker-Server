@@ -7,12 +7,17 @@ use CodeIgniter\API\ResponseTrait;
 //use App\Libraries\Packages\JwtGenerator;
 use App\Libraries\Packages\JwtHandler;
 use App\Libraries\Packages\TokenIssuer;
+use App\Libraries\Packages\Client;
 use App\Models\ApiClientModel;
 
 class Token extends BaseController
 {
     use ResponseTrait;
 
+    /**
+     * Generates token for specified client.
+     * Accessible to Company and Admin (companyFilter)
+     */
     public function add()
     {
         $rules = [
@@ -25,10 +30,14 @@ class Token extends BaseController
 
         $clientId = decodeHashId($this->request->getVar('client_id'));
 
-        $apiClientModel = new ApiClientModel();
-        $client = $apiClientModel->get($clientId);
+        //$apiClientModel = new ApiClientModel();
+        //$client = $apiClientModel->get($clientId);
+        $client = new Client($clientId);
 
-        if( ($this->request->decodedJwt->companyId != $client->company_id || $this->request->decodedJwt->client != 'company') && $this->request->decodedJwt->client != 'admin' ){
+        if( 
+            ( $this->request->decodedJwt->client == 'company' && $client->getClient()->type != 'staff' ) || 
+            ( $this->request->decodedJwt->client == 'company' && $client->getClient()->type == 'staff' && $client->getClient()->company_id != $this->request->decodedJwt->companyId )
+        ){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['company_id' => 'brak uprawnień do wykonania tej akcji']] , 409);
         }
 
