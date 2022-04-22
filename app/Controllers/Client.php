@@ -176,7 +176,7 @@ class Client extends BaseController
         ];
 
         if ($client->getClient()->type == 'company') {
-            $response['workers'] = hashId($client->getWorkers());
+            $response['workers'] = hashId($client->getWorkers(true));
         }
 
         if ($client->getClient()->type == 'locker') {
