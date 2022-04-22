@@ -95,7 +95,7 @@ $routes->group("api", function ($routes) {
     $routes->get("company/list", "Company::list", ['filter' => 'jwtStaffAuth']);
     $routes->post("company/update", "Company::update", ['filter' => 'jwtAdminAuth']);
     $routes->post("company/delete", "Company::delete", ['filter' => 'jwtAdminAuth']);
-    $routes->get("companies/locker/access/(:segment)", "Company::getLockerAccess/$1", ['filter' => 'jwtAdminAuth']);
+    $routes->get("companies/locker/access/(:segment)", "Company::getLockerAccess/$1", ['filter' => 'jwtStaffAuth']);
     $routes->post("companies/locker/access/(:segment)", "Company::setLockerAccess/$1", ['filter' => 'jwtAdminAuth']);
 
     $routes->post("client/add", "Client::add", ['filter' => 'jwtAdminAuth']/*, ['filter' => 'jwtAdminAuth']*/); 
