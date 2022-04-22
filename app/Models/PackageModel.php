@@ -143,8 +143,7 @@ class PackageModel extends Model
             $query = $query->where('company_id', $data['company']);
         }
 
-        $count = $query;
-        $results['count'] = $count->countAllResults();;
+        $results['count'] = $query->countAllResults(false);
         //Logger::log(994, $query->limit($data['limit'], $offset)->getCompiledSelect(), 'query');
         $results['results'] = $query->limit($data['limit'], $offset)->find();
         
