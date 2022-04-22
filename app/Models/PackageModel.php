@@ -144,7 +144,7 @@ class PackageModel extends Model
         }
         
         $results['results'] = $query->limit($data['limit'], $offset)->find();
-        $results['count'] = $this->countAllResults();
+        $results['count'] = $query->countAllResults();
         return $results;
     }
 
