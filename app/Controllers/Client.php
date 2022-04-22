@@ -75,7 +75,7 @@ class Client extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['type' => 'type is required']], 409, 123, 'Invalid Inputs');
         }
 
-        if ($this->request->getVar('type') != 'staff' && $this->request->decodedJwt->client == 'company' && $this->request->decodedJwt->clientId != $this->request->getVar('client_id')) {
+        if ($this->request->getVar('type') != 'staff' && $this->request->decodedJwt->client == 'company' && $this->request->decodedJwt->clientId != decodeHashId($this->request->getVar('client_id')) ) {
             return $this->setResponseFormat('json')->fail(['type' => $this->request->getVar('type'),'generalErrors' => ['type' => 'Nie masz uprawnień do edycji klienta tego typu']], 409, 123, 'Invalid Inputs');
         }
 
