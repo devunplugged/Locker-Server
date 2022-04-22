@@ -262,13 +262,12 @@ class Locker extends BaseController
     {
         $lockerId = decodeHashId($id);
 
-        $locker = \App\Libraries\Packages\ClientFactory::create($lockerId);
+       // $locker = \App\Libraries\Packages\ClientFactory::create($lockerId);
+        $locker = new \App\Libraries\Packages\Locker($lockerId);
 
-        if (!$locker->getClient()) {
+        if (!$locker->getClient()){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['id' => 'no locker found']], 404);
         }
-
-        $locker = new \App\Libraries\Packages\Locker($lockerId);
 
         if(!$locker->clientCanView($this->request->decodedJwt->clientId)){
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['client' => 'Nie masz uprawnień do zarządzania tym paczkomatem']], 404);
