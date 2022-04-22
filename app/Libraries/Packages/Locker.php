@@ -52,12 +52,12 @@ class Locker extends Client
 
     public function getEmptyCells($size)
     {
-        return $this->cellModel->getEmptyCells($this->client->id, $size);
+        return $this->cellModel->getEmptyCells($this->clientId, $size);
     }
 
     public function getCellsAndPackages()
     {
-        return $this->cellModel->getLockerCellsAndPackages($this->client->id);
+        return $this->cellModel->getLockerCellsAndPackages($this->clientId);
     }
 
     public function getTasks($markSent = true)
@@ -120,13 +120,13 @@ class Locker extends Client
         }
 
         $lockerAccessModel = new LockerAccessModel();
-        return $lockerAccessModel->companyHasAccess($companyId, $this->client->id);
+        return $lockerAccessModel->companyHasAccess($companyId, $this->clientId);
     }
 
     public function companySetAccess($companyId, $hasAccess)
     {
         $lockerAccessModel = new LockerAccessModel();
-        return $lockerAccessModel->setAccess($companyId, $this->client->id, $hasAccess);
+        return $lockerAccessModel->setAccess($companyId, $this->clientId, $hasAccess);
     }
 
     public function clientCanEdit($clientId)
