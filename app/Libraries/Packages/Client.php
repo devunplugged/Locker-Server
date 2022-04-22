@@ -14,6 +14,7 @@ class Client
     protected $apiClientModel;
     protected $detailModel;
 
+    public $clientId;
     public $client;
     public $details;
     public $workers;
@@ -21,6 +22,7 @@ class Client
 
     public function __construct(int $clientId)
     {
+        $this->clientId = $clientId;
         $this->apiClientModel = new ApiClientModel();
         $this->detailModel = new DetailModel();
         $this->client = $this->apiClientModel->get($clientId);
@@ -30,7 +32,7 @@ class Client
     {
         //Logger::log(46,$this->package->id);
         if (!$this->client || $reload) {
-            $this->client = $this->apiClientModel->get($this->client->id);
+            $this->client = $this->apiClientModel->get($this->clientId);
         }
         return $this->client;
     }
@@ -39,7 +41,7 @@ class Client
     {
         //Logger::log(46,$this->package->id);
         if (!$this->details || $reload) {
-            $this->details = $this->detailModel->getDetails($this->client->id, $forPublic);
+            $this->details = $this->detailModel->getDetails($this->clientId, $forPublic);
         }
         return $this->details;
     }
