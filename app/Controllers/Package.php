@@ -355,7 +355,7 @@ class Package extends BaseController
 
 
         $package->resetPackage();
-        return $this->setResponseFormat('json')->respond(['status' => 200, 'message' => 'Zresetowano paczkę', 'package' => $package->package], 200);
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'message' => 'Zresetowano paczkę', 'package' => hashId($package->package)], 200);
     }
 
     public function emailRecipient($type, $packageId)
