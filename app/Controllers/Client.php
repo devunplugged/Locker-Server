@@ -26,6 +26,10 @@ class Client extends BaseController
             return $this->setResponseFormat('json')->fail(['type' => $this->request->getVar('type'),'generalErrors' => ['type' => 'type is required']], 409, 123, 'Invalid Inputs');
         }
 
+        if (!$this->request->getVar('type') != 'staff' && $this->decodedJwt->client == 'company') {
+            return $this->setResponseFormat('json')->fail(['type' => $this->request->getVar('type'),'generalErrors' => ['type' => 'Nie masz uprawnień do dodawania klienta tego typu']], 409, 123, 'Invalid Inputs');
+        }
+
         $clientValidationRules = new ClientValidationRules();
         $rules = $clientValidationRules->getSaveRules($this->request->getVar('type'));
 
