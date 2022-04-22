@@ -29,6 +29,10 @@ class Filters extends BaseConfig
                                     \App\Filters\JwtAdminFilter::class,
                                     \App\Filters\JwtDataGathererFilter::class,
                                 ],
+        'jwtCompanyAuth'     => [
+                                    \App\Filters\JwtCompanyFilter::class,
+                                    \App\Filters\JwtDataGathererFilter::class,
+                                ],
         'jwtStaffAuth'     => [
                                     \App\Filters\JwtStaffFilter::class,
                                     \App\Filters\JwtDataGathererFilter::class,
