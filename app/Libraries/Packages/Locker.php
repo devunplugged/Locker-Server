@@ -28,6 +28,7 @@ class Locker extends Client
 
     public function __construct(int $lockerId)
     {
+        $this->clientId = $lockerId;
         $this->apiClientModel = new ApiClientModel();
         $this->detailModel = new DetailModel();
 
