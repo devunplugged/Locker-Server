@@ -10,7 +10,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Libraries\Packages\JwtHandler;
 use App\Libraries\Logger\Logger;
 
-class JwtStaffFilter implements FilterInterface
+class JwtCompanyFilter implements FilterInterface
 {
     use ResponseTrait;
     private $response;
