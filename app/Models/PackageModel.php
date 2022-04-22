@@ -142,9 +142,9 @@ class PackageModel extends Model
         if(isset($data['company'])){
             $query = $query->where('company_id', $data['company']);
         }
-        
-        $results['results'] = $query->limit($data['limit'], $offset)->find();
         $results['count'] = $query->countAllResults();
+        $results['results'] = $query->limit($data['limit'], $offset)->find();
+        
         return $results;
     }
 
