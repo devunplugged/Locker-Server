@@ -144,7 +144,7 @@ class PackageModel extends Model
         }
 
         //$count = clone $query;
-        $results['count'] = $query->countAllResults();
+        $results['count'] = 1;
         Logger::log(994, $query->limit($data['limit'], $offset)->getCompiledSelect(), 'query');
         $results['results'] = $query->limit($data['limit'], $offset)->findAll();
         
