@@ -140,12 +140,12 @@ class PackageModel extends Model
         $query = $this;
 
         if(isset($data['company'])){
-            $query = $query->where('company_ids', $data['company']);
+            $query = $query->where('company_id', $data['company']);
         }
 
         //$count = clone $query;
         $results['count'] = $query->countAllResults();
-        $results['results'] = $query->limit($data['limit'], $offset)->find();
+        $results['results'] = $query->limit($data['limit'], $offset)->getCompiledSelect();
         
         return $results;
     }
