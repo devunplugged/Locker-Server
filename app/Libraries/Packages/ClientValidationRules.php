@@ -25,7 +25,7 @@ class ClientValidationRules{
     }
 
     public function adminSaveRules(){
-        Logger::log(3, 'adminSaveRules', 'ClientValidationRules');
+        //Logger::log(3, 'adminSaveRules', 'ClientValidationRules');
         return [
             'company_id'    => [
                 'rules' => 'required|max_length[64]|company_exists',
@@ -33,7 +33,7 @@ class ClientValidationRules{
             ],
             'name'          => ['rules' => 'required|max_length[255]|is_unique[apiclients.name]'],
             'type'          => [
-                'rules' => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules' => 'required|max_length[16]|allowed_client_type',//|can_set_type
                 'errors' => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'first_name'       => ['rules' => 'required|max_length[255]'],
@@ -47,7 +47,7 @@ class ClientValidationRules{
     }
     
     public function adminUpdateRules(){
-        Logger::log(3, 'adminUpdateRules', 'ClientValidationRules');
+        //Logger::log(3, 'adminUpdateRules', 'ClientValidationRules');
         return [
             'id'            => ['rules' => 'required|is_not_unique_hash[apiclients.id]'],
             'company_id'    => [
@@ -56,7 +56,7 @@ class ClientValidationRules{
             ],
             'name'          => ['rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]'],
             'type'          => [
-                'rules' => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules' => 'required|max_length[16]|allowed_client_type', //|can_set_type
                 'errors' => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'first_name'       => ['rules' => 'required|max_length[255]'],
@@ -70,7 +70,7 @@ class ClientValidationRules{
     }
 
     public function companySaveRules(){
-        Logger::log(3, 'companySaveRules', 'ClientValidationRules');
+        //Logger::log(3, 'companySaveRules', 'ClientValidationRules');
         return [
             /*'company_id'    => [
                 'rules'     => 'required|max_length[64]|company_exists',
@@ -78,7 +78,7 @@ class ClientValidationRules{
             ],*/
             'name'          => ['rules' => 'required|max_length[255]|is_unique[apiclients.name]'],
             'type'          => [
-                'rules'     => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules'     => 'required|max_length[16]|allowed_client_type', //|can_set_type
                 'errors'    => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'street'        => ['rules' => 'required|max_length[255]'],
@@ -93,7 +93,7 @@ class ClientValidationRules{
     }
 
     public function companyUpdateRules(){
-        Logger::log(3, 'companyUpdateRules', 'ClientValidationRules');
+        //Logger::log(3, 'companyUpdateRules', 'ClientValidationRules');
         return [
             'id'    => [
                 'rules'     => 'required|max_length[64]|is_not_unique_hash[apiclients.id]',
@@ -101,7 +101,7 @@ class ClientValidationRules{
             ],
             'name'          => ['rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]'],
             'type'          => [
-                'rules'     => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules'     => 'required|max_length[16]|allowed_client_type', //|can_set_type
                 'errors'    => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'street'        => ['rules' => 'required|max_length[255]'],
@@ -127,7 +127,7 @@ class ClientValidationRules{
             ],
             'name'          => ['rules' => 'required|max_length[255]|is_unique[apiclients.name]'],
             'type'          => [
-                'rules' => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules' => 'required|max_length[16]|allowed_client_type', //|can_set_type
                 'errors' => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'first_name'       => ['rules' => 'required|max_length[255]'],
@@ -141,7 +141,7 @@ class ClientValidationRules{
     }
 
     public function staffUpdateRules(){
-        Logger::log(3, 'staffUpdateRules', 'ClientValidationRules');
+        //Logger::log(3, 'staffUpdateRules', 'ClientValidationRules');
         return [
             'id'            => ['rules' => 'required|is_not_unique_hash[apiclients.id]'],
             'company_id'    => [
@@ -150,7 +150,7 @@ class ClientValidationRules{
             ],
             'name'          => ['rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]'],
             'type'          => [
-                'rules' => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules' => 'required|max_length[16]|allowed_client_type', //|can_set_type
                 'errors' => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'first_name'       => ['rules' => 'required|max_length[255]'],
@@ -164,7 +164,7 @@ class ClientValidationRules{
     }
     
     public function lockerSaveRules(){
-        Logger::log(3, 'lockerSaveRules', 'ClientValidationRules');
+        //Logger::log(3, 'lockerSaveRules', 'ClientValidationRules');
         return [
             'company_id'    => [
                 'rules'     => 'required|max_length[64]|company_exists',
@@ -172,7 +172,7 @@ class ClientValidationRules{
             ],
             'name'          => ['rules' => 'required|max_length[255]|is_unique[apiclients.name]'],
             'type'          => [
-                'rules'     => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules'     => 'required|max_length[16]|allowed_client_type', //|can_set_type
                 'errors'    => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'street'        => ['rules' => 'required|max_length[255]'],
@@ -184,7 +184,7 @@ class ClientValidationRules{
     }
 
     public function lockerUpdateRules(){
-        Logger::log(3, 'lockerUpdateRules', 'ClientValidationRules');
+        //Logger::log(3, 'lockerUpdateRules', 'ClientValidationRules');
         return [
             'id'            => ['rules' => 'required|locker_exists[apiclients.id]'],
             'company_id'    => [
@@ -193,7 +193,7 @@ class ClientValidationRules{
             ],
             'name'          => ['rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]'],
             'type'          => [
-                'rules'     => 'required|max_length[16]|allowed_client_type|can_set_type',
+                'rules'     => 'required|max_length[16]|allowed_client_type', //|can_set_type
                 'errors'    => [ 'allowed_client_type' => 'This client type is not allowed' ]
             ],
             'street'        => ['rules' => 'required|max_length[255]'],
