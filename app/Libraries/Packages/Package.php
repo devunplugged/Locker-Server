@@ -126,23 +126,22 @@ class Package
         $this->package->size = $this->request->getVar('size');
         $this->package->ref_code = $this->request->getVar('ref_code');
 
-        $packageId = $this->packageModel->save($this->package);
 
-        if (!$packageId) {
+        if (!$this->packageModel->save($this->package)) {
             //return $this->setResponseFormat('json')->fail(['errors' => ['package' => 'Błąd podczas tworzenia paczki']] , 409);
             throw new \Exception('Błąd podczas aktualizowania paczki');
         }
 
         $packageAddressModel = new PackageAddressModel();
-        $packageAddressModel->saveFromRequest($this->request, $packageId);
+        $packageAddressModel->saveFromRequest($this->request, $this->package->id);
 
-        $this->package = $this->packageModel->get($packageId);
+        $this->package = $this->packageModel->get($this->package->id);
 
 
         //$this->packageLogModel->create($packageId, "Aktualizowano paczkę", $this->request->decodedJwt->clientId);
-        Logger::packageLog($packageId, "Aktualizowano paczkę", $this->request->decodedJwt->clientId);
+        Logger::packageLog($this->package->id, "Aktualizowano paczkę", $this->request->decodedJwt->clientId);
 
-        return $packageId;
+        return $this->package->id;
     }
 
     /////////Package loaders///////////////////
