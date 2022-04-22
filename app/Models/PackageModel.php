@@ -145,7 +145,8 @@ class PackageModel extends Model
 
         //$count = clone $query;
         $results['count'] = $query->countAllResults();
-        $results['results'] = $query->limit($data['limit'], $offset)->getCompiledSelect();
+        Logger::log(994, $query->limit($data['limit'], $offset)->getCompiledSelect(), 'query');
+        $results['results'] = $query->limit($data['limit'], $offset)->findAll();
         
         return $results;
     }
