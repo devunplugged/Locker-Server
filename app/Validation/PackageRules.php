@@ -3,6 +3,7 @@ namespace App\Validation;
 
 use App\Models\ApiClientModel;
 use App\Libraries\Packages\Locker;
+use App\Libraries\Logger\Logger;
 
 class PackageRules
 {
@@ -18,9 +19,10 @@ class PackageRules
 
     public function has_locker_access(string $id): bool
     {
+        Logger::log(976, $id, 'has_locker_access 1 (locker id)');
         $locker = new Locker((int)$id);
         $request = service('request');
-        
+        Logger::log(976, $request->decodedJwt->companyId, 'has_locker_access 2 (company id)');
         if($locker->companyHasAccess($request->decodedJwt->companyId)){
             return true;
         }
