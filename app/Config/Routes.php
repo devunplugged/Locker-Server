@@ -75,7 +75,7 @@ $routes->group("api", function ($routes) {
     
     
     $routes->post("package/add", "Package::add", ['filter' => 'jwtStaffAuth']);
-    $routes->post("package/update", "Package::update", ['filter' => 'jwtStaffAuth']);
+    $routes->post("package/update", "Package::update", ['filter' => 'jwtCompanyAuth']);
     //$routes->post("package/retrive", "Package::retrive", ['filter' => 'jwtLockerAuth']);
     $routes->post("package/list/overdue", "Package::listOverdueLockerPackages", ['filter' => 'jwtStaffAuth']);
     $routes->post("package/list", "Package::list", ['filter' => 'jwtStaffAuth']);

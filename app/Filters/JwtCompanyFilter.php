@@ -71,7 +71,7 @@ class JwtStaffFilter implements FilterInterface
             return $response->setJSON(createErrorMsg(401, 3, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
-        if($request->decodedJwt->client !== 'company' &&$request->decodedJwt->client !== 'admin'){// 
+        if($request->decodedJwt->client !== 'company' && $request->decodedJwt->client !== 'admin'){// 
             $response = service('response');
             return $response->setJSON(createErrorMsg(401, 3, ['generalErrors' => ['auth' => 'Access denied']]))->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
