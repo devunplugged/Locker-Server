@@ -72,6 +72,7 @@ $routes->group("api", function ($routes) {
     $routes->get("locker/get/(:segment)", "Locker::get/$1", ['filter' => 'jwtAuth']);
     $routes->get("locker/generate-codes/(:segment)", "Locker::generateLockerServiceCodes/$1", ['filter' => 'jwtAdminAuth']);
     $routes->get("locker/print-codes/(:segment)", "Locker::printLockerServiceCodes/$1", ['filter' => 'jwtStaffAuth']);
+    $routes->get("locker/status/(:segment)", "Locker::status/$1", ['filter' => 'jwtStaffAuth']);
     
     
     $routes->post("package/add", "Package::add", ['filter' => 'jwtStaffAuth']);

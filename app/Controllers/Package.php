@@ -107,7 +107,12 @@ class Package extends BaseController
     {
         $rules = [
             'id' => ['rules' => 'required|max_length[64]|is_not_unique_hash[packages.id]'],
-            'size' => ['rules' => 'required|max_length[1]'],
+            'size' => [
+                'rules' => 'required|max_length[1]|has_cell_size[locker_id]',
+                'errors' => [
+                    'has_cell_size' => 'Wybrany paczkomat nie ma skrytek w tym rozmiarze',
+                ]
+            ],
             'ref_code' => ['rules' => 'required|max_length[255]'],
             'status' => ['rules' => 'permit_empty|max_length[16]'],
             'locker_id' => ['rules' => 'permit_empty|max_length[64]|locker_exists|has_locker_access'],

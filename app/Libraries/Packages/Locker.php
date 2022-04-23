@@ -65,6 +65,11 @@ class Locker extends Client
         return $this->task->getForLocker($markSent);
     }
 
+    public function getStatus()
+    {
+        return $this->cellModel->getLockerCellsStatus($this->clientId);
+    }
+
     public function isNoEmptyCells($size)
     {
         if ($this->emptyCells === NULL) {

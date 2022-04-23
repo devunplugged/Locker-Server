@@ -378,4 +378,15 @@ class Locker extends BaseController
         $this->response->setHeader('Content-Type', 'application/pdf');
         $LockerServiceCodePrinter->output();
     }
+
+    public function status($lockerId)
+    {
+        $locker = new \App\Libraries\Packages\Locker(decodeHashId($lockerId));
+
+        if(!$locker->getClient()){
+            return $this->setResponseFormat('json')->fail(['generalErrors' => ['locker_id' => 'Nie znaleziono paczkomatu']], 409, 123, 'Invalid Inputs');
+        }
+
+        return $this->setResponseFormat('json')->respond(['status' => 200, 'status' => $locker->getStatus()], 200);
+    }
 }
