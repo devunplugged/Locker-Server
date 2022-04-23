@@ -60,12 +60,9 @@ class ClientRules
 
     public function hes_cell_size(string $cellSize, string $fields, array $data): bool
     {
-        echo "<pre>";
-        print_r($cellSize);
-        print_r($fields);
-        print_r($data);
-        echo "</pre>";
-        die;
+        \App\Libraries\Logger\Logger::log(888, $cellSize, 'cellSize');
+        \App\Libraries\Logger\Logger::log(888, $fields, 'fields');
+        \App\Libraries\Logger\Logger::log(888, $data, 'data');
         return false;
     }
 
