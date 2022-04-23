@@ -104,7 +104,7 @@ class CellModel extends Model
 
         foreach($cells as $cell){
             if(!isset($status[$cell->size])){
-                $status[$cell->size] = [0, 0]
+                $status[$cell->size] = [0, 0];
             }
             $status[$cell->size][1]++;
         }
