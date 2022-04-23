@@ -58,7 +58,7 @@ class ClientRules
         return false;
     }
 
-    public function has_cell_size(string $cellSize, string $fields, array $data): bool
+    public function has_cell_size(string $cellSize, ?string $fields, array $data): bool
     {
         \App\Libraries\Logger\Logger::log(888, $cellSize, 'cellSize');
         \App\Libraries\Logger\Logger::log(888, $fields, 'fields');
