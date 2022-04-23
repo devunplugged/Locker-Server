@@ -58,6 +58,17 @@ class ClientRules
         return false;
     }
 
+    public function hes_cell_size(string $cellSize, string $fields, array $data): bool
+    {
+        echo "<pre>";
+        print_r($cellSize);
+        print_r($fields);
+        print_r($data);
+        echo "</pre>";
+        die;
+        return false;
+    }
+
     public function can_set_type(string $type):bool
     {
         $request = service('request');
