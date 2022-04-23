@@ -64,7 +64,7 @@ class Package
             $apiClientModel = new \App\Models\ApiClientModel();
             $this->company['company'] = $apiClientModel->getCompany($this->package->company_id);
             if($this->company['company']){
-                $this->company['companyAddress'] = (new \App\Models\DetailModel())->get($this->company['company']->id);
+                $this->company['companyAddress'] = (new \App\Models\DetailModel())->getDetails($this->company['company']->id);
             }
         }
 
