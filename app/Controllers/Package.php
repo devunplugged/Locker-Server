@@ -250,6 +250,7 @@ class Package extends BaseController
                 'address' => $package->getAddress(),
                 'company' => hashId($package->getCompany()['company']),
                 'companyAddress' => $package->getCompany()['companyAddress'],
+                'lockerName' => $locker->getClient()->name,
                 'lockerAddress' => $locker->getAddressString(),
                 'lockerPostcode' => $locker->getPostcodeString(),
             ],
