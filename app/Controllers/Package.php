@@ -239,21 +239,19 @@ class Package extends BaseController
             return $this->setResponseFormat('json')->fail(['generalErrors' => ['package_id' => 'Brak dostępu do tej paczki']], 409, 123);
         }
 
-        $logs = $package->getLog();
-        $address = $package->getAddress();
-        $companyData = $package->getCompany();
-        $company = $companyData['company'];
-        $companyAddress = $companyData['companyAddress'];
 
+        $locker = new \App\Libraries\Packages\Locker($package->locker_id);
 
 
         return $this->respond(
             [
                 'package' => hashId($package->package),
-                'logs' => hashId($logs),
-                'address' => $address,
-                'company' => hashId($company),
-                'companyAddress' => $companyAddress,
+                'logs' => hashId($package->getLog()),
+                'address' => $package->getAddress(),
+                'company' => hashId($package->getCompany()['company']),
+                'companyAddress' => $package->getCompany()['companyAddress'],
+                'lockerAddress' => $locker->getAddressString(),
+                'lockerPostcode' => $locker->getPostcodeString(),
             ],
             200
         );
