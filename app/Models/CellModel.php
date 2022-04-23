@@ -99,10 +99,13 @@ class CellModel extends Model
     public function getLockerCellsStatus($lockerId)
     {
         
-        $status = ['a' => [0, 0], 'b' => [0, 0], 'c' => [0, 0] ];
+        //$status = ['a' => [0, 0], 'b' => [0, 0], 'c' => [0, 0] ];
         $cells = $this->where('locker_id', $lockerId)->find();
 
         foreach($cells as $cell){
+            if(!isset($status[$cell->size])){
+                $status[$cell->size] = [0, 0]
+            }
             $status[$cell->size][1]++;
         }
 
