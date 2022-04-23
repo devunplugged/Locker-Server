@@ -240,7 +240,7 @@ class Package extends BaseController
         }
 
 
-        $locker = new \App\Libraries\Packages\Locker($package->locker_id);
+        $locker = new \App\Libraries\Packages\Locker($package->package->locker_id);
 
 
         return $this->respond(
