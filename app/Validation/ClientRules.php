@@ -64,7 +64,7 @@ class ClientRules
             return false;
         }
         $cellModel = new CellModel();
-        return $cellModel->lockerHasCellSize($data[$fields], $cellSize);
+        return $cellModel->lockerHasCellSize(decodeHashId($data[$fields]), $cellSize);
     }
 
     public function can_set_type(string $type):bool
