@@ -60,10 +60,11 @@ class ClientRules
 
     public function has_cell_size(string $cellSize, ?string $fields, array $data): bool
     {
-        \App\Libraries\Logger\Logger::log(888, $cellSize, 'cellSize');
-        \App\Libraries\Logger\Logger::log(888, $fields, 'fields');
-        \App\Libraries\Logger\Logger::log(888, $data, 'data');
-        return false;
+        if(!isset($data[$fields])){
+            return false;
+        }
+        $cellModel = new CellModel();
+        return $cellModel->lockerHasCellSize($data[$fields], $cellSize);
     }
 
     public function can_set_type(string $type):bool

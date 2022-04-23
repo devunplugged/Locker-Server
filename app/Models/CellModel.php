@@ -145,4 +145,12 @@ class CellModel extends Model
         
 
     }
+
+    public function lockerHasCellSize($lockerId, $size)
+    {
+        if($this->where('locker_id', $lockerId)->where('size', $size)->find()){
+            return true;
+        }
+        return false;
+    }
 }
