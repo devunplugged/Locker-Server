@@ -27,7 +27,7 @@ class Package extends BaseController
     {
         $rules = [
             'locker_id' => ['rules' => 'required|max_length[255]|locker_exists|has_locker_access'],
-            'size' => ['rules' => 'required|max_length[1]'],
+            'size' => ['rules' => 'required|max_length[1]|has_cell_size'],
             'ref_code' => ['rules' => 'required|max_length[255]'],
 
             'senders_name' => ['rules' => 'required|max_length[255]'],
