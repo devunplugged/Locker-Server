@@ -26,14 +26,26 @@ class Package extends BaseController
     public function add()
     {
         $rules = [
-            'locker_id' => ['rules' => 'required|max_length[255]|locker_exists|has_locker_access'],
+            'locker_id' => [
+                'rules' => 'required|max_length[255]|locker_exists|has_locker_access',
+                'errors' => [
+                    'required' => 'Pole paczkomat jest wymagane',
+                    'locker_exists' => 'Nie znaleziono wybranego paczkomatu',
+                    'has_locker_access' => 'Nie masz dostępu do tego paczkomatu',
+                ]
+            ],
             'size' => [
                 'rules' => 'required|max_length[1]|has_cell_size[locker_id]',
                 'errors' => [
                     'has_cell_size' => 'Wybrany paczkomat nie ma skrytek w tym rozmiarze',
                 ]
             ],
-            'ref_code' => ['rules' => 'required|max_length[255]'],
+            'ref_code' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole numer referencyjny jest wymagane',
+                ]
+            ],
 
             'senders_name' => ['rules' => 'required|max_length[255]'],
             'senders_postcode' => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
