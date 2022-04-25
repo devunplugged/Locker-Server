@@ -191,16 +191,32 @@ class Package extends BaseController
     public function update()
     {
         $rules = [
-            'id' => ['rules' => 'required|max_length[64]|is_not_unique_hash[packages.id]'],
+            'id' => [
+                'rules' => 'required|max_length[64]|is_not_unique_hash[packages.id]',
+                'errors' => [
+                    'is_not_unique_hash' => 'Nie znaleziono wybranej paczki',
+                ]
+            ],
             'size' => [
                 'rules' => 'required|max_length[1]|has_cell_size[locker_id]',
                 'errors' => [
                     'has_cell_size' => 'Wybrany paczkomat nie ma skrytek w tym rozmiarze',
                 ]
             ],
-            'ref_code' => ['rules' => 'required|max_length[255]'],
+            'ref_code' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole numer referencyjny jest wymagane',
+                ]
+            ],
             'status' => ['rules' => 'permit_empty|max_length[16]'],
-            'locker_id' => ['rules' => 'permit_empty|max_length[64]|locker_exists|has_locker_access'],
+            'locker_id' => [
+                'rules' => 'permit_empty|max_length[64]|locker_exists|has_locker_access',
+                'errors' => [
+                    'locker_exists' => 'Nie znaleziono wybranego paczkomatu',
+                    'has_locker_access' => 'Nie masz dostępu do tego paczkomatu',
+                ]
+            ],
             'cell_sort_id' => ['rules' => 'permit_empty|max_length[255]|numeric'],
             'company_id' => ['rules' => 'permit_empty|max_length[64]|is_not_unique_hash[companies.id]'],
             'created_by' => ['rules' => 'permit_empty|max_length[64]|is_not_unique_hash[apiclients.id]'],
@@ -210,27 +226,101 @@ class Package extends BaseController
             //'insert_cancelled_by' => ['rules' => 'permit_empty|max_length[64]|is_not_unique_hash[apiclients.id]'],
             //'insert_cancelled_at' => ['rules' => 'permit_empty|max_length[24]'],
 
-            'senders_name' => ['rules' => 'required|max_length[255]'],
-            'senders_postcode' => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
-            'senders_city' => ['rules' => 'required|max_length[255]'],
-            'senders_street' => ['rules' => 'required|max_length[255]'],
-            'senders_building' => ['rules' => 'required|max_length[255]'],
+            'senders_name' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole nazwa podmiotu jest wymagane'
+                ]
+            ],
+            'senders_postcode' => [
+                'rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]',
+                'errors' => [
+                    'required' => 'Pole kod pocztowy nadawcy jest wymagane',
+                    'max_length' => 'Zbyt długi kod pocztowy',
+                    'regex_match' => 'Zły format kodu (00-000)',
+                ]
+            ],
+            'senders_city' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole miasto nadawcy jest wymagane'
+                ]
+            ],
+            'senders_street' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole ulica nadawcy jest wymagane'
+                ]
+            ],
+            'senders_building' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole numer budynku nadawcy jest wymagane'
+                ]
+            ],
             'senders_apartment' => ['rules' => 'permit_empty|max_length[255]'],
             'senders_firstname' => ['rules' => 'permit_empty|max_length[255]'],
             'senders_surname' => ['rules' => 'permit_empty|max_length[255]'],
-            'senders_phone' => ['rules' => 'required|max_length[255]'],
-            'senders_email' => ['rules' => 'required|max_length[255]|valid_email'],
+            'senders_phone' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole telefon nadawcy jest wymagane',
+                ]
+            ],
+            'senders_email' => [
+                'rules' => 'required|max_length[255]|valid_email',
+                'errors' => [
+                    'required' => 'Pole e-mail nadawcy jest wymagane',
+                ]
+            ],
 
-            'recipients_name' => ['rules' => 'required|max_length[255]'],
-            'recipients_postcode' => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
-            'recipients_city' => ['rules' => 'required|max_length[255]'],
-            'recipients_street' => ['rules' => 'required|max_length[255]'],
-            'recipients_building' => ['rules' => 'required|max_length[255]'],
+            'recipients_name' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole nazwa odbiorcy jest wymagane',
+                ]
+            ],
+            'recipients_postcode' => [
+                'rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]',
+                'errors' => [
+                    'required' => 'Pole kod pocztowy odbiorcy jest wymagane',
+                    'max_length' => 'Zbyt długi kod pocztowy',
+                    'regex_match' => 'Zły format kodu (00-000)',
+                ]
+            ],
+            'recipients_city' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole miasto odbiorcy jest wymagane',
+                ]
+            ],
+            'recipients_street' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole ulica odbiorcy jest wymagane',
+                ]
+            ],
+            'recipients_building' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole numer budynku odbiorcy jest wymagane',
+                ]
+            ],
             'recipients_apartment' => ['rules' => 'permit_empty|max_length[255]'],
             'recipients_firstname' => ['rules' => 'permit_empty|max_length[255]'],
             'recipients_surname' => ['rules' => 'permit_empty|max_length[255]'],
-            'recipients_phone' => ['rules' => 'required|max_length[255]'],
-            'recipients_email' => ['rules' => 'required|max_length[255]|valid_email'],
+            'recipients_phone' => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Pole telefon odbiorcy jest wymagane',
+                ]
+            ],
+            'recipients_email' => [
+                'rules' => 'required|max_length[255]|valid_email',
+                'errors' => [
+                    'required' => 'Pole e-mail odbiorcy jest wymagane',
+                ]
+            ],
         ];
 
         if (!$this->validate($rules)) {
