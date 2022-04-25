@@ -267,7 +267,7 @@ class ClientValidationRules
                 'errors'    => [
                     'required' => 'Podaj ID klienta',
                     'company_exists' => 'Nie znaleziono wybranej firmy',
-                    ]
+                ]
             ],
             'name'          => [
                 'rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]',
@@ -300,7 +300,7 @@ class ClientValidationRules
                 'errors' => [
                     'required' => 'Kod pocztowy jest polem wymaganym',
                     'max_length' => 'To pole może mieć maks. 6 znaków',
-                    'regex_match' => 'Podaj kod pocztowy we właściwym formacie: 00-000'
+                    'regex_match' => 'Podaj kod pocztowy we właściwym formacie: 00-000',
                 ]
             ],
             'geolocate'     => [
@@ -348,20 +348,70 @@ class ClientValidationRules
         return [
             'company_id'    => [
                 'rules' => 'required|max_length[64]|company_exists',
-                'errors' => ['company_exists' => 'Company doesn\'t exist ']
+                'errors' => [
+                    'required' => 'Firma jest polem wymaganym',
+                    'company_exists' => 'Nie znaleziono wybranej firmy',
+                ]
             ],
-            'name'          => ['rules' => 'required|max_length[255]|is_unique[apiclients.name]'],
+            'name'          => [
+                'rules' => 'required|max_length[255]|is_unique[apiclients.name]',
+                'errors' => [
+                    'required' => 'Nazwa jest polem wymaganym',
+                    'is_unique' => 'Ta nazwa jest już zajęta',
+                ]
+            ],
             'type'          => [
                 'rules' => 'required|max_length[16]|allowed_client_type', //|can_set_type
-                'errors' => ['allowed_client_type' => 'This client type is not allowed']
+                'errors' => [
+                    'required' => 'Typ klienta jest polem wymaganym',
+                    'allowed_client_type' => 'Niedozwolony typ klienta',
+                ]
             ],
-            'first_name'       => ['rules' => 'required|max_length[255]'],
-            'sur_name'          => ['rules' => 'required|max_length[255]'],
-            'street'        => ['rules' => 'required|max_length[255]'],
-            'city'          => ['rules' => 'required|max_length[255]'],
-            'post_code'     => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
-            'phone'     => ['rules' => 'required|max_length[255]'],
-            'email'     => ['rules' => 'required|max_length[255]|valid_email'],
+            'first_name'       => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Imię jest polem wymaganym',
+                ]
+            ],
+            'sur_name'          => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Nazwisko jest polem wymaganym',
+                ]
+            ],
+            'street'        => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Ulica jest polem wymaganym',
+                ]
+            ],
+            'city'          => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Miasto jest polem wymaganym',
+                ]
+            ],
+            'post_code'     => [
+                'rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]',
+                'errors' => [
+                    'required' => 'Kod pocztowy jest polem wymaganym',
+                    'max_length' => 'To pole może mieć maks. 6 znaków',
+                    'regex_match' => 'Podaj kod pocztowy we właściwym formacie: 00-000',
+                ]
+            ],
+            'phone'     => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Telefon jest polem wymaganym',
+                ]
+            ],
+            'email'     => [
+                'rules' => 'required|max_length[255]|valid_email',
+                'errors' => [
+                    'required' => 'E-mail jest polem wymaganym',
+                    'valid_email' => 'Podaj poprawny adres e-mail',
+                ]
+            ],
         ];
     }
 
@@ -369,23 +419,79 @@ class ClientValidationRules
     {
         //Logger::log(3, 'staffUpdateRules', 'ClientValidationRules');
         return [
-            'id'            => ['rules' => 'required|is_not_unique_hash[apiclients.id]'],
+            'id'            => [
+                'rules' => 'required|is_not_unique_hash[apiclients.id]',
+                'errors' => [
+                    'required' => 'Podaj ID klienta',
+                    'company_exists' => 'Nie znaleziono wybranego pracownika',
+                ]
+            ],
             'company_id'    => [
                 'rules' => 'required|max_length[64]|company_exists',
-                'errors' => ['company_exists' => 'Company doesn\'t exist ']
+                'errors' => [
+                    'required' => 'Firma jest polem wymaganym',
+                    'company_exists' => 'Nie znaleziono wybranej firmy',
+                ]
             ],
-            'name'          => ['rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]'],
+            'name'          => [
+                'rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]',
+                'errors' => [
+                    'required' => 'Nazwa jest polem wymaganym',
+                    'is_unique_except_hash' => 'Ta nazwa jest już zajęta',
+                ]
+            ],
             'type'          => [
                 'rules' => 'required|max_length[16]|allowed_client_type', //|can_set_type
-                'errors' => ['allowed_client_type' => 'This client type is not allowed']
+                'errors' => [
+                    'required' => 'Typ jest polem wymaganym',
+                    'allowed_client_type' => 'Nie dozwolony typ klienta',
+                ]
             ],
-            'first_name'       => ['rules' => 'required|max_length[255]'],
-            'sur_name'          => ['rules' => 'required|max_length[255]'],
-            'street'        => ['rules' => 'required|max_length[255]'],
-            'city'          => ['rules' => 'required|max_length[255]'],
-            'post_code'     => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
-            'phone'     => ['rules' => 'required|max_length[255]'],
-            'email'     => ['rules' => 'required|max_length[255]|valid_email'],
+            'first_name'       => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Imię jest polem wymaganym',
+                ]
+            ],
+            'sur_name'          => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Nazwisko jest polem wymaganym',
+                ]
+            ],
+            'street'        => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Ulica jest polem wymaganym',
+                ]
+            ],
+            'city'          => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Miasto jest polem wymaganym',
+                ]
+            ],
+            'post_code'     => [
+                'rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]',
+                'errors' => [
+                    'required' => 'Kod pocztowy jest polem wymaganym',
+                    'max_length' => 'To pole może mieć maks. 6 znaków',
+                    'regex_match' => 'Podaj kod pocztowy we właściwym formacie: 00-000',
+                ]
+            ],
+            'phone'     => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Telefon jest polem wymaganym',
+                ]
+            ],
+            'email'     => [
+                'rules' => 'required|max_length[255]|valid_email',
+                'errors' => [
+                    'required' => 'E-mail jest polem wymaganym',
+                    'valid_email' => 'Podaj poprawny adres e-mail',
+                ]
+            ],
         ];
     }
 
@@ -395,18 +501,58 @@ class ClientValidationRules
         return [
             'company_id'    => [
                 'rules'     => 'required|max_length[64]|company_exists',
-                'errors'    => ['company_exists' => 'Company doesn\'t exist ']
+                'errors'    => [
+                    'required' => 'Firma jest polem wymaganym',
+                    'company_exists' => 'Nie znaleziono wybranej firmy',
+                ]
             ],
-            'name'          => ['rules' => 'required|max_length[255]|is_unique[apiclients.name]'],
+            'name'          => [
+                'rules' => 'required|max_length[255]|is_unique[apiclients.name]',
+                'errors' => [
+                    'required' => 'Nazwa jest polem wymaganym',
+                    'is_unique' => 'Ta nazwa jest już zajęta',
+                ]
+            ],
             'type'          => [
                 'rules'     => 'required|max_length[16]|allowed_client_type', //|can_set_type
-                'errors'    => ['allowed_client_type' => 'This client type is not allowed']
+                'errors'    => [
+                    'required' => 'Typ jest polem wymaganym',
+                    'allowed_client_type' => 'Nie dozwolony typ klienta',
+                ]
             ],
-            'street'        => ['rules' => 'required|max_length[255]'],
-            'city'          => ['rules' => 'required|max_length[255]'],
-            'post_code'     => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
-            'geolocate'     => ['rules' => 'required|max_length[255]'],
-            'request_interval' => ['rules' => 'required|numeric'],
+            'street'        => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Ulica jest polem wymaganym',
+                ]
+            ],
+            'city'          => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Miasto jest polem wymaganym'
+                ]
+            ],
+            'post_code'     => [
+                'rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]',
+                'errors' => [
+                    'required' => 'Kod pocztowy jest polem wymaganym',
+                    'max_length' => 'To pole może mieć maks. 6 znaków',
+                    'regex_match' => 'Podaj kod pocztowy we właściwym formacie: 00-000',
+                ]
+            ],
+            'geolocate'     => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Geolokalizacja jest polem wymaganym',
+                ]
+            ],
+            'request_interval' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'Interwał jest polem wymaganym',
+                    'numeric' => 'Wartość interwału powinna byc liczbą całkowitą'
+                ]
+            ],
         ];
     }
 
@@ -414,21 +560,67 @@ class ClientValidationRules
     {
         //Logger::log(3, 'lockerUpdateRules', 'ClientValidationRules');
         return [
-            'id'            => ['rules' => 'required|locker_exists[apiclients.id]'],
+            'id'            => [
+                'rules' => 'required|locker_exists[apiclients.id]',
+                'errors' => [
+                    'required' => 'Paczkomat jest polem wymaganym',
+                    'locker_exists' => 'Nie znaleziono wybranego paczkomatu',
+                ]
+            ],
             'company_id'    => [
                 'rules'     => 'required|max_length[64]|company_exists',
-                'errors'    => ['company_exists' => 'Company doesn\'t exist ']
+                'errors'    => [
+                    'required' => 'Firma jest polem wymaganym',
+                    'company_exists' => 'Nie znaleziono wybranej firmy',
+                ]
             ],
-            'name'          => ['rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]'],
+            'name'          => [
+                'rules' => 'required|max_length[255]|is_unique_except_hash[apiclients.name,id,{id}]',
+                'errors' => [
+                    'required' => 'Nazwa jest polem wymaganym',
+                    'is_unique_except_hash' => 'Ta nazwa jest już zajęta',
+                ]
+            ],
             'type'          => [
                 'rules'     => 'required|max_length[16]|allowed_client_type', //|can_set_type
-                'errors'    => ['allowed_client_type' => 'This client type is not allowed']
+                'errors'    => [
+                    'required' => 'Typ jest polem wymaganym',
+                    'allowed_client_type' => 'Nie dozwolony typ klienta',
+                ]
             ],
-            'street'        => ['rules' => 'required|max_length[255]'],
-            'city'          => ['rules' => 'required|max_length[255]'],
-            'post_code'     => ['rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]'],
-            'geolocate'     => ['rules' => 'required|max_length[255]'],
-            'request_interval' => ['rules' => 'required|numeric'],
+            'street'        => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Ulica jest polem wymaganym',
+                ]
+            ],
+            'city'          => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Miasto jest polem wymaganym'
+                ]
+            ],
+            'post_code'     => [
+                'rules' => 'required|max_length[6]|regex_match[/\d{2}-\d{3}/]',
+                'errors' => [
+                    'required' => 'Kod pocztowy jest polem wymaganym',
+                    'max_length' => 'To pole może mieć maks. 6 znaków',
+                    'regex_match' => 'Podaj kod pocztowy we właściwym formacie: 00-000',
+                ]
+            ],
+            'geolocate'     => [
+                'rules' => 'required|max_length[255]',
+                'errors' => [
+                    'required' => 'Geolokalizacja jest polem wymaganym',
+                ]
+            ],
+            'request_interval' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'Interwał jest polem wymaganym',
+                    'numeric' => 'Wartość interwału powinna byc liczbą całkowitą'
+                ]
+            ],
         ];
     }
 }
