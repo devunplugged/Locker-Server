@@ -138,8 +138,6 @@ class Client extends BaseController
         $data['page'] = $this->request->getVar('page') ?? 1;
         $data['limit'] = $this->request->getVar('limit') ?? 20;
         $data['type'] = $this->request->getVar('type') ?? 'all';
-        Logger::log(555, $this->request->getVar('type'), 'Client list type');
-        Logger::log(555, $data, 'Client list data');
 
         $apiClientModel = new ApiClientModel();
 
