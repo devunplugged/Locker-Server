@@ -138,7 +138,7 @@ class Printer
         $this->pdf->SetXY(5, 75);
         $this->pdf->Cell(95, 4, '', 1, 1);
         $this->pdf->SetXY(5, 76);
-        $this->pdf->MultiCell(95, 2, 'Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl', 0, 2);      
+        $this->pdf->MultiCell(95, 2, $this->fixEncoding('Administratorem danych osobowych jest Delta z siedziba ul. Graniczna 10 Poznań. Wiecej informacji na delta.poznan.pl'), 0, 2);      
         
         
     }
