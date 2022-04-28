@@ -319,7 +319,8 @@ class Package
 
     public function isRemoved()
     {
-        return $this->package->removed_at ? true : false;
+        //return $this->package->removed_at ? true : false;
+        return $this->package->status == 'removed';
     }
 
     public function isInLockerForGood()

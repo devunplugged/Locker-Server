@@ -42,24 +42,24 @@ class LockerRequest
 
     public function getType()
     {
-        Logger::log(48, 'LOCKER REQUEST', 'getType', 'locker', $this->request->decodedJwt->clientId);
-        Logger::log(48, $this->request->getVar('code'), 'LOCKER REQUEST CODE', 'locker', $this->request->decodedJwt->clientId);
+        // Logger::log(48, 'LOCKER REQUEST', 'getType', 'locker', $this->request->decodedJwt->clientId);
+        // Logger::log(48, $this->request->getVar('code'), 'LOCKER REQUEST CODE', 'locker', $this->request->decodedJwt->clientId);
 
         if ($this->lockerServiceCode->isLockerSreviceCode($this->request->getVar('code'))) {
             $this->requestType = 'lockerServiceCode';
-            Logger::log(48, 'LOCKER REQUEST', 'isLockerSreviceCode', 'locker', $this->request->decodedJwt->clientId);
+            //Logger::log(48, 'LOCKER REQUEST', 'isLockerSreviceCode', 'locker', $this->request->decodedJwt->clientId);
             return;
         }
 
         //check if code is a servicecode
         if ($this->serviceCode->isSreviceCode($this->request->getVar('code'))) {
-            Logger::log(48, 'LOCKER REQUEST', 'isLockerSreviceCode', 'locker', $this->request->decodedJwt->clientId);
+            //Logger::log(48, 'LOCKER REQUEST', 'isLockerSreviceCode', 'locker', $this->request->decodedJwt->clientId);
             $this->requestType = 'createService';
             return;
         }
 
         if ($this->package->loadFromInsertCodeAndLocker($this->request->getVar('code'), $this->request->decodedJwt->clientId)) {
-            Logger::log(48, 'LOCKER REQUEST', 'isLockerSreviceCode', 'locker', $this->request->decodedJwt->clientId);
+            //Logger::log(48, 'LOCKER REQUEST', 'isLockerSreviceCode', 'locker', $this->request->decodedJwt->clientId);
             $this->requestType = 'in';
             return;
         }
@@ -183,9 +183,6 @@ class LockerRequest
             throw new ValidationException('No package found', 202, 404);
         }
 
-        if (!$this->package->isInLocker()) {
-            throw new ValidationException('Package is not in a locker yet', 203, 409);
-        }
 
         if ($this->locker->isBusyWithPackageOtherThan($this->package->package->id)) {
             throw new ValidationException('Locker is busy. Try again later', 3, 403);
@@ -198,6 +195,10 @@ class LockerRequest
             return true;
         }
 
+        if (!$this->package->isInLocker()) {
+            throw new ValidationException('Package is not in a locker yet', 203, 409);
+        }
+        
         $this->package->makeRemoveReady();
         $this->task->create('open-cell', $this->package->package->cell_sort_id);
         //$this->createOpenCellTask($this->package->package->cell_sort_id);
