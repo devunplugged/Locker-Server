@@ -146,7 +146,7 @@ class Locker extends BaseController
 
             //send response with tasks
             $task = new Task($this->request->decodedJwt->clientId);
-            Logger::log(331, $task->getForLocker(), 'CODE OK', 'locker', $this->request->decodedJwt->clientId);
+            Logger::log(331, "", 'CODE OK', 'locker', $this->request->decodedJwt->clientId);
             return $this->setResponseFormat('json')->respond(['status' => 200, 'tasks' => $task->getForLocker()], 200);
         } catch (ValidationException $e) {
             $failedOpenAttemptsModel->create($this->request->decodedJwt->clientId);
